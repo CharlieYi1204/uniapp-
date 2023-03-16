@@ -26,6 +26,6 @@
 /* 透明度 */
 /* 文章场景相关 */
 .tabbar {
-  background-color: #546;
+  color: green;
 }
 

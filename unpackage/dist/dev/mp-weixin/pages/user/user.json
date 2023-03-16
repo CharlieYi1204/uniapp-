@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "个人",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "user-top-icon": "/components/userTopIcon/userTopIcon"
+  }
+}

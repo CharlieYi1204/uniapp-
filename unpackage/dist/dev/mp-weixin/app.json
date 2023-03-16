@@ -1,7 +1,11 @@
 {
   "pages": [
+    "pages/signup/signup",
+    "pages/login/login",
+    "pages/user/user",
     "pages/index/index",
-    "pages/bbs/bbs"
+    "pages/bbs/bbs",
+    "pages/message/message"
   ],
   "subPackages": [],
   "window": {
@@ -9,6 +13,36 @@
     "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#12B5A1",
     "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#888",
+    "selectedColor": "12B5A1",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "查询",
+        "iconPath": "static/icon/map.png",
+        "selectedIconPath": "static/icon/map-filling.png"
+      },
+      {
+        "pagePath": "pages/bbs/bbs",
+        "text": "交流",
+        "iconPath": "static/icon/smile.png",
+        "selectedIconPath": "static/icon/smile-filling.png"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "text": "消息",
+        "iconPath": "/static/icon/email.png",
+        "selectedIconPath": "static/icon/news-filling.png"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我的",
+        "iconPath": "static/icon/user.png",
+        "selectedIconPath": "static/icon/user-filling.png"
+      }
+    ]
   },
   "usingComponents": {}
 }

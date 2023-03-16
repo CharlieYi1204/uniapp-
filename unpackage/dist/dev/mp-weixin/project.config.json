@@ -11,6 +11,7 @@
     "minified": false,
     "newFeature": true,
     "bigPackageSizeSupport": true,
+    "ignoreUploadUnusedFiles": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
@@ -19,7 +20,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.30.2",
-  "appid": "touristappid",
+  "appid": "wxda72eb3ca45eb856",
   "projectname": "bbs",
   "condition": {},
   "editorSetting": {

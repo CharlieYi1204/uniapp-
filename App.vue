@@ -15,4 +15,10 @@
 <style lang="scss">
 	@import "@/uni_modules/uview-ui/index.scss";
 	/*每个页面公共css */
+	view { 
+		box-sizing: border-box;
+	}
+	page {
+			background-color: #DFE6E9;
+	}
 </style>
