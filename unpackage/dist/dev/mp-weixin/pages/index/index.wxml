@@ -1,1 +1,1 @@
-<view><u-button vue-id="8dd740cc-1" text="月落" bind:__l="__l"></u-button></view>
+<view class="cardinfo"><card-top-info vue-id="8dd740cc-1" bind:__l="__l"></card-top-info><card-info-map vue-id="8dd740cc-2" bind:__l="__l"></card-info-map></view>

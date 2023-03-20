@@ -8,7 +8,13 @@
 		},
 		onHide: function() {
 			console.log('App Hide')
+		},
+		data() {
+			return {
+				globalImgBaseUrl: 'http://localhost:3000/'
+			}
 		}
+		
 	}
 </script>
 

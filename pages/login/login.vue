@@ -13,7 +13,8 @@
 			<u-form 
 			labelPosition="left"
 			:model="userLogin"
-			@submit="res => console.log(res)">
+			@submit="res => console.log(res)"
+			>
 				<u-form-item
 					label="账号"
 					borderBottom
@@ -40,6 +41,7 @@
 			</u-form-item>
 			</u-form>
 		</view>
+		<u-toast ref="uToast"></u-toast>
 	</view>
 </template>
 
@@ -51,12 +53,50 @@
 				userLogin: {
 					username:"",
 					password:""
-				}
+				},
+				loading:true,
+				toastType:"",
 			}
 		},
 		methods: {
 			getInfo() {
-				console.log(this.userLogin)
+				let userLogin = this.userLogin
+				uni.$u.http.post('/users/userLogin',{
+					username: userLogin.username,
+					password: userLogin.password
+				},{dataType: 'json'}).then(res => {
+					if(res.data.message == "登录成功")
+					{
+						uni.setStorageSync('user_token',res.data.token)
+						uni.setStorageSync('isLogin', true)
+						this.toastType = "success"
+					} else {
+						this.toastType = "error"
+					}
+					let toastType = this.toastType
+					this.$refs.uToast.show({
+						type:this.toastType,
+						message:res.data.message,
+						duration:800,
+						url:"/pages/user/user",
+						complete() {
+							//如果登录成功就进行跳转到用户页面
+							if(toastType == "success") {
+								uni.reLaunch({
+									url:"/pages/user/user"
+								})
+							}
+						}
+					})})
+					.catch((errpr) => {
+						this.$refs.uToast.show({
+							type:"error",
+							message:"登录失败",
+							duration:800,
+						})
+					})
+					//登录成功则跳转至用户中心
+					
 			},
 			toSignUp() {
 				uni.navigateTo({

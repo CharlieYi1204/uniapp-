@@ -24,6 +24,15 @@ wx.__webpack_require_UNI_MP_PLUGIN__ = __webpack_require__;
 _vue.default.config.productionTip = false;
 _App.default.mpType = 'app';
 _vue.default.use(_uviewUi.default);
+
+//全局配置baseURL
+uni.$u.http.setConfig(function (config) {
+  /* config 为默认全局配置*/
+  config.baseURL = "http://localhost:3000"; /* 根域名 */
+  return config;
+});
+//设置图片的全局变量
+_vue.default.prototype.$imgBaseUrl = 'http://localhost:3000/';
 try {
   var isPromise = function isPromise(obj) {
     return !!obj && ((0, _typeof2.default)(obj) === "object" || typeof obj === "function") && typeof obj.then === "function";
@@ -130,6 +139,11 @@ var _default = {
   },
   onHide: function onHide() {
     console.log('App Hide');
+  },
+  data: function data() {
+    return {
+      globalImgBaseUrl: 'http://localhost:3000/'
+    };
   }
 };
 exports.default = _default;

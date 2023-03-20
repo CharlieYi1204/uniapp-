@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "uview-ui": "^2.0.31"
+  },
+  "devDependencies": {
+    "webpack": "^5.76.2"
   }
 }

@@ -1,37 +1,13 @@
 <template>
 	<view class="user">
-<!-- 		<view class="user-bg">
-			<image src="../../static/img/user_bg.jpg" mode="aspectFill"></image>
-		</view> -->
 		<!-- 头部头像区域 -->
 		<view class="top">
 			<view class="usericon" @click="toLogin()">
-					<image src="/static/img/user_bg.jpg" mode="aspectFill"></image>
-					<view>请登录</view>
+					<image :src="imgsrc" mode="aspectFill"></image>
+					<view v-if="!isLogin">请登录</view>
+					<view v-if="isLogin && !notSetNickname" class="username">{{userInfo.nickname}}</view>
+					<view v-if="isLogin && notSetNickname" class="username">未设置昵称</view>
 			</view>
-		</view>
-		<!-- 中部帖子、收藏数量栏目 -->
-		<view class="user-newsnum">
-			<view class="item" v-for="item in userNewsCollect">
-				<view class="info-num" :style="{color: item.color}"> {{item.num}} </view>
-				<view class="info-title">{{item.title}}</view>
-			</view>
-		</view>
-		<!-- 下部，列表功能项 -->
-			<view class="user-func">
-				<view 
-				v-for="(item,index) in userFunc"
-				:key="index"
-				class="row">
-				<view class="func-icon">
-					<image :src="item.icon" ></image>
-				</view>
-				<view class="func-text">{{item.title}}</view>
-				</view>
-			</view>
-		<!-- 退出登录按钮 -->
-		<view class="log-out">
-			<button color="red">退出登录</button>
 		</view>
 	</view>
 	
@@ -40,33 +16,24 @@
 <script>
 	export default {
 		name:"userTopIcon",
+		props: {
+			isLogin:{
+				type:Boolean,
+				default: false
+			},
+			userInfo:{
+				type:Object,
+				default() {
+					return {
+						username:"默认用户名",
+						icon:"/static/img/user_bg.jpg"
+					}
+				}
+			}
+		},
 		data() {
 			return {
-				userNewsCollect: [{
-					title:"帖子",
-					num:20,
-					color:"rgb(116, 185, 255)"
-				},{
-					title:"收藏",
-					num:35,
-					color:"rgb(0, 206, 201)"
-				},{
-					title:"关注",
-					num:10,
-					color:"rgb(250, 177, 160)"
-				},{
-					title:"粉丝",
-					num:12,
-					color:"rgb(225, 112, 85)"
-				}],
-				userFunc:[{
-					title:"修改个人信息",
-					icon:"/static/icon/edit.png"
-				},
-				{
-					title:"查看浏览历史",
-					icon:"/static/icon/history.png"
-				}]
+				
 			};
 		},
 		methods: {
@@ -74,25 +41,25 @@
 				uni.redirectTo({
 					url:"/pages/login/login"
 				})
+			},
+			imgUrl(url) {
+			      return "http://localhost:3000/" + url
 			}
+		},
+		computed: {
+			notSetNickname() {
+				return this.userInfo.nickname == '' || this.userInfo.nickname == null
+			},
+			imgsrc() {
+				return this.$imgBaseUrl + this.userInfo.icon
+			}
+		},
 		}
-	}
 </script>
 
 <style lang="scss" scoped>
   .user{
 	  background: #DFE6E9;
-	  padding:20rpx 20rpx;
-	  // .user-bg {
-		 //  position: absolute;
-		 //  width: 100%;
-		 //  height: 400rpx;
-		 //  image {
-			//   width: 100%;
-			//   height: 100%;
-			//   filter:opacity(0.5);
-		 //  }
-	  // }
 	.top {
 		  width: 100%;
 		  height: 400rpx;
@@ -108,7 +75,7 @@
 		  align-items: center;
 		  .usericon {
 			text-align: center;
-		  	width: 300rpx;
+		  	width: 350rpx;
 		  	height: 150rpx;
 			image {
 				border: 3px solid #fff;
@@ -116,76 +83,14 @@
 				width: 150rpx;
 				height: 100%;
 			}
+			.username {
+				 overflow: hidden;
+				 white-space: nowrap;
+				 text-overflow: ellipsis;
+
+			}
 		  }
 		}
-		.user-newsnum {
-			width: 100%;
-			height: 200rpx;
-			border-radius: 20rpx;
-			margin-top: 20rpx;
-			padding: 5rpx;
-			display: flex;
-			justify-content: space-around;
-			background-color: #fff;
-			.item {
-				height: 100%;
-				width: 150rpx;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-				
-			.info-num {
-				font-size: 50rpx;
-				font-weight: bold;
-			}
-			.info-title{
-				font-size: 30rpx;
-			}
-			}
-		}
-		.user-func {
-			font-size: 40rpx;
-			padding:30rpx 40rpx;
-			background: #fff;
-			margin-top: 20rpx;
-			border-radius: 20rpx;
-			.row {
-				width: 100%;
-				height: 80rpx;
-				padding:50rpx 0rpx;
-				margin-bottom: 20rpx;
-				border-bottom: 1px solid #DFE6E9;
-				display: flex;
-				align-items: center;
-				.func-icon{
-					width: 50rpx;
-					height: 50rpx;
-					image {
-						width: 100%;
-						height: 100%;
-					}
-				}
-				.func-text {
-					font-size: 40rpx;
-					font-weight: bold;
-					padding-left:30rpx
-				}
-			}
-		}
-		.log-out {
-			margin-top: 20rpx;
-			button {
-				background: #12B5A1;
-				color:white;
-				border-radius: 20rpx;
-			}
-		}
-		.enditem{
-			border: none;
-			color:red;
-		}
-  }
-	
+	}
 
 </style>

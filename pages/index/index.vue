@@ -1,6 +1,7 @@
 <template>
-	<view>
-		<u-button text="月落"></u-button>	
+	<view class="cardinfo">
+		<cardTopInfo></cardTopInfo>
+		<cardInfoMap></cardInfoMap>
 	</view>
 </template>
 
@@ -8,14 +9,15 @@
 	export default {
 		data() {
 			return {
-				value6:0
+				
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-.tabbar {
-	color: green;
-}
+	.cardinfo{
+		padding:20rpx 20rpx
+	}
+
 </style>

@@ -39,7 +39,7 @@
 					</u-button>
 				</u-form-item>
 			</u--form>
-			<view class="tologintxt" @click="toLogin()">已有账号？点击登陆></view>
+			<view class="tologintxt" @click="toLogin()" >已有账号？点击登陆></view>
 			<!-- 选择性别时的弹窗 -->
 			<u-action-sheet :show="showSex" :actions="genderArr" title="请选择性别" @close="showSex = false"
 				@select="sexSelect">
@@ -92,25 +92,23 @@
 							message: "账号只能包含数字和字母",
 							// 触发器可以同时用blur和change，二者之间用英文逗号隔开
 							trigger: ["change", "blur"],
-						}],
-						// 校验用户是否已存在
-						// {
-						// 	asyncValidator: (rule, value, callback) => {
-						// 		uni.$u.http.post('/xxx/xxx', {
-						// 			name: value
-						// 		}).then(res => {
-						// 			// 如果验证不通过，需要在callback()抛出new Error('错误提示信息')
-						// 			if (res.error) {
-						// 				callback(new Error('姓名重复'));
-						// 			} else {
-						// 				// 如果校验通过，也要执行callback()回调
-						// 				callback();
-						// 			}
-						// 		})
-						// 	},
-							// 如果是异步校验，无需写message属性，错误的信息通过Error抛出即可
-							// message: 'xxx'],
-							
+						},
+							//校验用户是否已存在
+							{
+								asyncValidator: (rule, value, callback) => {
+									uni.$u.http.get('/users/getUserName', { params:{ name: value}}).then(res => {
+										// 如果验证不通过，需要在callback()抛出new Error('错误提示信息')
+										if (res.data.msg) {	
+											callback(new Error('该用户已存在'))
+										} else {
+											// 如果校验通过，也要执行callback()回调
+											callback();
+										}
+									})},
+
+										trigger: ["change", "blur"],
+								},
+						],
 							"userInfo.nickname": [
 								{
 									min: 0,
@@ -146,7 +144,6 @@
 									validator: (rule, value, callback) => {
 										// 调用uView自带的js验证规则，详见：https://www.uviewui.com/js/test.html
 										let passwordCorrect = this.model1.userInfo.password == value
-										console.log(passwordCorrect)
 										return passwordCorrect
 									},
 									message: "与第一次输入的密码不匹配",
@@ -173,16 +170,35 @@
 					},
 					//选择性别的回调函数
 					sexSelect(e) {
-						console.log(e)
 						this.model1.userInfo.gender = e.name
 					},
 					submit() {
 						//效验表单最终数据是否通过
 						this.$refs.form.validate().then(res => {
-							uni.$u.toast('校验通过')
-							console.log(res)
+							//效验通过后，发送POST请求至数据库
+							let user = this.model1.userInfo
+							uni.$u.http.post('/users/register',{
+								username: user.username,
+								nickname: user.nickname,
+								password: user.password,
+								gender: user.gender
+							},{dataType: 'json'}).then(res => {
+								console.log(res)
+								uni.$u.toast(res.data.msg)
+								//注册成功跳转到登录界面
+								if(res.data.msg == "注册成功"){
+									setTimeout(()=> {
+										uni.navigateTo({
+											url: "/pages/login/login"
+										})
+									},500)
+								}
+								})
+							.catch(err => {
+								console.log(err)
+							})
 						}).catch(errors => {
-							uni.$u.toast('注册失败，请按提示填写')
+							uni.$u.toast('注册失败')
 						})
 					}
 				}
