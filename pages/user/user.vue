@@ -92,6 +92,7 @@
 							})
 						} else {
 						uni.showToast({ title: '请先登录', icon: 'none' })
+						this.useInfo = {icon: "images/user_bg.jpg"}
 					}
 			},
 			logOut(){

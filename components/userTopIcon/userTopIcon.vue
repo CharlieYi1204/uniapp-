@@ -38,7 +38,7 @@
 		},
 		methods: {
 			toLogin() {
-				uni.redirectTo({
+				uni.navigateTo({
 					url:"/pages/login/login"
 				})
 			},

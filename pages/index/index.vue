@@ -1,7 +1,7 @@
 <template>
 	<view class="cardinfo">
+		<cardInfoMapLimit></cardInfoMapLimit>
 		<cardTopInfo></cardTopInfo>
-		<cardInfoMap></cardInfoMap>
 	</view>
 </template>
 

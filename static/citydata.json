@@ -1,0 +1,14 @@
+[{
+	 "code":"510100",
+	 "name":"成都市",
+	 "supportCard":true  
+  },{
+	 "code":"511400",
+	 "name":"眉山市",
+	 "supportCard":true  
+  },
+  {
+  	 "code":"512000",
+  	 "name":"资阳市",
+  	 "supportCard":false  
+  }]

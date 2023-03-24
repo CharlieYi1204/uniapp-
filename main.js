@@ -7,6 +7,13 @@ App.mpType = 'app'
 import uView from '@/uni_modules/uview-ui'
 Vue.use(uView)
 
+//引入echarts
+import * as echarts from '@/uni_modules/lime-echart/static/echarts.min'
+// 标签自动布局，全局过渡动画等特性
+import {LabelLayout,UniversalTransition} from 'echarts/features';
+// 引入 Canvas 渲染器，注意引入 CanvasRenderer 是必须的一步
+import {CanvasRenderer} from 'echarts/renderers';
+
 //全局配置baseURL
 uni.$u.http.setConfig((config) => {
     /* config 为默认全局配置*/

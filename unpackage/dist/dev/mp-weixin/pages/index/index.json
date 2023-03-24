@@ -1,7 +1,7 @@
 {
   "navigationBarTitleText": "查询",
   "usingComponents": {
-    "card-top-info": "/components/cardTopInfo/cardTopInfo",
-    "card-info-map": "/components/cardInfoMap/cardInfoMap"
+    "card-info-map-limit": "/components/cardInfoMapLimit/cardInfoMapLimit",
+    "card-top-info": "/components/cardTopInfo/cardTopInfo"
   }
 }
