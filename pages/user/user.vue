@@ -70,10 +70,12 @@
 						url:"/pages/login/login"
 					})
 				},
-				//若已登录，通过token获取当前已登录的用户信息
+				//若已登录且token未过期，通过token获取当前已登录的用户信息
 				getUserInfo() {
+					//获取当前已存在的token
 					const token = uni.getStorageSync("user_token")
 					console.log(token)
+					//判断token是否存在，若存在即向后台验证
 					if(token) {
 						uni.$u.http.get("/users/verifyToken",{ header: { Authorization: `Bearer ${token}` }}).then(res => { 
 								const { code, message, user } = res.data;
@@ -95,6 +97,7 @@
 						this.useInfo = {icon: "images/user_bg.jpg"}
 					}
 			},
+			//注销，退出并清除token至登录页
 			logOut(){
 				console.log('111')
 				uni.removeStorageSync('user_token');

@@ -101,10 +101,13 @@ var components
 try {
   components = {
     cardInfoMapLimit: function () {
-      return Promise.all(/*! import() | components/cardInfoMapLimit/cardInfoMapLimit */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/cardInfoMapLimit/cardInfoMapLimit")]).then(__webpack_require__.bind(null, /*! @/components/cardInfoMapLimit/cardInfoMapLimit.vue */ 335))
+      return Promise.all(/*! import() | components/cardInfoMapLimit/cardInfoMapLimit */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/cardInfoMapLimit/cardInfoMapLimit")]).then(__webpack_require__.bind(null, /*! @/components/cardInfoMapLimit/cardInfoMapLimit.vue */ 341))
     },
-    cardTopInfo: function () {
-      return __webpack_require__.e(/*! import() | components/cardTopInfo/cardTopInfo */ "components/cardTopInfo/cardTopInfo").then(__webpack_require__.bind(null, /*! @/components/cardTopInfo/cardTopInfo.vue */ 766))
+    cardCityText: function () {
+      return __webpack_require__.e(/*! import() | components/cardCityText/cardCityText */ "components/cardCityText/cardCityText").then(__webpack_require__.bind(null, /*! @/components/cardCityText/cardCityText.vue */ 772))
+    },
+    cardCityDiscount: function () {
+      return __webpack_require__.e(/*! import() | components/cardCityDiscount/cardCityDiscount */ "components/cardCityDiscount/cardCityDiscount").then(__webpack_require__.bind(null, /*! @/components/cardCityDiscount/cardCityDiscount.vue */ 779))
     },
   }
 } catch (e) {
@@ -174,9 +177,47 @@ exports.default = void 0;
 //
 //
 //
+//
+//
+//
 var _default = {
   data: function data() {
-    return {};
+    return {
+      cityName: "",
+      //判断是否处于省级
+      isProvince: true,
+      //判断是否点击区县地区
+      isDistrict: false,
+      //判断该地区是否支持
+      isSupportArea: true,
+      //支持地区数据
+      supportCityData: [{
+        name: "成都市",
+        code: 510100
+      }, {
+        name: "德阳市",
+        code: 510600
+      }, {
+        name: "雅安市",
+        code: 511800
+      }, {
+        name: "资阳市",
+        code: 512000
+      }, {
+        name: "眉山市",
+        code: 511400
+      }]
+    };
+  },
+  methods: {
+    //从地图组件获取当前点击的城市名称
+    getMapComponentsData: function getMapComponentsData(city, isProvince, isDistrict, cardSupport, supportDistrict) {
+      this.cityName = city;
+      this.isProvince = isProvince;
+      this.isDistrict = isDistrict;
+      this.isSupportArea = cardSupport;
+      this.supportCityData = supportDistrict;
+    }
   }
 };
 exports.default = _default;

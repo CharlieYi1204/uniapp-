@@ -59,14 +59,17 @@
 			}
 		},
 		methods: {
+			//提交登录信息至后台
 			getInfo() {
 				let userLogin = this.userLogin
+				//将用户名和密码提交至后台进行验证
 				uni.$u.http.post('/users/userLogin',{
 					username: userLogin.username,
-					password: userLogin.password
+					password: userLogin.password,
 				},{dataType: 'json'}).then(res => {
 					if(res.data.message == "登录成功")
 					{
+						//若登录成功就将用户token保存
 						uni.setStorageSync('user_token',res.data.token)
 						uni.setStorageSync('isLogin', true)
 						this.toastType = "success"

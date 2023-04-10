@@ -101,10 +101,10 @@ var components
 try {
   components = {
     userTopIcon: function () {
-      return __webpack_require__.e(/*! import() | components/userTopIcon/userTopIcon */ "components/userTopIcon/userTopIcon").then(__webpack_require__.bind(null, /*! @/components/userTopIcon/userTopIcon.vue */ 773))
+      return __webpack_require__.e(/*! import() | components/userTopIcon/userTopIcon */ "components/userTopIcon/userTopIcon").then(__webpack_require__.bind(null, /*! @/components/userTopIcon/userTopIcon.vue */ 786))
     },
     uToast: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uview-ui/components/u-toast/u-toast */ "uni_modules/uview-ui/components/u-toast/u-toast").then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-toast/u-toast.vue */ 780))
+      return __webpack_require__.e(/*! import() | uni_modules/uview-ui/components/u-toast/u-toast */ "uni_modules/uview-ui/components/u-toast/u-toast").then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-toast/u-toast.vue */ 793))
     },
   }
 } catch (e) {
@@ -236,11 +236,13 @@ var _default = {
         url: "/pages/login/login"
       });
     },
-    //若已登录，通过token获取当前已登录的用户信息
+    //若已登录且token未过期，通过token获取当前已登录的用户信息
     getUserInfo: function getUserInfo() {
       var _this = this;
+      //获取当前已存在的token
       var token = uni.getStorageSync("user_token");
       console.log(token);
+      //判断token是否存在，若存在即向后台验证
       if (token) {
         uni.$u.http.get("/users/verifyToken", {
           header: {
@@ -279,6 +281,7 @@ var _default = {
         };
       }
     },
+    //注销，退出并清除token至登录页
     logOut: function logOut() {
       console.log('111');
       uni.removeStorageSync('user_token');

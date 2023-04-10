@@ -17,11 +17,11 @@ import {CanvasRenderer} from 'echarts/renderers';
 //全局配置baseURL
 uni.$u.http.setConfig((config) => {
     /* config 为默认全局配置*/
-    config.baseURL = `http://localhost:3000`; /* 根域名 */
+    config.baseURL = `http://192.168.11.124:3000`; /* 根域名 */
     return config
 })
 //设置图片的全局变量
-Vue.prototype.$imgBaseUrl = 'http://localhost:3000/';
+Vue.prototype.$imgBaseUrl = 'http://192.168.11.124:3000/';
 
 try {
   function isPromise(obj) {

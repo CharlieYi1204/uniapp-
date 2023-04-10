@@ -5,7 +5,8 @@
     "pages/login/login",
     "pages/signup/signup",
     "pages/bbs/bbs",
-    "pages/message/message"
+    "pages/message/message",
+    "pages/CardBalanceQuery/CardBalanceQuery"
   ],
   "subPackages": [],
   "window": {

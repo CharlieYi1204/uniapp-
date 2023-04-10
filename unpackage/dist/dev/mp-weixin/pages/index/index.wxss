@@ -26,6 +26,6 @@
 /* 透明度 */
 /* 文章场景相关 */
 .cardinfo {
-  padding: 20rpx 20rpx;
+  padding: 20rpx 30rpx;
 }
 
