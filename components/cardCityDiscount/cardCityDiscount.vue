@@ -115,7 +115,7 @@
 					url:"/pages/CardBalanceQuery/CardBalanceQuery?url=http://tftzhgl.cdtft.cn/tft/jsp/wx/search.jsp"
 				})
 			}
-		},
+		}
 	}
 </script>
 

@@ -44,19 +44,6 @@
 					return [{
 					name:"成都市",
 					code:510100,
-				},
-				{
-					name:"德阳市",
-					code:510600,
-				},{
-					name:"雅安市",
-					code:511800,
-				},{
-					name:"资阳市",
-					code:512000,
-				},{
-					name:"眉山市",
-					code:511400,
 				}]
 				}
 			},
@@ -117,6 +104,7 @@
 			//请求地图的JSONGeo数据
 			registerMap() {
 				//返回省级地图，使两个变量初始化
+				console.log(this.supportCity)
 				this.isDistrict = false
 				this.isCity = false
 				this.cardSupport = true

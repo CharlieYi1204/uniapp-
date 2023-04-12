@@ -119,10 +119,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _props = _interopRequireDefault(__webpack_require__(/*! ../u-form/props.js */ 805));
+var _props = _interopRequireDefault(__webpack_require__(/*! ../u-form/props.js */ 815));
 var uvForm = function uvForm() {
   Promise.all(/*! require.ensure | uni_modules/uview-ui/components/u-form/u-form */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-form/u-form")]).then((function () {
-    return resolve(__webpack_require__(/*! ../u-form/u-form.vue */ 800));
+    return resolve(__webpack_require__(/*! ../u-form/u-form.vue */ 810));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var _default = {

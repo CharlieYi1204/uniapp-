@@ -4,9 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+//路由路径
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var geoRouter = require('./routes/geo')
+var mapRouter = require('./routes/map')
 
 var app = express();
 
@@ -25,8 +27,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//路由路径设置
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/geo',geoRouter)
+app.use('/map',mapRouter)
 
 app.listen('3000')

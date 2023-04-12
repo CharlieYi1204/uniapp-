@@ -14,9 +14,8 @@ module.exports = {
     sqlConnect: function(sql,sqlArr,callBack){
         var pool = mysql.createPool(this.config)
         pool.getConnection((err,conn)=> {
-            console.log('数据库已连接')
             if(err){
-                console.log('连接失败');
+                console.log('数据库连接失败');
                 return;
             }
             //事件驱动回调

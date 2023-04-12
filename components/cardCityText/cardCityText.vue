@@ -91,7 +91,9 @@
 			display: flex;
 			justify-content: space-around;
 			flex-wrap: wrap;
+			width: 100%;
 			.tag_view {
+				padding-left: 10rpx;
 				padding-bottom: 20rpx;
 			}
 		}

@@ -1,12 +1,12 @@
-var config = require('../util/config')
+let config = require('../util/config')
 //引入 jsonwebtoken以用来验证用户登录状态
 const jwt = require('jsonwebtoken');
 
 //获取所有用户信息
 getUser = (req,res)=> {
-  var sql = "select * from user";
-  var sqlArr = [];
-  var callBack = (err,data)=> {
+  let sql = "select * from user";
+  let sqlArr = [];
+  let callBack = (err,data)=> {
     if(err){
       console.log('连接出错了')
     }else{

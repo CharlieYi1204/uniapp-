@@ -80,7 +80,7 @@ var components
 try {
   components = {
     uButton: function () {
-      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-button/u-button */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-button/u-button")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-button/u-button.vue */ 823))
+      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-button/u-button */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-button/u-button")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-button/u-button.vue */ 786))
     },
     lEchart: function () {
       return Promise.all(/*! import() | uni_modules/lime-echart/components/l-echart/l-echart */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/lime-echart/components/l-echart/l-echart")]).then(__webpack_require__.bind(null, /*! @/uni_modules/lime-echart/components/l-echart/l-echart.vue */ 863))
@@ -197,18 +197,6 @@ var _default2 = {
         return [{
           name: "成都市",
           code: 510100
-        }, {
-          name: "德阳市",
-          code: 510600
-        }, {
-          name: "雅安市",
-          code: 511800
-        }, {
-          name: "资阳市",
-          code: 512000
-        }, {
-          name: "眉山市",
-          code: 511400
         }];
       }
     },
@@ -267,6 +255,7 @@ var _default2 = {
     registerMap: function registerMap() {
       var _this = this;
       //返回省级地图，使两个变量初始化
+      console.log(this.supportCity);
       this.isDistrict = false;
       this.isCity = false;
       this.cardSupport = true;

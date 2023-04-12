@@ -89,7 +89,7 @@ try {
       return Promise.all(/*! import() | uni_modules/uview-ui/components/u-line/u-line */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-line/u-line")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-line/u-line.vue */ 911))
     },
     uLoadingIcon: function () {
-      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-loading-icon/u-loading-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-loading-icon/u-loading-icon")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-loading-icon/u-loading-icon.vue */ 895))
+      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-loading-icon/u-loading-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-loading-icon/u-loading-icon")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-loading-icon/u-loading-icon.vue */ 887))
     },
     uGap: function () {
       return Promise.all(/*! import() | uni_modules/uview-ui/components/u-gap/u-gap */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-gap/u-gap")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-gap/u-gap.vue */ 903))
@@ -174,8 +174,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _openType = _interopRequireDefault(__webpack_require__(/*! ../../libs/mixin/openType */ 829));
-var _button = _interopRequireDefault(__webpack_require__(/*! ../../libs/mixin/button */ 828));
+var _openType = _interopRequireDefault(__webpack_require__(/*! ../../libs/mixin/openType */ 792));
+var _button = _interopRequireDefault(__webpack_require__(/*! ../../libs/mixin/button */ 791));
 var _props = _interopRequireDefault(__webpack_require__(/*! ./props.js */ 852));
 //
 //

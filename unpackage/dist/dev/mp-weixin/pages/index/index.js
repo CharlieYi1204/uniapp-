@@ -164,7 +164,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(uni) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -180,10 +180,11 @@ exports.default = void 0;
 //
 //
 //
+//
 var _default = {
   data: function data() {
     return {
-      cityName: "",
+      cityName: null,
       //判断是否处于省级
       isProvince: true,
       //判断是否点击区县地区
@@ -191,22 +192,10 @@ var _default = {
       //判断该地区是否支持
       isSupportArea: true,
       //支持地区数据
-      supportCityData: [{
-        name: "成都市",
-        code: 510100
-      }, {
-        name: "德阳市",
-        code: 510600
-      }, {
-        name: "雅安市",
-        code: 511800
-      }, {
-        name: "资阳市",
-        code: 512000
-      }, {
-        name: "眉山市",
-        code: 511400
-      }]
+      supportCity: null,
+      supportDistrict: null,
+      supportDistrictName: null,
+      mapdata: null
     };
   },
   methods: {
@@ -216,11 +205,91 @@ var _default = {
       this.isProvince = isProvince;
       this.isDistrict = isDistrict;
       this.isSupportArea = cardSupport;
-      this.supportCityData = supportDistrict;
-    }
-  }
+      this.supportDistrictName = supportDistrict;
+    },
+    //获取支持城市数据
+    getSupport: function getSupport() {
+      var _this = this;
+      uni.$u.http.get('/map/getSupportInfo').then(function (res) {
+        var data = res.data.data;
+        //支持的地级市名称和code
+        var supportCity = data.map(function (item) {
+          return {
+            code: item.citycode,
+            name: item.cityname
+          };
+        });
+        //支持的区（县）名称和code
+        var supportDistrict = data.map(function (item) {
+          return {
+            city: item.cityname,
+            name: item.districtname,
+            code: item.districtcode
+          };
+        });
+        _this.supportDistrict = supportDistrict;
+        //去除相同的地级市
+        supportCity = supportCity.filter(function (item, index) {
+          return index === supportCity.findIndex(function (obj) {
+            return JSON.stringify(obj) === JSON.stringify(item);
+          });
+        });
+        _this.supportCity = supportCity;
+        _this.supportDistrictName = supportCity;
+        console.log(_this.supportCity);
+      });
+    } // //从高德地图行政区查询API获取数据
+    // getMapData() {
+    // 	uni.$u.http.get("https://restapi.amap.com/v3/config/district?parameters",{ params: {
+    // 	key:"a2f1991e4040f24f532133df275069ec",keywords:"四川",subdistrict:2
+    // 	}}).then(res => {
+    // 		const data = res.data.districts[0].districts
+    // 		this.mapdata = data.map(item => {
+    // 			let citycode = item.citycode
+    // 			let cityname = item.name
+    // 			let mapdata = item.districts.map(dist => {
+    // 				let districtname = dist.name
+    // 				let districtcode = dist.citycode
+    // 				return {
+    // 					citycode:Number(citycode),
+    // 					cityname:cityname,
+    // 					districtname:districtname,
+    // 					districtcode:Number(districtcode)
+    // 				}
+    // 			})
+    // 			return mapdata
+    // 		}).flat()
+    // 		//根据adcode进行排序
+    // 		this.mapdata.sort((a,b) => a.citycode - b.citycode)
+    // 		console.log(this.mapdata)
+    // 	})
+    // },
+    // sendDataB() {
+    // 	this.mapdata.map(async item => {
+    // 		await new Promise(resolve => 
+    // 			setTimeout(resolve,5000))
+    // 				await uni.$u.http.post("/map/addMapData",{
+    // 					citycode:item.citycode,
+    // 					cityname:item.cityname,
+    // 					districtname:item.districtname,
+    // 					districrtcode:item.districtcode,
+    // 					},{dataType:'json'}).then(res => {
+    // 					resolve(res)
+    // 				}).catch(err => {
+    // 					console.log(err)
+    // 				})
+    // 	})
+    // }s
+  },
+  mounted: function mounted() {
+    //获取卡/码支持数据
+    this.getSupport();
+  } // onLoad() { 
+  // 	// this.getMapData()
+  // }
 };
 exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
 

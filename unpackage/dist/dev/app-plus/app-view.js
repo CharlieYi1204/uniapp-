@@ -266,6 +266,8 @@ try {
     cardCityText: __webpack_require__(/*! @/components/cardCityText/cardCityText.vue */ 49).default,
     cardCityDiscount:
       __webpack_require__(/*! @/components/cardCityDiscount/cardCityDiscount.vue */ 65).default,
+    uButton: __webpack_require__(/*! @/uni_modules/uview-ui/components/u-button/u-button.vue */ 8)
+      .default,
   }
 } catch (e) {
   if (
@@ -302,6 +304,14 @@ var render = function () {
       }),
       _vm._$g(2, "i") ? _c("cardCityText", { attrs: { _i: 2 } }) : _vm._e(),
       _vm._$g(3, "i") ? _c("cardCityDiscount", { attrs: { _i: 3 } }) : _vm._e(),
+      _c("u-button", {
+        attrs: { _i: 4 },
+        on: {
+          click: function ($event) {
+            return _vm.$handleViewEvent($event)
+          },
+        },
+      }),
     ],
     1
   )
@@ -3571,24 +3581,9 @@ __webpack_require__.r(__webpack_exports__);
   !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--13-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/view/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/using-components.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/view/style.js!D:/桌面/开题/毕设/bbs/pages/index/index.vue?vue&type=script&lang=js&mpType=page ***!
   \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var _default = {
-  data: function data() {
-    return {
-      wxsProps: {}
-    };
-  },
-  components: {}
-};
-exports.default = _default;
+throw new Error("Module build failed (from ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/view/script.js):\nSyntaxError: Missing catch or finally clause. (81:5)\n    at instantiate (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:67:32)\n    at constructor (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:364:12)\n    at TypeScriptParserMixin.raise (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:3365:19)\n    at TypeScriptParserMixin.parseTryStatement (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:13449:12)\n    at TypeScriptParserMixin.parseStatementContent (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12998:21)\n    at TypeScriptParserMixin.parseStatementContent (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9223:18)\n    at TypeScriptParserMixin.parseStatementLike (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12952:17)\n    at TypeScriptParserMixin.parseStatementListItem (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12937:17)\n    at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:13558:61)\n    at TypeScriptParserMixin.parseBlockBody (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:13550:10)\n    at TypeScriptParserMixin.parseBlock (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:13538:10)\n    at TypeScriptParserMixin.parseFunctionBody (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12287:24)\n    at TypeScriptParserMixin.parseArrowExpression (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12260:10)\n    at TypeScriptParserMixin.parseAsyncArrowUnaryFunction (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11647:17)\n    at TypeScriptParserMixin.parseExprAtom (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11553:29)\n    at TypeScriptParserMixin.parseExprSubscripts (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11171:23)\n    at TypeScriptParserMixin.parseUpdate (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11153:21)\n    at TypeScriptParserMixin.parseMaybeUnary (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11127:23)\n    at TypeScriptParserMixin.parseMaybeUnary (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9590:20)\n    at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10956:61)\n    at TypeScriptParserMixin.parseExprOps (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10962:23)\n    at TypeScriptParserMixin.parseMaybeConditional (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10937:23)\n    at TypeScriptParserMixin.parseMaybeAssign (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10895:21)\n    at TypeScriptParserMixin.parseMaybeAssign (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9529:20)\n    at D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10863:39\n    at TypeScriptParserMixin.allowInAnd (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12640:12)\n    at TypeScriptParserMixin.parseMaybeAssignAllowIn (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10863:17)\n    at TypeScriptParserMixin.parseExprListItem (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12380:18)\n    at TypeScriptParserMixin.parseCallExpressionArguments (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11367:22)\n    at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11279:29)\n    at TypeScriptParserMixin.parseSubscript (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11210:19)\n    at TypeScriptParserMixin.parseSubscript (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9056:18)\n    at TypeScriptParserMixin.parseSubscripts (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11184:19)\n    at TypeScriptParserMixin.parseExprSubscripts (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11175:17)\n    at TypeScriptParserMixin.parseUpdate (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11153:21)\n    at TypeScriptParserMixin.parseMaybeUnary (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11127:23)\n    at TypeScriptParserMixin.parseMaybeUnary (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9590:20)\n    at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10956:61)\n    at TypeScriptParserMixin.parseExprOps (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10962:23)\n    at TypeScriptParserMixin.parseMaybeConditional (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10937:23)\n    at TypeScriptParserMixin.parseMaybeAssign (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10895:21)\n    at TypeScriptParserMixin.parseMaybeAssign (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9529:20)\n    at TypeScriptParserMixin.parseExpressionBase (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10845:23)\n    at D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10840:39\n    at TypeScriptParserMixin.allowInAnd (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12635:16)\n    at TypeScriptParserMixin.parseExpression (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10840:17)\n    at TypeScriptParserMixin.parseStatementContent (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:13096:23)\n    at TypeScriptParserMixin.parseStatementContent (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9223:18)\n    at TypeScriptParserMixin.parseStatementLike (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12952:17)\n    at TypeScriptParserMixin.parseStatementListItem (D:\\桌面\\Tool\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12937:17)");
 
 /***/ }),
 /* 91 */
