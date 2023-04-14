@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "查询",
+  "usingComponents": {
+    "card-info-map-limit": "/components/cardInfoMapLimit/cardInfoMapLimit",
+    "card-city-text": "/components/cardCityText/cardCityText",
+    "card-city-discount": "/components/cardCityDiscount/cardCityDiscount"
+  }
+}

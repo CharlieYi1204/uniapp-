@@ -4,7 +4,16 @@
 		},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 	{
-			"path": "pages/index/index",
+	    "path" : "pages/bbs/bbs",
+	    "style" :                                                                                    
+	    {
+	        "navigationBarTitleText": "交流",
+	        "enablePullDownRefresh": false
+	    }
+	    
+	},
+	{
+			"path": "pages/cardInfo/index/index",
 			"style": {
 				"navigationBarTitleText": "查询"
 	}
@@ -35,16 +44,8 @@
 	    }
 	    
 	},
-	    {
-            "path" : "pages/bbs/bbs",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "交流",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
+
+        {
             "path" : "pages/message/message",
             "style" :                                                                                    
             {
@@ -54,7 +55,16 @@
             
         }
         ,{
-            "path" : "pages/CardBalanceQuery/CardBalanceQuery",
+            "path" : "pages/cardInfo/cardBalanceQuery/cardBalanceQuery",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/cardInfo/cardTimesbalance/cardTimesbalance",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
@@ -74,7 +84,7 @@
 		"color": "#888",
 		"selectedColor": "12B5A1",
 		"list": [{
-			"pagePath": "pages/index/index",
+			"pagePath": "pages/cardInfo/index/index",
 			"text": "查询",
 			"iconPath": "static/icon/map.png",
 			"selectedIconPath": "static/icon/map-filling.png"

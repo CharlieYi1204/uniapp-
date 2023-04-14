@@ -66,7 +66,7 @@
 			methods: {
 				//去登录
 				toLogin() {
-					uni.redirectTo({
+					uni.navigateTo({
 						url:"/pages/login/login"
 					})
 				},
@@ -156,6 +156,7 @@
 				background: #fff;
 				margin-top: 20rpx;
 				border-radius: 20rpx;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 				.row {
 					width: 100%;
 					height: 80rpx;

@@ -10,7 +10,7 @@
 				<!-- 分割线 -->
 				<view style="width: 100%; border-bottom:3px dashed #12B5A1;margin-top: 30rpx;"></view>
 				<view v-if="!isSupprtArea" style="font-size: 30rpx;color:#888 ;padding:20rpx 0rpx;text-align: center;">
-					该区域待扩展，感谢您的等待和支持
+					该区域待扩展，感谢您的等待和支持[]
 				</view>
 				<!-- 内容	 -->
 				<view class="content" v-if="isSupprtArea">
@@ -26,6 +26,7 @@
 						<!-- 余额查询按钮 -->
 						<view class="bottm-content">
 							<u-button  type="default" text="卡片余额查询" color="#12B5A1" @click="goToCardBalance" shape="circle"></u-button>
+							<u-button type="default" v-if="cityName === '成都市'" text="公交次数查询" color="#12B5A1" @click="goToCardTimesbalance" shape="circle" customStyle="margin-top:20rpx"></u-button>
 							<view class="tipstext">请点击地图区域，以获取更详细信息</view>
 						</view>
 				</view>
@@ -69,9 +70,16 @@
 			goToCardBalance() {
 				console.log('111')
 				uni.navigateTo({
-					url:"/pages/CardBalanceQuery/CardBalanceQuery?url=http://tftzhgl.cdtft.cn/tft/jsp/wx/search.jsp"
+					url:"/pages/cardBalanceQuery/cardBalanceQuery?url=http://tftzhgl.cdtft.cn/tft/jsp/wx/search.jsp"
 				})
 			},
+			goToCardTimesbalance() {
+				console.log('222')
+				uni.navigateTo({
+					url:"/pages/cardTimesbalance/cardTimesbalance?url=https://cdtftwxxcx.cdtft.cn/buscardH5/#/homePage"
+				})
+				
+			}
 		},
 	}
 </script>

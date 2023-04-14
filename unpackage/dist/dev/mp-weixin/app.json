@@ -1,12 +1,13 @@
 {
   "pages": [
-    "pages/index/index",
+    "pages/bbs/bbs",
+    "pages/cardInfo/index/index",
     "pages/user/user",
     "pages/login/login",
     "pages/signup/signup",
-    "pages/bbs/bbs",
     "pages/message/message",
-    "pages/CardBalanceQuery/CardBalanceQuery"
+    "pages/cardInfo/cardBalanceQuery/cardBalanceQuery",
+    "pages/cardInfo/cardTimesbalance/cardTimesbalance"
   ],
   "subPackages": [],
   "window": {
@@ -20,7 +21,7 @@
     "selectedColor": "12B5A1",
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/cardInfo/index/index",
         "text": "查询",
         "iconPath": "static/icon/map.png",
         "selectedIconPath": "static/icon/map-filling.png"

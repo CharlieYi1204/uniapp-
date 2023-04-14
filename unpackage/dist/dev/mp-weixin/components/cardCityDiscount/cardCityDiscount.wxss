@@ -46,13 +46,13 @@
   padding-top: 10rpx;
   padding-bottom: 20rpx;
 }
-.topinfo .discount-box {
+.topinfo .discount-box, .topinfo .unit-box {
   padding: 20rpx 10rpx 0rpx 10rpx;
 }
-.topinfo .discount-box .discount-tag {
+.topinfo .discount-box .discount-tag, .topinfo .unit-box .discount-tag {
   padding-bottom: 20rpx;
 }
-.topinfo .discount-box .discount-tag .tag .discount-txt {
+.topinfo .discount-box .discount-tag .tag .discount-txt, .topinfo .unit-box .discount-tag .tag .discount-txt {
   padding-top: 20rpx;
   font-size: 30rpx;
   text-indent: 20rpx;

@@ -6,7 +6,7 @@
 		<!-- 支持地区组件 -->
 		<cardCityText v-if="!isDistrict" :cityName="cityName" :isProvince="isProvince" :cityData="supportDistrictName" :isSupprtArea="isSupportArea"></cardCityText>
 		<!-- 优惠政策组件 -->
-		<cardCityDiscount v-if="isDistrict" :title="cityName" :isSupprtArea="isSupportArea"></cardCityDiscount>
+		<cardCityDiscount v-if="isDistrict" :title="cityName" :isSupprtArea="isSupportArea" :code="districtCode"></cardCityDiscount>
 	</view>
 </template>
 <script>
@@ -25,16 +25,18 @@
 				supportDistrict:null,
 				supportDistrictName:null,
 				mapdata:null,
+				districtCode:null
 			}
 		},
 		methods: {
 			//从地图组件获取当前点击的城市名称
-			getMapComponentsData(city,isProvince,isDistrict,cardSupport,supportDistrict) {
+			getMapComponentsData(city,isProvince,isDistrict,cardSupport,supportDistrict,clickDisCode) {
 				this.cityName = city
 				this.isProvince = isProvince
 				this.isDistrict = isDistrict
 				this.isSupportArea = cardSupport
 				this.supportDistrictName = supportDistrict
+				this.districtCode = clickDisCode
 			},
 			//获取支持城市数据
 			getSupport() {

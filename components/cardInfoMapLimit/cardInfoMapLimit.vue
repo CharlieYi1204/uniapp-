@@ -93,7 +93,9 @@
 				isDistrict:this.propIsDistrict,
 				//支持城市列表，该数据从后台数据库获取
 				supportCity:this.propSupportCity,
-				supportDistrict:this.propSupportDistrict
+				supportDistrict:this.propSupportDistrict,
+				//传递给父组件的值，当前点击区县的命名
+				clickDisCode:null
 			}
 		},
 		mounted() {
@@ -226,10 +228,13 @@
 												chart.setOption(option);
 																					   
 										   }
+										    if(this.isDistrict) {
+												this.clickDisCode = value
+										    }
 										    this.sendData()
 									   },100)
+									   //如果当前为区县，则将code赋值，方便传递给父组件
 							          console.log('您点击了' + name + '，值为' + value);
-									  //传值给父组件
 						}
 					})
 					//对echarts的样式、标题等进行设置
@@ -283,7 +288,7 @@
 			},
 			//为index.vue父组件传值
 			sendData() {
-				this.$emit('getMapComponentsData',this.cityName,!this.isCity,this.isDistrict,this.cardSupport,this.supportDistrictData)
+				this.$emit('getMapComponentsData',this.cityName,!this.isCity,this.isDistrict,this.cardSupport,this.supportDistrictData,this.clickDisCode)
 			}
 		}
 	}

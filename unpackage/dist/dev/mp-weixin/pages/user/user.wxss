@@ -60,6 +60,7 @@
   background: #fff;
   margin-top: 20rpx;
   border-radius: 20rpx;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .user .user-func .row.data-v-80842834 {
   width: 100%;

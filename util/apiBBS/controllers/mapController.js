@@ -63,9 +63,28 @@ getCardSupport = (req,res) => {
     }
     config.sqlConnect(sql,sqlArr,callBack)
 }
-
+//根据adcode，获取区(县)区域卡/码支持的支付方式和具体优惠
+getCardDiscount = (req,res) => {
+    let {districtcode} = req.body
+    const sql = `select * from card_payment where districtcode=?`
+    const sqlArr = [
+        districtcode
+    ]
+    let callBack = (err,data) => {
+        if(err){
+            res.send({msg:"数据获取失败"})
+        }
+        else {
+            res.send({
+                data:data
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
 module.exports = {
     addMapData,
     getMapData,
-    getCardSupport
+    getCardSupport,
+    getCardDiscount
 }
