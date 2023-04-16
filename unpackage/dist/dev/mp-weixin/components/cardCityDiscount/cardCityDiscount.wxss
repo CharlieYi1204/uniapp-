@@ -39,11 +39,12 @@
 }
 .topinfo .content .tagbox {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   flex-wrap: wrap;
 }
 .topinfo .content .tagbox .tag_view {
   padding-top: 10rpx;
+  padding-left: 25rpx;
   padding-bottom: 20rpx;
 }
 .topinfo .discount-box, .topinfo .unit-box {

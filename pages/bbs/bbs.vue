@@ -1,7 +1,22 @@
 <template>
 	<view class="bbs">
 		<!-- 发帖按钮 -->
-		
+		<view class="sendpost" @click="showModal" :class="isActive ? 'sendpostActive' : 'sendpost'">
+			<image src="../../static/icon/addition.png"></image>
+		</view>
+		<!-- 点击按钮后，弹出模态框确认是否进行发帖操作 -->
+		<view>
+				<u-modal :show="modalShow" 
+				:title="modalTitle" 
+				:content='modalContent' 
+				cancelText='取消' 
+				showCancelButton
+				buttonReverse
+				@cancel="hiddenModal"
+				@confirm="toSendPost"
+				></u-modal>
+		</view>
+
 		<!-- 搜索栏 -->
 		<view class="search-box">
 			<u-search placeholder="键入你想查找的内容" v-model="keyword"></u-search>
@@ -19,6 +34,7 @@
                 radius="5"
 				bgColor="#DFE6E9"
 				height="180"
+				@click="toPageDetail"
         ></u-swiper>
 		</view>	
 		<!-- 公告通知小喇叭 -->
@@ -26,36 +42,12 @@
 		    <u-notice-bar :text="text1" mode="link" speed="150" url="/pages/componentsB/tag/tag" custom-style="margin-bottom:20rpx;border-radius: 20rpx;"></u-notice-bar>
 		  </view>
 		<!-- 板块专区 -->
-		<view class="bbs-blockbox">
-			<view class="blocktitle">
-				板块分类
-			<text style="font-size: 25rpx;color:#888;margin-left: 330rpx;"> >>更多板块</text>
-			<u-divider></u-divider>
-			</view>
-				<view class="content-box">
-					<view class="content-view" v-for="(item,index) in city" :key="index">
-						<view class="left-img">
-							<u-avatar
-								size="45"
-								:text="item.name.slice(0, 1)"
-								fontSize="25"
-								bg-color="#12B5A1">
-							</u-avatar>
-						</view>
-						<view class="right-txt">
-							<view>
-								{{item.name}}
-							</view>
-							<view style="font-size: 20rpx;color:#888;padding-top:20rpx">
-								帖子数量：
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
-			<!-- 最新发帖 -->
+		<blockClassify classifyTitle="热门板块" :moreBlock="true" :blockName="city"></blockClassify>
+		
+			<!-- 热门帖子 -->
 			<u-divider text="热门帖子"></u-divider>
-			<pageCard></pageCard>
+			<pageCard :propUserHeadImgSrc="UserHeadImgSrc"></pageCard>
+			<pageCard :propUserHeadImgSrc="UserHeadImgSrc"></pageCard>
 		</view>
 		
 </template>
@@ -65,17 +57,21 @@
 		data() {
 			return {
 					text1:"成都交通卡/码联盟+1,攀枝花市米易县也可以刷卡啦",
+					modalShow:false,
+					isActive:false,
+					modalTitle:"提示",
+					modalContent:"要去发送新帖子吗？",
 				   list3: [{
-					   image:'https://cdn.uviewui.com/uview/swiper/swiper3.png',
-					   title: '昨夜星辰昨夜风，画楼西畔桂堂东',
+					   image:`${this.$imgBaseUrl}/images/tft2.jpg`,
+					   title: '天府通，伴你出行哈哈哈哈哈哈哈',
 				   },
 				   {
-						image:'https://cdn.uviewui.com/uview/swiper/swiper2.png',
-						title: '昨夜星辰昨夜风，画楼西畔桂堂东',
+						image:`${this.$imgBaseUrl}/images/tft3.jpg`,
+						title: '小天出行',
 				   },
 				   {
-					   image:'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-					   title: '昨夜星辰昨夜风，画楼西畔桂堂东',
+					   image:`${this.$imgBaseUrl}/images/tft4.jpg`,
+					   title: '智慧出行',
 				   }
                 ],
 				city: [{
@@ -90,14 +86,65 @@
 				{
 					name:"资阳市"
 				}],
-				keyword:''  
+				keyword:'' ,
+				UserHeadImgSrc:`${this.$imgBaseUrl}images/user_bg.jpg`
 			}
-		}
+		},
+		methods: {
+			//点击轮播图跳转至帖子详情页
+			toPageDetail(index){
+				uni.navigateTo({
+					url:`/pages/bbs/pageDetail/pageDetail?pageID=${index}`
+				})
+			},
+			//跳转到板块详情页
+			toBlockClassifyDetail() {
+				uni.navigateTo({
+					url:"/pages/bbs/bolckClassifyDetail/bolckClassifyDetail"
+				})
+			},
+			//隐藏模态框
+			showModal() {
+				this.modalShow = true
+				this.isActive = true
+			},
+			//显示模态框
+			hiddenModal() {
+				this.modalShow = false
+				this.isActive = false
+				
+			},
+			//模态框确认后跳转
+			toSendPost() {
+				uni.navigateTo({
+					url:"/pages/bbs/sendPost/sendPost"
+				})
+			}
+		},
 	}
 </script>
 
 <style lang="scss">
 .bbs {
+	.sendpost {
+		width:120rpx;
+		height:120rpx;
+		background-color: #fff;
+		border-radius: 50%;
+		position: fixed;
+		z-index: 9999;
+		right:20rpx;
+		bottom: 20rpx;
+		transform: rotate(0deg);
+		transition: transform 0.5s ease;
+		image {
+			width:100%;
+			height:100%;
+		}
+	}
+	.sendpostActive {
+		transform: rotate(45deg);
+	}
 	padding:20rpx 20rpx;
 	.search-box {
 		padding-bottom: 20rpx;

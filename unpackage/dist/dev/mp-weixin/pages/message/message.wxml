@@ -1,1 +1,1 @@
-<view>这是消息页面<u-tag vue-id="7ac9e6a0-1" text="标签" type="warning" size="large" bind:__l="__l"></u-tag></view>
+<view class="message">这是消息页面<u-tag vue-id="7ac9e6a0-1" text="标签" type="warning" size="large" bind:__l="__l"></u-tag></view>

@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "交流",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-modal": "/uni_modules/uview-ui/components/u-modal/u-modal",
+    "u-search": "/uni_modules/uview-ui/components/u-search/u-search",
+    "u-swiper": "/uni_modules/uview-ui/components/u-swiper/u-swiper",
+    "u-notice-bar": "/uni_modules/uview-ui/components/u-notice-bar/u-notice-bar",
+    "u-divider": "/uni_modules/uview-ui/components/u-divider/u-divider",
+    "u-avatar": "/uni_modules/uview-ui/components/u-avatar/u-avatar",
+    "page-card": "/components/pageCard/pageCard"
+  }
+}

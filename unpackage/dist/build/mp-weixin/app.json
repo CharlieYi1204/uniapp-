@@ -1,0 +1,55 @@
+{
+  "pages": [
+    "pages/bbs/pageDetail/pageDetail",
+    "pages/bbs/bbs",
+    "pages/bbs/userDetail/userDetail",
+    "pages/bbs/bolckDetail/bolckDetail",
+    "pages/index/index",
+    "pages/user/user",
+    "pages/user/login/login",
+    "pages/user/login/signup/signup",
+    "pages/message/message",
+    "pages/index/cardBalanceQuery/cardBalanceQuery",
+    "pages/index/cardTimesbalance/cardTimesbalance",
+    "pages/message/notice/notice",
+    "pages/bbs/sendPost/sendPost"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#12B5A1",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#888",
+    "selectedColor": "12B5A1",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "查询",
+        "iconPath": "static/icon/map.png",
+        "selectedIconPath": "static/icon/map-filling.png"
+      },
+      {
+        "pagePath": "pages/bbs/bbs",
+        "text": "交流",
+        "iconPath": "static/icon/smile.png",
+        "selectedIconPath": "static/icon/smile-filling.png"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "text": "消息",
+        "iconPath": "/static/icon/email.png",
+        "selectedIconPath": "static/icon/news-filling.png"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我的",
+        "iconPath": "static/icon/user.png",
+        "selectedIconPath": "static/icon/user-filling.png"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

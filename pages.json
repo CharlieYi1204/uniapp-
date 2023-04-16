@@ -10,10 +10,45 @@
 	        "navigationBarTitleText": "交流",
 	        "enablePullDownRefresh": false
 	    }
+		
+	},
+	{
+            "path" : "pages/bbs/blockDetail/blockDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "板块详情",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+	
+	{
+	    "path" : "pages/bbs/pageDetail/pageDetail",
+	    "style" :                                                                                    
+	    {
+	        "navigationBarTitleText": "帖子详情",
+	        "enablePullDownRefresh": false
+	    }
+	},
+	{
+		"path" : "pages/bbs/userDetail/userDetail",
+		"style" :                                                                                    
+		{
+		    "navigationBarTitleText": "用户信息",
+		    "enablePullDownRefresh": false
+		}
+	},
+	{
+	    "path" : "pages/bbs/bolckClassifyDetail/bolckClassifyDetail",
+	    "style" :                                                                                    
+	    {
+	        "navigationBarTitleText": "板块分类",
+	        "enablePullDownRefresh": false
+	    }
 	    
 	},
 	{
-			"path": "pages/cardInfo/index/index",
+			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "查询"
 	}
@@ -27,7 +62,7 @@
 	            }
 	},
 	{
-	    "path" : "pages/login/login",
+	    "path" : "pages/user/login/login",
 	    "style" :                                                                                    
 	    {
 	        "navigationBarTitleText": "登录",
@@ -36,7 +71,7 @@
 	    
 	},
 	{
-	    "path" : "pages/signup/signup",
+	    "path" : "pages/user/login/signup/signup",
 	    "style" :                                                                                    
 	    {
 	        "navigationBarTitleText": "注册",
@@ -55,23 +90,42 @@
             
         }
         ,{
-            "path" : "pages/cardInfo/cardBalanceQuery/cardBalanceQuery",
+            "path" : "pages/index/cardBalanceQuery/cardBalanceQuery",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "电子钱包余额查询",
                 "enablePullDownRefresh": false
             }
             
         }
         ,{
-            "path" : "pages/cardInfo/cardTimesbalance/cardTimesbalance",
+            "path" : "pages/index/cardTimesbalance/cardTimesbalance",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "次数余额查询",
                 "enablePullDownRefresh": false
             }
             
         }
+        ,{
+            "path" : "pages/message/notice/notice",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "公告",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/bbs/sendPost/sendPost",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "发帖",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
@@ -84,7 +138,7 @@
 		"color": "#888",
 		"selectedColor": "12B5A1",
 		"list": [{
-			"pagePath": "pages/cardInfo/index/index",
+			"pagePath": "pages/index/index",
 			"text": "查询",
 			"iconPath": "static/icon/map.png",
 			"selectedIconPath": "static/icon/map-filling.png"
@@ -94,7 +148,8 @@
 			"text": "交流",
 			"iconPath": "static/icon/smile.png",
 			"selectedIconPath": "static/icon/smile-filling.png"
-		},{
+		},
+		{
 			"pagePath": "pages/message/message",
 			"text": "消息",
 			"iconPath": "/static/icon/email.png",

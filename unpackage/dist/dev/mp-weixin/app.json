@@ -1,13 +1,19 @@
 {
   "pages": [
     "pages/bbs/bbs",
-    "pages/cardInfo/index/index",
+    "pages/bbs/blockDetail/blockDetail",
+    "pages/bbs/pageDetail/pageDetail",
+    "pages/bbs/userDetail/userDetail",
+    "pages/bbs/bolckClassifyDetail/bolckClassifyDetail",
+    "pages/index/index",
     "pages/user/user",
-    "pages/login/login",
-    "pages/signup/signup",
+    "pages/user/login/login",
+    "pages/user/login/signup/signup",
     "pages/message/message",
-    "pages/cardInfo/cardBalanceQuery/cardBalanceQuery",
-    "pages/cardInfo/cardTimesbalance/cardTimesbalance"
+    "pages/index/cardBalanceQuery/cardBalanceQuery",
+    "pages/index/cardTimesbalance/cardTimesbalance",
+    "pages/message/notice/notice",
+    "pages/bbs/sendPost/sendPost"
   ],
   "subPackages": [],
   "window": {
@@ -21,7 +27,7 @@
     "selectedColor": "12B5A1",
     "list": [
       {
-        "pagePath": "pages/cardInfo/index/index",
+        "pagePath": "pages/index/index",
         "text": "查询",
         "iconPath": "static/icon/map.png",
         "selectedIconPath": "static/icon/map-filling.png"

@@ -39,7 +39,7 @@
 		methods: {
 			toLogin() {
 				uni.navigateTo({
-					url:"/pages/login/login"
+					url:"/pages/user/login/login"
 				})
 			},
 			imgUrl(url) {

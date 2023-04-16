@@ -28,6 +28,29 @@
 .bbs {
   padding: 20rpx 20rpx;
 }
+.bbs .sendpost {
+  width: 120rpx;
+  height: 120rpx;
+  background-color: #fff;
+  border-radius: 50%;
+  position: fixed;
+  z-index: 9999;
+  right: 20rpx;
+  bottom: 20rpx;
+  -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+  transition: -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
+}
+.bbs .sendpost image {
+  width: 100%;
+  height: 100%;
+}
+.bbs .sendpostActive {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
 .bbs .search-box {
   padding-bottom: 20rpx;
 }

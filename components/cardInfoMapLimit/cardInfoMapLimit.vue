@@ -14,7 +14,6 @@
 <script>
 	import * as echarts from 'echarts'
 	import {CanvasRenderer} from 'echarts/renderers';
-	import mapData from '@/static/geo/sichuan.json'
 	import {LabelLayout,UniversalTransition} from 'echarts/features';
 	export default {
 		props: {

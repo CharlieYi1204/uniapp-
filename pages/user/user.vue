@@ -67,7 +67,7 @@
 				//去登录
 				toLogin() {
 					uni.navigateTo({
-						url:"/pages/login/login"
+						url:"/pages/user/login/login"
 					})
 				},
 				//若已登录且token未过期，通过token获取当前已登录的用户信息
@@ -88,7 +88,11 @@
 								} else {
 								uni.showToast({ title: message, icon: 'none' });
 								this.useInfo = {icon: "images/user_bg.jpg"}
+								//token过期则清除token
+								uni.removeStorageSync('user_token');
+								uni.setStorageSync('isLogin', false);
 								}
+								
 							}).catch( err => {
 								console.log(err)
 							})
@@ -108,7 +112,7 @@
 					duration:800,
 					complete() {
 						uni.redirectTo({
-							url:"/pages/login/login"
+							url:"/pages/user/login/login"
 						})
 					}
 				})

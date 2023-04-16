@@ -100,23 +100,26 @@ __webpack_require__.r(__webpack_exports__);
 var components
 try {
   components = {
+    uModal: function () {
+      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-modal/u-modal */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-modal/u-modal")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-modal/u-modal.vue */ 393))
+    },
     uSearch: function () {
-      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-search/u-search */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-search/u-search")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-search/u-search.vue */ 349))
+      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-search/u-search */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-search/u-search")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-search/u-search.vue */ 401))
     },
     uSwiper: function () {
-      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-swiper/u-swiper */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-swiper/u-swiper")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-swiper/u-swiper.vue */ 357))
+      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-swiper/u-swiper */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-swiper/u-swiper")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-swiper/u-swiper.vue */ 409))
     },
     uNoticeBar: function () {
-      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-notice-bar/u-notice-bar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-notice-bar/u-notice-bar")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-notice-bar/u-notice-bar.vue */ 365))
+      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-notice-bar/u-notice-bar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-notice-bar/u-notice-bar")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-notice-bar/u-notice-bar.vue */ 417))
+    },
+    blockClassify: function () {
+      return __webpack_require__.e(/*! import() | components/blockClassify/blockClassify */ "components/blockClassify/blockClassify").then(__webpack_require__.bind(null, /*! @/components/blockClassify/blockClassify.vue */ 425))
     },
     uDivider: function () {
-      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-divider/u-divider */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-divider/u-divider")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-divider/u-divider.vue */ 373))
-    },
-    uAvatar: function () {
-      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-avatar/u-avatar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-avatar/u-avatar")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-avatar/u-avatar.vue */ 381))
+      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-divider/u-divider */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-divider/u-divider")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-divider/u-divider.vue */ 432))
     },
     pageCard: function () {
-      return __webpack_require__.e(/*! import() | components/pageCard/pageCard */ "components/pageCard/pageCard").then(__webpack_require__.bind(null, /*! @/components/pageCard/pageCard.vue */ 389))
+      return __webpack_require__.e(/*! import() | components/pageCard/pageCard */ "components/pageCard/pageCard").then(__webpack_require__.bind(null, /*! @/components/pageCard/pageCard.vue */ 440))
     },
   }
 } catch (e) {
@@ -140,22 +143,6 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var l0 = _vm.__map(_vm.city, function (item, index) {
-    var $orig = _vm.__get_orig(item)
-    var g0 = item.name.slice(0, 1)
-    return {
-      $orig: $orig,
-      g0: g0,
-    }
-  })
-  _vm.$mp.data = Object.assign(
-    {},
-    {
-      $root: {
-        l0: l0,
-      },
-    }
-  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -189,7 +176,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(uni) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -249,27 +236,23 @@ exports.default = void 0;
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 var _default = {
   data: function data() {
     return {
       text1: "成都交通卡/码联盟+1,攀枝花市米易县也可以刷卡啦",
+      modalShow: false,
+      isActive: false,
+      modalTitle: "提示",
+      modalContent: "要去发送新帖子吗？",
       list3: [{
-        image: 'https://cdn.uviewui.com/uview/swiper/swiper3.png',
-        title: '昨夜星辰昨夜风，画楼西畔桂堂东'
+        image: "".concat(this.$imgBaseUrl, "/images/tft2.jpg"),
+        title: '天府通，伴你出行哈哈哈哈哈哈哈'
       }, {
-        image: 'https://cdn.uviewui.com/uview/swiper/swiper2.png',
-        title: '昨夜星辰昨夜风，画楼西畔桂堂东'
+        image: "".concat(this.$imgBaseUrl, "/images/tft3.jpg"),
+        title: '小天出行'
       }, {
-        image: 'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-        title: '昨夜星辰昨夜风，画楼西畔桂堂东'
+        image: "".concat(this.$imgBaseUrl, "/images/tft4.jpg"),
+        title: '智慧出行'
       }],
       city: [{
         name: "成都市"
@@ -280,11 +263,43 @@ var _default = {
       }, {
         name: "资阳市"
       }],
-      keyword: ''
+      keyword: '',
+      UserHeadImgSrc: "".concat(this.$imgBaseUrl, "images/user_bg.jpg")
     };
+  },
+  methods: {
+    //点击轮播图跳转至帖子详情页
+    toPageDetail: function toPageDetail(index) {
+      uni.navigateTo({
+        url: "/pages/bbs/pageDetail/pageDetail?pageID=".concat(index)
+      });
+    },
+    //跳转到板块详情页
+    toBlockClassifyDetail: function toBlockClassifyDetail() {
+      uni.navigateTo({
+        url: "/pages/bbs/bolckClassifyDetail/bolckClassifyDetail"
+      });
+    },
+    //隐藏模态框
+    showModal: function showModal() {
+      this.modalShow = true;
+      this.isActive = true;
+    },
+    //显示模态框
+    hiddenModal: function hiddenModal() {
+      this.modalShow = false;
+      this.isActive = false;
+    },
+    //模态框确认后跳转
+    toSendPost: function toSendPost() {
+      uni.navigateTo({
+        url: "/pages/bbs/sendPost/sendPost"
+      });
+    }
   }
 };
 exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
 

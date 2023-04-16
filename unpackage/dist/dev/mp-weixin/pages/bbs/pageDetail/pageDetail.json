@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "帖子详情",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-toast": "/uni_modules/uview-ui/components/u-toast/u-toast",
+    "u-avatar": "/uni_modules/uview-ui/components/u-avatar/u-avatar",
+    "u-button": "/uni_modules/uview-ui/components/u-button/u-button",
+    "u-popup": "/uni_modules/uview-ui/components/u-popup/u-popup",
+    "u--textarea": "/uni_modules/uview-ui/components/u--textarea/u--textarea",
+    "page-comment": "/components/pageComment/pageComment",
+    "u-divider": "/uni_modules/uview-ui/components/u-divider/u-divider",
+    "u--input": "/uni_modules/uview-ui/components/u--input/u--input"
+  }
+}

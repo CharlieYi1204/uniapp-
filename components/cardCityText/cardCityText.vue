@@ -70,13 +70,13 @@
 			goToCardBalance() {
 				console.log('111')
 				uni.navigateTo({
-					url:"/pages/cardBalanceQuery/cardBalanceQuery?url=http://tftzhgl.cdtft.cn/tft/jsp/wx/search.jsp"
+					url:"/pages/index/cardBalanceQuery/cardBalanceQuery?url=http://tftzhgl.cdtft.cn/tft/jsp/wx/search.jsp"
 				})
 			},
 			goToCardTimesbalance() {
 				console.log('222')
 				uni.navigateTo({
-					url:"/pages/cardTimesbalance/cardTimesbalance?url=https://cdtftwxxcx.cdtft.cn/buscardH5/#/homePage"
+					url:"/pages/index/cardTimesbalance/cardTimesbalance?url=https://cdtftwxxcx.cdtft.cn/buscardH5/#/homePage"
 				})
 				
 			}
@@ -97,7 +97,7 @@
 		padding: 20rpx 10rpx 0rpx 10rpx;
 		.tagbox {
 			display: flex;
-			justify-content: space-around;
+			justify-content: flex-start;
 			flex-wrap: wrap;
 			width: 100%;
 			.tag_view {

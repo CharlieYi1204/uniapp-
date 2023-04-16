@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "用户信息",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-avatar": "/uni_modules/uview-ui/components/u-avatar/u-avatar",
+    "u-divider": "/uni_modules/uview-ui/components/u-divider/u-divider",
+    "u-button": "/uni_modules/uview-ui/components/u-button/u-button",
+    "page-card": "/components/pageCard/pageCard",
+    "user-comment": "/components/userComment/userComment"
+  }
+}

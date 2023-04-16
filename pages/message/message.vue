@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="message">
 		这是消息页面
 		<u-tag  text="标签" type="warning" size="large" ></u-tag>
 	</view>

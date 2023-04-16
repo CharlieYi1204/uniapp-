@@ -21,7 +21,7 @@ uni.$u.http.setConfig((config) => {
     return config
 })
 //设置图片的全局变量
-Vue.prototype.$imgBaseUrl = 'http://192.168.8.147:3000/';
+Vue.prototype.$imgBaseUrl = 'http://192.168.8.147:3000';
 
 try {
   function isPromise(obj) {

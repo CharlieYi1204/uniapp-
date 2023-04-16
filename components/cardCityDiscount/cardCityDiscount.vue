@@ -147,10 +147,11 @@
 		padding: 20rpx 10rpx 0rpx 10rpx;
 		.tagbox {
 			display: flex;
-			justify-content: space-around;
+			justify-content: flex-start;
 			flex-wrap: wrap;
 			.tag_view {
 				padding-top:10rpx;
+				padding-left: 25rpx;
 				padding-bottom:20rpx;
 			}
 		}

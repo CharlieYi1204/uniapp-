@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "板块详情",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-avatar": "/uni_modules/uview-ui/components/u-avatar/u-avatar",
+    "u-button": "/uni_modules/uview-ui/components/u-button/u-button",
+    "u-divider": "/uni_modules/uview-ui/components/u-divider/u-divider",
+    "page-card": "/components/pageCard/pageCard"
+  }
+}

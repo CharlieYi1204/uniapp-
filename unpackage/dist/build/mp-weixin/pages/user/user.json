@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "个人",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "user-top-icon": "/components/userTopIcon/userTopIcon",
+    "u-toast": "/uni_modules/uview-ui/components/u-toast/u-toast"
+  }
+}
