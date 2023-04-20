@@ -21,7 +21,7 @@
 								{{item.name}}
 							</view>
 							<view style="font-size: 20rpx;color:#888;padding-top:20rpx">
-								帖子数量：
+								帖子数量：-
 							</view>
 						</view>
 					</view>

@@ -16,7 +16,7 @@
 			<view class="author-right">
 				<view class="focus-button">
 					<view class="action-star" style="display:flex;align-items:center;" @click="changeCommntLike">
-						<image :src="isCommentLike ? `${this.$imgBaseUrl}/images/like_selected.png` : `${this.$imgBaseUrl}/images/like_g.png`"></image>
+						<image :src="isCommentLike ? `${$imgBaseUrl}/images/like_selected.png` : `${$imgBaseUrl}/images/like_g.png`"></image>
 						<text>&nbsp;{{commentLikeNum}}</text>
 					</view>
 				</view>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+	import Vue from 'vue'
 	export default {
 		name:"pageComment",
 		props: {
@@ -47,6 +48,7 @@
 		},
 		data() {
 			return {
+				$imgBaseUrl:Vue.prototype.$imgBaseUrl,
 				commentLikeNum:0,
 				isCommentLike:false,
 				datatime:'2023-4-16 14:53',

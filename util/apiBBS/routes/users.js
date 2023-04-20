@@ -8,7 +8,7 @@ router.post('/register',user.userRegister)
 router.get('/getUserName',user.getUserName)
 router.post('/userLogin',user.userLogin)
 router.get('/verifyToken',user.verifyToken)
-
+router.get("/getIDTargetUser",user.getIDTargetUser)
 module.exports = router;
 
 

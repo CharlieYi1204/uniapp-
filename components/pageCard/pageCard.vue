@@ -3,30 +3,28 @@
 		<!-- 帖子预览顶部，头像、用户名及发帖时间 -->
 		<view class="author-box">
 			<view class="useravatar" @click="toUserDetail">
-				<u-avatar :src="propUserHeadImgSrc"></u-avatar>
+				<u-avatar :src="userAvatar"></u-avatar>
 			</view>
 			<view class="usertxt">
-				<view class="username">用户名</view>
-				<view class="datatime" style="color:#888;font-size: 20rpx;">{{propPageTime}}</view>
+				<view class="username">{{userName}}</view>
+				<view class="datatime" style="color:#888;font-size: 20rpx;">{{propData.create_time}}</view>
 			</view>
 		</view>
 		<!-- 标题和内容简介 -->
 		<view class="title-box" @click="toPageDetil">
-			<view class="title">好消息！地铁、公交通通5折！天府新区学生卡优惠政策升级→</view>
-			<view class="content">为鼓励公交绿色出行，缓解城市交通拥堵，积极响应四川天府新区政策，
-			认真践行“全龄友好、幸福出行”服务理念，为天府新区未满18周岁中小学生线上线下办理学生卡优惠政策升级业务。
-			天府新区学生卡优惠政策升级情况及办理指南，小天已经为您一一整理好啦，请查收！</view>
+			<view class="title">{{propData.title}}</view>
+			<view class="content">{{propData.content}}</view>
 		</view>
 		<!-- 预览图片，最多显示三个 -->
 		<view class="pageImg-box" @click="toPageDetil">
-			<view class="image-box" v-for="(item,index) in  propImgUrl">
-				<image :src="item.imgUrl" mode="aspectFill"></image>
+			<view class="image-box" v-for="(item,index) in propData.image" v-if="index <= 3">
+				<image :src="item" mode="aspectFill"></image>
 			</view>
 		</view>
 			<!-- 下方点赞、评论、阅读量查看 -->
 		<view class="active-box">
 			<view class="active-img" @click="changeLikeStatus">
-				<image :src="isLike ? `${this.$imgBaseUrl}/images/like_selected.png` : `${this.$imgBaseUrl}/images/like.png`"></image>
+				<image :src="isLike ? `${$imgBaseUrl}/images/like_selected.png` : `${$imgBaseUrl}/images/like.png`"></image>
 				<view>{{likeCount}}</view>
 			</view>
 			<view class="active-img">
@@ -42,6 +40,7 @@
 </template>
 
 <script>
+	import Vue from 'vue'
 	export default {
 		name:"pageCard",
 		props:{
@@ -53,29 +52,85 @@
 				type:String,
 				default:"2023/4/15"
 			},
-			propImgUrl: {
+			imgBaseUrl: {
+				type:String,
+			},
+			propImgUrl:{
 				type:Array,
+			},
+			content: {
+				type:String
+			},
+				
+			title: {
+				type:String
+			},
+			//父组件传过来的值
+			propData: {
+				type:Object,
 				default() {
-					return [{
-						imgUrl:"http://192.168.8.147:3000/images/tft1.jpg"
-					},{
-						imgUrl:"http://192.168.8.147:3000/images/tft2.jpg"
-					},{
-						imgUrl:"http://192.168.8.147:3000/images/tft3.jpg"
-					}]
+					return {
+						id:null,
+						user_id:null,
+						create_time:"2023-4-20",
+						title:"标题",
+						content:"这里是内容",
+						image:null,
+					}
 				}
 			}
 		},
 		data() {
 			return {
-				isLike:false,
-				likeCount:5
+				$imgBaseUrl:Vue.prototype.$imgBaseUrl,
+				isLike:null,
+				likeCount:5,
+				userAvatar:null,
+				userName:null,
+				// 从token中获取当前已登录用户的ID
+				currentUserID:null,
 			};
 		},
 		methods: {
+			//获取所发帖用户的信息
+			getPostAuthor() {
+				const id = this.propData.user_id
+				uni.$u.http.get('/users/getIDTargetUser', {params: {user_id:`${id}`}}).then(res => {
+					const userData = res.data.data[0]
+					this.userAvatar = userData.icon
+					if(userData.nickname) {
+						this.userName = userData.nickname
+					}
+					else {
+						this.userName = `用户${userData.user_id}`
+					}
+				})
+			},
+			// 获取当前帖子的点赞量和状态
+			getLikesNum() {
+				//获取当前贴的点赞数量
+				const postID = this.propData.id
+				uni.$u.http.get('/bbs/getLikesNum', {params: {post_id:`${postID}`}}).then(res => {
+					console.log (res)
+					this.likeCount = res.data.data[0].likesNum
+				})
+				// 从token获取当前已登录用户的ID,通过当前帖子ID和用户ID获取已点赞情况
+				this.currentUserID = uni.getStorageSync("user_id")
+				const userID = this.currentUserID
+				uni.$u.http.get('/bbs/getIsLikes', {params: {post_id:`${postID}`,user_id:`${userID}`}}).then(res => {
+					this.isLike = res.data
+				})
+			},
 			changeLikeStatus() {
 				if(!this.isLike){
-					this.likeCount++
+					const postID = this.propData.id
+					uni.$u.http.get('/bbs/addLikes', {params: {post_id:`${postID}`,user_id:`${this.currentUserID}`}}).then(res => {
+						console.log (res,"111")
+					})
+					uni.$u.http.get('/bbs/getLikesNum', {params: {post_id:`${postID}`}}).then(res => {
+						console.log (res,"222")
+						this.likeCount = res.data.data[0].likesNum
+					})
 				}
 				else{
 					this.likeCount--
@@ -88,11 +143,14 @@
 				})
 			},
 			toUserDetail() {
-				console.log("111")
 				uni.navigateTo({
 					url:'/pages/bbs/userDetail/userDetail'
 				})
 			}
+		},
+		mounted () {
+			this.getPostAuthor()
+			this.getLikesNum()
 		}
 	}
 </script>
@@ -161,8 +219,10 @@
 	}
 	.pageImg-box{
 		display: flex;
-		justify-content: space-around;
+		justify-content: flex-start;
+		padding:0rpx 20rpx;
 		.image-box{
+			margin-left: 20rpx;
 			width: 200rpx;
 			height:200rpx;
 			image {

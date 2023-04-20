@@ -86,9 +86,11 @@
 }
 .page-card .pageImg-box {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  padding: 0rpx 20rpx;
 }
 .page-card .pageImg-box .image-box {
+  margin-left: 20rpx;
   width: 200rpx;
   height: 200rpx;
 }

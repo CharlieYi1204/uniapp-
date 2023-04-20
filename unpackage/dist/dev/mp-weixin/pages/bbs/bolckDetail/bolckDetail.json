@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "板块分类",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "block-classify": "/components/blockClassify/blockClassify"
-  }
-}

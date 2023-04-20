@@ -9,7 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var geoRouter = require('./routes/geo')
 var mapRouter = require('./routes/map')
-
+var bbsRouter = require('./routes/bbs')
 var app = express();
 
 //引入body-parser中间件以来解析请求体中的数据
@@ -19,7 +19,6 @@ app.use(bodyParser.json())
 //改写入口文件至app.js
 var http = require('http');
 var server = http.createServer(app);
-
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -32,5 +31,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/geo',geoRouter)
 app.use('/map',mapRouter)
+app.use('/bbs',bbsRouter)
 
 app.listen('3000')
+

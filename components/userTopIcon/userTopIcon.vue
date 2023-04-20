@@ -3,7 +3,7 @@
 		<!-- 头部头像区域 -->
 		<view class="top">
 			<view class="usericon" @click="toLogin()">
-					<image :src="imgsrc" mode="aspectFill"></image>
+					<image :src="imgsrc" mode="aspectFill" @click="imgUrl()"></image>
 					<view v-if="!isLogin">请登录</view>
 					<view v-if="isLogin && !notSetNickname" class="username">{{userInfo.nickname}}</view>
 					<view v-if="isLogin && notSetNickname" class="username">未设置昵称</view>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+	 import Vue from 'vue'
 	export default {
 		name:"userTopIcon",
 		props: {
@@ -26,14 +27,14 @@
 				default() {
 					return {
 						username:"默认用户名",
-						icon:"/static/img/user_bg.jpg"
+						icon:"/images/user_bg.jpg"
 					}
 				}
 			}
 		},
 		data() {
 			return {
-				
+				$imgBaseUrl:Vue.prototype.$imgBaseUrl 
 			};
 		},
 		methods: {
@@ -42,8 +43,8 @@
 					url:"/pages/user/login/login"
 				})
 			},
-			imgUrl(url) {
-			      return "http://localhost:3000/" + url
+			imgUrl(){
+				console.log(this.imgsrc)
 			}
 		},
 		computed: {

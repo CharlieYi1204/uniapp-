@@ -19,7 +19,7 @@
 
 		<!-- 搜索栏 -->
 		<view class="search-box">
-			<u-search placeholder="键入你想查找的内容" v-model="keyword"></u-search>
+			<u-search placeholder="点击进行搜索" :showAction="false" @click="toSearch" disabled height="70rpx"></u-search>
 		</view>
 		<!-- 轮播图 -->
 		<view class="swiper-box">
@@ -46,8 +46,9 @@
 		
 			<!-- 热门帖子 -->
 			<u-divider text="热门帖子"></u-divider>
-			<pageCard :propUserHeadImgSrc="UserHeadImgSrc"></pageCard>
-			<pageCard :propUserHeadImgSrc="UserHeadImgSrc"></pageCard>
+			<view v-for="(item,index) in pageData" :key="index">
+				<pageCard :propUserHeadImgSrc="UserHeadImgSrc" :propData="item"></pageCard>
+			</view>
 		</view>
 		
 </template>
@@ -56,14 +57,21 @@
 	export default {
 		data() {
 			return {
-					text1:"成都交通卡/码联盟+1,攀枝花市米易县也可以刷卡啦",
+			// 		title1:"好消息！地铁、公交通通5折！天府新区学生卡优惠政策升级→",
+			// 		title2:"小天年度账单出炉！你坐车花了多少钱？",
+			// 		content1:`为鼓励公交绿色出行，缓解城市交通拥堵，积极响应四川天府新区政策
+			// 认真践行“全龄友好、幸福出行”服务理念，为天府新区未满18周岁中小学生线上线下办理学生卡优惠政策升级业务。
+			// 天府新区学生卡优惠政策升级情况及办理指南，小天已经为您一一整理好啦，请查收！`,
+			// 		content2:`不知不觉小天陪伴你,走过了无数个日日夜夜,也见证了你每一次的奔波,有你相伴的日子,每一天都很温暖.`,
+			// 		text1:"成都交通卡/码联盟+1,攀枝花市米易县也可以刷卡啦",
+					pageData: [],
 					modalShow:false,
 					isActive:false,
 					modalTitle:"提示",
 					modalContent:"要去发送新帖子吗？",
 				   list3: [{
 					   image:`${this.$imgBaseUrl}/images/tft2.jpg`,
-					   title: '天府通，伴你出行哈哈哈哈哈哈哈',
+					   title: '一起来学习在线充值小技巧',
 				   },
 				   {
 						image:`${this.$imgBaseUrl}/images/tft3.jpg`,
@@ -86,11 +94,16 @@
 				{
 					name:"资阳市"
 				}],
-				keyword:'' ,
 				UserHeadImgSrc:`${this.$imgBaseUrl}images/user_bg.jpg`
 			}
 		},
 		methods: {
+			//点击跳转至搜索页面
+			toSearch() {
+				uni.navigateTo({
+					url:"/pages/bbs/search/search"
+				})
+			},
 			//点击轮播图跳转至帖子详情页
 			toPageDetail(index){
 				uni.navigateTo({
@@ -119,8 +132,18 @@
 				uni.navigateTo({
 					url:"/pages/bbs/sendPost/sendPost"
 				})
+			},
+			//请求数据
+			getPageData() {
+				uni.$u.http.get('/bbs').then(res => {
+					let data = res.data.data 
+					this.pageData = data
+				})
 			}
 		},
+		onLoad() {
+			this.getPageData()
+		}
 	}
 </script>
 

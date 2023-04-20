@@ -11,7 +11,7 @@
 		},
 		data() {
 			return {
-				globalImgBaseUrl: 'http://localhost:3000/'
+				globalImgBaseUrl: 'http://192.168.8.147:3000',
 			}
 		}
 		

@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/bbs/bbs",
+    "pages/bbs/sendPost/sendPost",
     "pages/bbs/blockDetail/blockDetail",
     "pages/bbs/pageDetail/pageDetail",
     "pages/bbs/userDetail/userDetail",
@@ -13,7 +14,8 @@
     "pages/index/cardBalanceQuery/cardBalanceQuery",
     "pages/index/cardTimesbalance/cardTimesbalance",
     "pages/message/notice/notice",
-    "pages/bbs/sendPost/sendPost"
+    "pages/bbs/chat/chat",
+    "pages/bbs/search/search"
   ],
   "subPackages": [],
   "window": {

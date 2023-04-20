@@ -1,4 +1,5 @@
 let config = require('../util/config')
+let imgGlobalURL = require('../routes/global')
 //引入 jsonwebtoken以用来验证用户登录状态
 const jwt = require('jsonwebtoken');
 
@@ -19,10 +20,32 @@ getUser = (req,res)=> {
 }
 
 
+//获取指定user_id用户信息
+getIDTargetUser = (req,res)=> {
+  let {user_id} = req.query;
+  let imgURL = imgGlobalURL.imgGlobalURL
+  let sql = `select * from user where user_id=?`
+  let sqlArr = [user_id];
+  let callBack = (err,data) => {
+    if (err) {
+      console.log("连接出错了",err)
+    } else {
+      data.forEach( item => {
+        item.icon = `${imgURL}${item.icon}`
+      })
+      res.send({
+        'data': data
+      })
+    }
+  }
+  config.sqlConnect(sql,sqlArr,callBack)
+}
+
+
 //获取指定用户信息
 getTargetUser = (req,res)=> {
   let {username} = req.query;
-  let sql = `select * from user where username=?`
+  let sql = `select * from user where user_name=?`
   let sqlArr = [username];
   let callBack = (err,data) => {
     if (err) {
@@ -44,7 +67,7 @@ getUserName = (req,res) => {
   let {
     name
   } = req.query
-  let sql = `select username from user where username=?`
+  let sql = `select user_name from user where user_name=?`
   let sqlArr = [name]
   let callBack = (err,data) => {
     if(data.length > 0 ) {
@@ -70,7 +93,7 @@ userRegister = (req,res) => {
     password,
     gender
   } = req.body
-  const sql = `insert into user (username,nickname,password,gender) values (?,?,?,?)`
+  const sql = `insert into user (user_name,nickname,password,gender) values (?,?,?,?)`
   const sqlArr = [username,
     nickname,
     password,
@@ -95,7 +118,7 @@ userLogin = (req,res) => {
     username
     ,password
   } = req.body
-  let sql = `select * from user where username=?`
+  let sql = `select * from user where user_name=?`
   let sqlArr = [username,password]
   let callBack = (err,data) => {
     if (data.length == 0) {
@@ -141,5 +164,6 @@ module.exports = {
     userRegister,
     getUserName,
     userLogin,
-    verifyToken
+    verifyToken,
+    getIDTargetUser
 }

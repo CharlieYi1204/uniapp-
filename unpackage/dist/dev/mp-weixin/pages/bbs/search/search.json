@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "搜索",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-search": "/uni_modules/uview-ui/components/u-search/u-search",
+    "page-card": "/components/pageCard/pageCard",
+    "user-title": "/components/userTitle/userTitle"
+  }
+}

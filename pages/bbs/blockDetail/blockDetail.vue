@@ -1,5 +1,21 @@
 <template>
 	<view class="blockdetail-box">
+		<!-- 发帖按钮 -->
+		<view class="sendpost" @click="showModal" :class="isActive ? 'sendpostActive' : 'sendpost'">
+			<image src="../../../static/icon/addition.png"></image>
+		</view>
+		<!-- 点击按钮后，弹出模态框确认是否进行发帖操作 -->
+		<view>
+				<u-modal :show="modalShow" 
+				:title="modalTitle" 
+				:content='modalContent' 
+				cancelText='取消' 
+				showCancelButton
+				buttonReverse
+				@cancel="hiddenModal"
+				@confirm="toSendPost"
+				></u-modal>
+		</view>
 		<!-- 顶部板块详情页 -->
 			<view class="block-title">
 				<view class="title-left">
@@ -43,7 +59,7 @@
 			</view>
 			<!-- 最新帖子卡片 -->
 			<u-divider text="最新帖子"></u-divider>
-			<pageCard></pageCard>
+			<pageCard title="【卡面上新】华为钱包×腾讯手游13张卡面正式来袭！" content="喜欢玩游戏的华为钱包天府通用户们有福气啦！本周华为钱包来给各位天府通小伙伴送夏日卡面福利啦！《英雄联盟》手游、《穿越火线》手游、《使命召唤》手游、《QQ飞车》手游，4款炙手可热的手游卡面上线啦！13款精美绝伦的卡面限时免费送啦！前往华为钱包现在领取，部分卡片永久有效哦！"></pageCard>
 	</view>
 </template>
 
@@ -76,9 +92,12 @@
 		},
 		data() {
 			return {
+				modalShow:false,
+				isActive:false,
+				modalTitle:"提示",
+				modalContent:"要去发送新帖子吗？",
 				name:'城市名称',
-				isfouced:false
-				
+				isfouced:false,
 			};
 		},
 		methods: {
@@ -89,8 +108,24 @@
 				uni.navigateTo({
 					url:"/pages/bbs/pageDetail/pageDetail"
 				})
-			}
-		},
+			},
+			//隐藏模态框
+				showModal() {
+					this.modalShow = true
+					this.isActive = true
+				},
+				//显示模态框
+				hiddenModal() {
+					this.modalShow = false
+					this.isActive = false
+				},
+				//模态框确认后跳转
+				toSendPost() {
+					uni.navigateTo({
+						url:"/pages/bbs/sendPost/sendPost"
+					})
+				}
+			},
 		onLoad(data) {
 			this.name = data.blockname
 		}
@@ -99,6 +134,25 @@
 
 <style lang="scss">
  .blockdetail-box {
+	 .sendpost {
+	 	width:120rpx;
+	 	height:120rpx;
+	 	background-color: #fff;
+	 	border-radius: 50%;
+	 	position: fixed;
+	 	z-index: 9999;
+	 	right:20rpx;
+	 	bottom: 100rpx;
+	 	transform: rotate(0deg);
+	 	transition: transform 0.5s ease;
+	 	image {
+	 		width:100%;
+	 		height:100%;
+	 	}
+	 }
+	 .sendpostActive {
+	 	transform: rotate(45deg);
+	 }
 	padding:20rpx 20rpx;
 		.block-title{
 			width: 100%;

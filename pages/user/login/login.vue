@@ -91,7 +91,8 @@
 							}
 						}
 					})})
-					.catch((errpr) => {
+					.catch((error) => {
+						conso.log(error)
 						this.$refs.uToast.show({
 							type:"error",
 							message:"登录失败",

@@ -13,6 +13,15 @@
 		
 	},
 	{
+	    "path" : "pages/bbs/sendPost/sendPost",
+	    "style" :                                                                                    
+	    {
+	        "navigationBarTitleText": "发帖",
+	        "enablePullDownRefresh": false
+	    }
+	    
+	},
+	{
             "path" : "pages/bbs/blockDetail/blockDetail",
             "style" :                                                                                    
             {
@@ -115,17 +124,25 @@
                 "enablePullDownRefresh": false
             }
             
-        }
+        }        
         ,{
-            "path" : "pages/bbs/sendPost/sendPost",
+            "path" : "pages/bbs/chat/chat",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "发帖",
+                "navigationBarTitleText": "即时消息",
                 "enablePullDownRefresh": false
             }
             
         }
-        
+        ,{
+            "path" : "pages/bbs/search/search",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "搜索",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",

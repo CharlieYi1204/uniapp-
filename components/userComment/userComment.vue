@@ -6,16 +6,15 @@
 				<u-avatar :src="propUserHeadImgSrc"></u-avatar>
 			</view>
 			<view class="usertxt">
-				<view class="username">用户名</view>
+				<view class="username">小猹猹</view>
 				<view class="datatime" style="color:#888;font-size: 20rpx;">评论于：{{datatime}}</view>
 			</view>
 		</view>
 		<!-- 评论内容及引用的文章 -->
-		<view class="commit-txt">我觉得这个东西说得很好我非常赞同，它是正确的，客观的，一针见血的
+		<view class="commit-txt">我觉得这个东西说得很好我非常赞同，不用再担心卡片丢失啦！
 		<view class="commit-page" @click="toPageDetail()">
 			<view class="page-title">天府通-NFC卡正式上线啦！</view>
-			<view class="page-content">轻轻一碰，出行更方便，更像享受天府通实体卡同等折扣，快来体验吧！
-			轻轻一碰，出行更方便，更像享受天府通实体卡同等折扣，快来体验吧！</view>
+			<view class="page-content">轻轻一碰，出行更方便，更像享受天府通实体卡同等折扣，快来体验吧！换手机也不怕， 支持免费将卡片旧手机迁移至新手机，余额卡号都不变，没网没电也能刷！</view>
 		</view>
 		</view>
 	</view>

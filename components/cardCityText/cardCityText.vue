@@ -68,13 +68,11 @@
 		methods: {
 			//跳转到天府通余额查询在线页面，由于naviagateTo只能跳转本地网页，所以在地址后面带参数，传递过去用WebView进行显示，便于返回到主页，传递过去onLoad接受
 			goToCardBalance() {
-				console.log('111')
 				uni.navigateTo({
 					url:"/pages/index/cardBalanceQuery/cardBalanceQuery?url=http://tftzhgl.cdtft.cn/tft/jsp/wx/search.jsp"
 				})
 			},
 			goToCardTimesbalance() {
-				console.log('222')
 				uni.navigateTo({
 					url:"/pages/index/cardTimesbalance/cardTimesbalance?url=https://cdtftwxxcx.cdtft.cn/buscardH5/#/homePage"
 				})

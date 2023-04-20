@@ -84,10 +84,11 @@
 								//this.useInfo.username = user.username
 								this.isLogin = true
 								this.useInfo = res.data.user.tokenData
+								uni.setStorageSync('user_id', this.useInfo.user_id);
 								console.log(this.useInfo)
 								} else {
 								uni.showToast({ title: message, icon: 'none' });
-								this.useInfo = {icon: "images/user_bg.jpg"}
+								this.useInfo = {icon: "/images/user_bg.jpg"}
 								//token过期则清除token
 								uni.removeStorageSync('user_token');
 								uni.setStorageSync('isLogin', false);
@@ -98,7 +99,7 @@
 							})
 						} else {
 						uni.showToast({ title: '请先登录', icon: 'none' })
-						this.useInfo = {icon: "images/user_bg.jpg"}
+						this.useInfo = {icon: "/images/user_bg.jpg"}
 					}
 			},
 			//注销，退出并清除token至登录页

@@ -6,11 +6,11 @@
 		<view class="author-box">
 			<view class="author-left">
 				<view class="useravatar" @click="toUserDetail">
-					<u-avatar :src="propUserHeadImgSrc"></u-avatar>
+					<u-avatar :src="`${this.$imgBaseUrl}/images/user_bg.jpg`"></u-avatar>
 				</view>
 				<view class="usertxt">
 					<view class="username">用户名</view>
-					<view class="datatime" style="color:#888;font-size: 20rpx;">{{datatime}}</view>
+					<view class="datatime" style="color:#888;font-size: 20rpx;">{{datetime}}</view>
 				</view>
 			</view>
 			<view class="author-right">
@@ -26,8 +26,7 @@
 			<view class="post-title">【卡面上新】华为钱包×腾讯手游13张卡面正式来袭！</view>
 			<!-- 内容 -->
 			<view class="post-context">喜欢玩游戏的华为钱包天府通用户们有福气啦！本周华为钱包来给各位天府通小伙伴送夏日卡面福利啦！
-《英雄联盟》手游、《穿越火线》手游、《使命召唤》手游、《QQ飞车》手游，4款炙手可热的手游卡面上线啦！13款精美绝伦的卡面限时免费送啦！现在领取，部分卡片永久有效哦！
-戳链接快速领取卡面
+《英雄联盟》手游、《穿越火线》手游、《使命召唤》手游、《QQ飞车》手游，4款炙手可热的手游卡面上线啦！13款精美绝伦的卡面限时免费送啦！前往华为钱包现在领取，部分卡片永久有效哦！
 			</view>
 			<!-- 如果存在图片就遍历出来，显示在帖子内容下面 -->
 			<view class="post-img">
@@ -68,7 +67,7 @@
 						<text>收藏&nbsp;{{starNum}}</text>
 					</view>
 					<view class="action-star" style="display:flex;align-items:center;" @click="changeLike">
-						<image :src="isLike ? `${this.$imgBaseUrl}/images/like_selected.png` : `${this.$imgBaseUrl}/images/like_g.png`"></image>
+						<image :src="isLike ? `${$imgBaseUrl}/images/like_selected.png` : `${$imgBaseUrl}/images/like_g.png`"></image>
 						<text>点赞&nbsp;{{likeNum}}</text>
 					</view>
 				</view>
@@ -87,7 +86,6 @@
 					</view>
 					<u-divider lineColor="#596275"></u-divider>
 				</view>
-				
 			</view>
 			<!-- 底部输入框 -->
 	<view class="input-bottom">
@@ -110,20 +108,11 @@
 </template>
 
 <script>
+	import Vue from 'vue'
 	export default {
-		props:{
-			datatime: {
-				type:String,
-				default:"2023-4-16"
-			},
-			propUserHeadImgSrc: {
-				type:String,
-				default:'http://192.168.8.147:3000/images/user_bg.jpg'
-			}
-			
-		},
 		data() {
 			return {
+				datetime:"2023-4-16",
 				popUpShow:false,
 				isStar:false,
 				isLike:false,
@@ -135,7 +124,8 @@
 				commentNum:1,
 				haveSubComment:true,
 				commentListInstance:"回复该贴：",
-				commentList:[1,2]
+				commentList:[1,2],
+				$imgBaseUrl:Vue.prototype.$imgBaseUrl,
 			};
 		},
 		methods:{

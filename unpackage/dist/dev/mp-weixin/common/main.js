@@ -36,11 +36,25 @@ _vue.default.use(_uviewUi.default);
 //全局配置baseURL
 uni.$u.http.setConfig(function (config) {
   /* config 为默认全局配置*/
-  config.baseURL = "http://192.168.8.147:3000"; /* 根域名 */
+  config.baseURL = "http://192.168.73.147:3000"; /* 根域名 */
   return config;
 });
 //设置图片的全局变量
-_vue.default.prototype.$imgBaseUrl = 'http://192.168.8.147:3000';
+_vue.default.prototype.$imgBaseUrl = 'http://192.168.73.147:3000';
+
+//定义全局函数
+_vue.default.prototype.$myFunction = function () {
+  var token = uni.getStorageSync("user_token");
+  if (token) {
+    uni.$u.http.get("/users/verifyToken", {
+      header: {
+        Authorization: "Bearer ".concat(token)
+      }
+    }).then(function (res) {
+      return res;
+    });
+  }
+};
 try {
   var isPromise = function isPromise(obj) {
     return !!obj && ((0, _typeof2.default)(obj) === "object" || typeof obj === "function") && typeof obj.then === "function";
@@ -150,7 +164,7 @@ var _default = {
   },
   data: function data() {
     return {
-      globalImgBaseUrl: 'http://localhost:3000/'
+      globalImgBaseUrl: 'http://192.168.8.147:3000'
     };
   }
 };
