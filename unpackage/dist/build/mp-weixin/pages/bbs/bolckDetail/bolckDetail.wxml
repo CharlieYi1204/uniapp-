@@ -1,1 +1,0 @@
-<view class="blockdetail"><block-classify vue-id="050f4b2a-1" classifyTitle="城市板块" bind:__l="__l"></block-classify><block-classify vue-id="050f4b2a-2" classifyTitle="支付方式板块" blockName="{{blockMethos}}" bind:__l="__l"></block-classify></view>

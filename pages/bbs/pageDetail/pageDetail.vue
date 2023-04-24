@@ -6,15 +6,15 @@
 		<view class="author-box">
 			<view class="author-left">
 				<view class="useravatar" @click="toUserDetail">
-					<u-avatar :src="`${this.$imgBaseUrl}/images/user_bg.jpg`"></u-avatar>
+					<u-avatar :src="userData.icon"></u-avatar>
 				</view>
 				<view class="usertxt">
-					<view class="username">用户名</view>
-					<view class="datatime" style="color:#888;font-size: 20rpx;">{{datetime}}</view>
+					<view class="username">{{userData.nickname}}</view>
+					<view class="datatime" style="color:#888;font-size: 20rpx;">{{pageData.create_time}}</view>
 				</view>
 			</view>
 			<view class="author-right">
-				<view class="focus-button">
+				<view class="focus-button" v-if="!(userData.user_id == currentUserID) ">
 					<u-button type="primary" size="mini" text="关注" icon="plus" plain shape="circle" color="#12B5A1" @click="isFoucs" v-if="!isfouced"></u-button>
 					<u-button type="primary" size="mini" text="已关注" icon="checkmark" plain shape="circle" color="#888" @click="isFoucs" v-if="isfouced"></u-button>
 				</view>
@@ -23,14 +23,15 @@
 		<!-- 中部帖子信息栏 -->
 		<view class="post-box">
 			<!-- 标题 -->
-			<view class="post-title">【卡面上新】华为钱包×腾讯手游13张卡面正式来袭！</view>
+			<view class="post-title">{{pageData.title}}</view>
 			<!-- 内容 -->
-			<view class="post-context">喜欢玩游戏的华为钱包天府通用户们有福气啦！本周华为钱包来给各位天府通小伙伴送夏日卡面福利啦！
-《英雄联盟》手游、《穿越火线》手游、《使命召唤》手游、《QQ飞车》手游，4款炙手可热的手游卡面上线啦！13款精美绝伦的卡面限时免费送啦！前往华为钱包现在领取，部分卡片永久有效哦！
-			</view>
+			<view class="post-context">{{pageData.content}}</view>
 			<!-- 如果存在图片就遍历出来，显示在帖子内容下面 -->
 			<view class="post-img">
-				<view class="img-box"><image src="../../../static/img/tft3.jpg" mode='aspectFill'></image></view>
+				<view class="img-box">
+					<!-- 帖子图片 -->
+					 <u-album :urls="urls1" rowCount="3" singleSize="300" multipleSize="100" ></u-album>
+				</view>
 			</view>
 			<!-- 弹出层进行内容举报 -->
 			<u-popup :show="popUpShow">
@@ -66,9 +67,9 @@
 						<image :src="isStar ? '../../../static/icon/favor_fill.png' : '../../../static/icon/favor.png'"></image>
 						<text>收藏&nbsp;{{starNum}}</text>
 					</view>
-					<view class="action-star" style="display:flex;align-items:center;" @click="changeLike">
+					<view class="action-star" style="display:flex;align-items:center;" @click="changeLikeStatus">
 						<image :src="isLike ? `${$imgBaseUrl}/images/like_selected.png` : `${$imgBaseUrl}/images/like_g.png`"></image>
-						<text>点赞&nbsp;{{likeNum}}</text>
+						<text>点赞&nbsp;{{likeCount}}</text>
 					</view>
 				</view>
 			</view>
@@ -80,9 +81,9 @@
 				</view>
 				<!-- 二级评论 -->
 				<view class="comment-txt" v-for="(item,index) in commentList" :key="index">
-					<pageComment @getCommentData="getCommentData" :commentID="index"></pageComment>
-					<view class="comment-txt-2">
-						<pageComment :isSubComment = "true" v-if="haveSubComment"></pageComment>
+					<pageComment @getCommentData="getCommentData" :commentID="index" :propcommentData="item"></pageComment>
+					<view class="comment-txt-2" v-if="item.parent_id">
+						<pageComment :isSubComment = "true"></pageComment>
 					</view>
 					<u-divider lineColor="#596275"></u-divider>
 				</view>
@@ -112,48 +113,55 @@
 	export default {
 		data() {
 			return {
+				//传入的帖子ID
+				postID:null,
+				//帖子的具体数据
+				pageData:null,
+				//发帖用户的详细信息
+				userData:null,
+				currentUserID:null,
+				//帖子中的图片的相册数据
+				urls1:null,
+				
 				datetime:"2023-4-16",
 				popUpShow:false,
 				isStar:false,
 				isLike:false,
-				likeNum:0,
+				likeCount:0,
 				starNum:0,
 				value:'',
 				isfouced:false,
 				reportValue:"",
-				commentNum:1,
+				commentNum:0,
 				haveSubComment:true,
 				commentListInstance:"回复该贴：",
-				commentList:[1,2],
+				commentList:null,
 				$imgBaseUrl:Vue.prototype.$imgBaseUrl,
 			};
 		},
 		methods:{
+			
 			toIndex() {
 				uni.redirectTo({
 					url:'/pages/index/index'
 				})
 			},
 			isFoucs(){
-				this.isfouced = !this.isfouced
+				if(this.isfouced) {
+					//已经关注点击后，需要从数据库中删除
+					this.cancleFouces()
+				}else {
+					this.addFouces()
+				}
 			},
 			changeStar() {
 				if(!this.isStar){
-					this.starNum++
+					//增加收藏
+					this.addCollect()
 				}
 				else{
-					this.starNum--
+					this.cancelCollect()
 				}
-				this.isStar = ! this.isStar
-			},
-			changeLike(){
-				if(!this.likeNum){
-					this.likeNum++
-				}
-				else{
-					this.likeNum--
-				}
-				this.isLike = ! this.isLike
 			},
 			sendReportData(){
 				this.popUpShow = false
@@ -169,16 +177,143 @@
 			},
 			toUserDetail() {
 				uni.navigateTo({
-					url:"/pages/bbs/userDetail/userDetail"
+					url:`/pages/bbs/userDetail/userDetail?userID=${this.propData.user_id}`
 				})
 			},
 			//获取子组件comment一级评论的数据
 			getCommentData(id) {
 				this.commentListInstance = `回复：${id}`
+			},
+			//取消关注接口
+			cancleFouces() {
+				uni.$u.http.get('/bbs/cancleFollow', {params: {user_id:`${this.currentUserID}`, follow_id:`${this.userData.user_id}`}}).then(res => {
+						this.isfouced = !this.isfouced
+					}).catch(err => {
+				})
+			},
+			//增加关注接口
+			addFouces() {
+				uni.$u.http.get('/bbs/follows', {params: {user_id:`${this.currentUserID}`, follow_id:`${this.userData.user_id}`}}).then(res => {
+						this.isfouced = !this.isfouced
+					}).catch(err => {
+					console.log(err)
+				})
+			},
+			// 获取该页面的具体数据
+			getpageDetailData() {
+				uni.$u.http.get('/bbs/getTargetPostData', {params: {post_id:`${this.postID}`}}).then(res => {
+					this.pageData = res.data.data[0]
+					this.urls1 = this.pageData.image
+					//获取当前帖子的所有评论 
+				uni.$u.http.get('/bbs/getCommentData', {params: {post_id:`${this.postID}`}}).then(res => {
+					this.commentList = res.data
+				})
+					//获取当前发帖的用户信息
+					uni.$u.http.get('/users/getIDTargetUser', {params: {user_id:`${this.pageData.user_id}`}}).then(res => {
+						const userData = res.data.data[0]
+						this.userData = res.data.data[0]
+						if(this.userData.nickname == null) {
+							this.userData.nickname = `用户${this.userData.user_id}`
+						}
+						
+						this.currentUserID = uni.getStorageSync("user_id")
+						//获取当前用户的收藏状态
+						uni.$u.http.get('/bbs/getCollectState', {params: {user_id:`${this.currentUserID}`, post_id:`${this.postID}`}}).then(res => {
+								this.isStar = res.data
+							}).catch(err => {
+							console.log(err)
+						})
+						//获取当前用户对发帖用户的关注状态
+						uni.$u.http.get('/bbs/getFollowState', {params: {user_id:`${this.currentUserID}`, followed_id:`${this.userData.user_id}`}}).then(res => {
+							this.isfouced = res.data
+						})
+					}).catch(err => {
+						console.log(err)
+					})
+				})
+			},
+			//获取帖子的收藏量
+			getStarNum() {
+				uni.$u.http.get('/bbs/getCollectByID', {params: {post_id:`${this.postID}`}}).then(res => {
+					this.starNum = res.data[0].collectNum
+				})
+			},
+			//添加收藏
+			addCollect() {
+				uni.$u.http.post('/bbs/addCollect', {post_id: `${this.postID}`, user_id: `${this.currentUserID}`} ).then(res => {
+					this.getStarNum()
+					this.isStar = !this.isStar
+				}).catch(err => {
+					console.log(err)
+				})
+			},
+			//取消收藏
+			cancelCollect() {
+				uni.$u.http.post('/bbs/cancelCollect', {post_id: `${this.postID}`, user_id: `${this.currentUserID}`} ).then(res => {
+						this.getStarNum()
+						this.isStar = !this.isStar
+					}).catch(err => {
+						console.log(err)
+					})
+				},
+			// 获取当前帖子的点赞量和状态
+			getLikesNum() {
+				//获取当前贴的点赞数量
+				uni.$u.http.get('/bbs/getLikesNum', {params: {post_id:`${this.postID}`}}).then(res => {
+					this.likeCount = res.data.data[0].likesNum
+				})
+				// 从token获取当前已登录用户的ID,通过当前帖子ID和用户ID获取已点赞情况
+				this.currentUserID = uni.getStorageSync("user_id")
+				const userID = this.currentUserID
+				uni.$u.http.get('/bbs/getIsLikes', {params: {post_id:`${this.postID}`,user_id:`${userID}`}}).then(res => {
+					this.isLike = res.data
+				})
+			},
+			//改变点赞状态及其数据
+			changeLikeStatus() {
+				if(!this.isLike){
+					//点击添加赞
+					uni.$u.http.get('/bbs/addLikes', {params: {post_id:`${this.postID}`,user_id:`${this.currentUserID}`}}).then(res => {
+						//获取加入后的记录
+						uni.$u.http.get('/bbs/getLikesNum', {params: {post_id:`${this.postID}`}}).then(res => {
+							this.likeCount = res.data.data[0].likesNum
+						})
+					})
+					
+				}
+				else{
+					uni.$u.http.get('/bbs/delLikes', {params: {post_id:`${this.postID}`,user_id:`${this.currentUserID}`}}).then(res => {
+						uni.$u.http.get('/bbs/getLikesNum', {params: {post_id:`${this.postID}`}}).then(res => {
+							this.likeCount = res.data.data[0].likesNum
+						})
+					})
+				}
+				this.isLike = !this.isLike
+			},
+			//获取该贴的评论量
+			getCommmentNum() {
+				uni.$u.http.get('/bbs/getCommentCountByPostID', {params: {post_id:`${this.postID}`}}).then(res => {
+					this.commentNum = res.data[0].commentNum
+				}).catch(err => {
+					console.log(err)
+				}) 
 			}
 		},
 		onLoad(data) {
-			console.log(data.pageID)
+			this.postID = data.postID
+			uni.showLoading({
+				title: '加载中'
+			});
+		},
+		onReady() {
+			uni.hideLoading();
+			
+		},
+		mounted(){
+			this.getpageDetailData()
+			this.getLikesNum()
+			this.getStarNum()
+			this.getCommmentNum()
 		}
 	}
 </script>
@@ -217,18 +352,14 @@
 			font-size: 35rpx;
 			font-weight: bold;
 		}
-		.post {
-			ttext-indent: 20rpx;
+		.post-context {
+			padding-top: 20rpx;
+			text-indent: 20rpx;
 		}
 		.post-img {
 			.img-box{
 				padding-top:15rpx;
-				width: 100%;
-				height: 400rpx;
-				image {
-					width: 100%;
-					height:100%;
-				}
+				text-align: center;
 			}
 			
 		}

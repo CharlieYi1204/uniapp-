@@ -47,30 +47,25 @@
 						    isLink
 							@click="changePickerShow"
 						></u-cell>
+						 <u-picker :show="pickerShow" ref="uPicker" :columns="classify" @confirm="confirmPicker" @change="changeHandler" @cancle="cancelPicker()"></u-picker>
 					</u-cell-group>
-					  <u-picker 
-					  :show="pickerShow"
-					  ref="uPicker" 
-					  :columns="classify"
-					  :loading="pickerLoading"
-					  @confirm="confirmPicker"
-					  @cancel = "this.pickerShow = false"
-					  @change="changeHandler"></u-picker>
 				</u-form-item>
 				<!-- 图片上传 -->
 				<u-form-item>
+					<uni-file-picker
+						ref="imgUP"
+						v-model="imageValue" 
+						:auto-upload = "false"
+						fileMediatype="image" 
+						mode="grid" 
+						@select="select" 
+						:limit='9'
+						:del-icon = "false"
+					/>
 					<view class="form-itme-title">图片上传(最多9张)</view>
-					<u-upload
-						:fileList="fileList5"
-						@afterRead="afterRead"
-						@delete="deletePic"
-						name="5"
-						multiple
-						:maxCount="9"
-						deletable
-					></u-upload>
+					<u-button :plain="true" color="#EE394E" shape="circle" @click="clearImg">清空已选图片</u-button>
 				</u-form-item>
-				<u-button :plain="true" color="#12B5A1" shape="circle" @click="submit">提交</u-button>
+				<u-button :plain="true" color="#12B5A1" shape="circle" @click="submit">发送帖子</u-button>
 			</u--form>
 		</view>
 	</view>
@@ -80,13 +75,17 @@
 	export default {
 		data() {
 			return {
+				imageValue:[],
 				model1: {
 					postInfo: {
+						user_id:null,
 						title:'',
 						context:'',
 						imgurl:null,
 						classify:null,
 						block:null,
+						is_pass:null,
+						image:null,
 					}
 				},
 				rules: {
@@ -108,6 +107,7 @@
 				},
 				fileList1:[],
 				imgUrlArr:[],
+				postImgUrl:[],
 				pickerShow:false,
 				//板块选择中的一级，板块类型
 				classify:[['城市','支付方式'],['成都市','德阳市','眉山市','资阳市']],
@@ -120,12 +120,49 @@
 			};
 		},
 		methods: {
+			//清楚已选中图片
+			clearImg() {
+				this.$refs.imgUP.clearFiles()
+				this.imgUrlArr = []
+			},
+			// 上传图片,获取URL地址
+			uploadImg() {
+				console.log(111)
+					return new Promise(resolve=>{
+						let a = uni.uploadFile({
+							url: 'http://localhost:3000/upload/upimg', //仅为示例，非真实的接口地址
+							filePath: this.imgUrlArr[0],
+							name: 'image',
+							formData: {
+							},
+							success: (res) => {
+								resolve(res)
+							}})
+					})
+				}, 
+				//获取到上传之后的照片地址，方便传入后台数据库
+			async setpostUrlImg () {
+				let result = await this.uploadImg()
+				let imgUrl = JSON.parse(result.data)
+				this.postImgUrl.push(imgUrl.data[0])
+			},
+			// 处理获取到url照片地址,将其数组转换为字符串
+			handleImgUrl() {
+				if(this.postImgUrl.length !== 0) {
+					this.model1.postInfo.image = this.postImgUrl.join(",")
+				}
+			},
+			// 选择图片时触发
+			select(e) {
+				let eLength = e.tempFilePaths.length
+				this.imgUrlArr[0] = e.tempFilePaths[eLength-1]
+				this.setpostUrlImg()
+			},
 			//控制交流板块picker
 			changePickerShow() {
 				this.pickerShow = true
 			},
 			//当picker一级列表变化是，进行取值
-			
 			changeHandler(e) {
 				console.log(e)
 				  const {
@@ -148,57 +185,36 @@
 			}, 
 			//点击picker的确认按钮
 			confirmPicker(e) {
-				console.log(e)
 				//选择后的数据值，用于显示在cell中
 				this.blockChoosen = `${e.value[0]}-${e.value[1]}`
 				this.model1.postInfo.classify = e.value[0]
 				this.model1.postInfo.block = e.value[1]
 				this.pickerShow = false
-				console.log(this.model1)
 			},
-			// 新增图片
-			async afterRead(event) {
-				// 当设置 multiple 为 true 时, file 为数组格式，否则为对象格式
-				let lists = [].concat(event.file)
-				let fileListLen = this[`fileList${event.name}`].length
-				lists.map((item) => {
-					this[`fileList${event.name}`].push({
-						...item,
-						status: 'uploading',
-						message: '上传中'
-					})
-				})
-				for (let i = 0; i < lists.length; i++) {
-					const result = await this.uploadFilePromise(lists[i].url)
-					let item = this[`fileList${event.name}`][fileListLen]
-					this[`fileList${event.name}`].splice(fileListLen, 1, Object.assign(item, {
-						status: 'success',
-						message: '',
-						url: result
-					}))
-					fileListLen++
+			cancelPicker() {
+				this.pickerShow = false
+			},
+			// 提交数据至后台
+			sendPost(pass) {
+				if(this.model1.postInfo.classify === "城市") {
+					this.model1.postInfo.classify = 1
 				}
-			},
-			//上传图片的函数
-			uploadFilePromise(url) {
-				return new Promise((resolve, reject) => {
-					let a = uni.uploadFile({
-						url: 'http://192.168.2.21:7001/upload', // 仅为示例，非真实的接口地址
-						filePath: url,
-						name: 'file',
-						formData: {
-							user: 'test'
-						},
-						success: (res) => {
-							setTimeout(() => {
-								resolve(res.data.data)
-							}, 1000)
-						}
-					});
+				if(this.model1.postInfo.classify === "支付方式") {
+					this.model1.postInfo.classify = 2
+				}
+				const currentUserID = uni.getStorageSync("user_id")
+				uni.$u.http.post('/bbs/sendPost', {user_id:currentUserID,category_id: `${this.model1.postInfo.classify}`,title:`${this.model1.postInfo.title}` ,content:`${this.model1.postInfo.context}` ,is_pass: pass ,image: `${this.model1.postInfo.image}` } ).then(res => {
+					console.log(res)
+				}).catch(err => {
+					console.log(err)
 				})
+	
 			},
+
 			submit() {
+				this.handleImgUrl()
 				let content = `${this.model1.postInfo.title},${this.model1.postInfo.context}`
+				console.log(this.model1.postInfo)
 				uni.showLoading({
 					title: '加载中'
 				});
@@ -212,29 +228,46 @@
 							let message = null
 							if(conclusion === "合规") {
 								//若API判定内容通过，则用户所发帖会成功提交至数据库
+								this.model1.postInfo.is_pass = 1
+								this.sendPost(this.model1.postInfo.is_pass)
 								uni.showModal(
 								{
 									title:"提示",
 									content:"发帖成功",
 									showCancel:false,
 									success:() => {
-										uni.navigateTo({
-											delta: 1
-											});
+										uni.reLaunch({
+											url:"/pages/bbs/bbs"
+										});
 									}
 								})
-							} else {
-								conclusion =  res.data.data[0].conclusion
+							} else if (conclusion === "疑似") {
+								this.model1.postInfo.is_pass = 2
+								this.sendPost(this.model1.postInfo.is_pass)
+								// conclusion =  res.data.data[0].conclusion
 								message =  res.data.data[0].msg
-								uni.showModal(
-								{
-									title:"提示",
-									content:`发帖内容${message},请编辑后重新提交`,
-									showCancel:false,
-								})
-							}
-							console.log(conclusion,message)
-							uni.hideLoading()
+									uni.showModal(
+									{
+										title:"提示",
+										content:`发帖内容${message},已提交至后台等待管理员审核`,
+										showCancel:false,
+										success:() => {
+										uni.reLaunch({
+											url:"/pages/bbs/bbs"
+										});
+									}
+									})
+								
+								} else {
+								message =  res.data.data[0].msg
+									uni.showModal(
+									{
+										title:"提示",
+										content:`发帖内容${message},不允许发布，请编辑后重新提交`,
+										showCancel:false,
+									})
+								}
+								uni.hideLoading()
 						}).catch(err => {
 							console.log(err)
 						})

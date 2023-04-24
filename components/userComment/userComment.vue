@@ -3,7 +3,7 @@
 	<view class="cardComment">
 		<view class="author-box">
 			<view class="useravatar" @click="toUserDetail">
-				<u-avatar :src="propUserHeadImgSrc"></u-avatar>
+				<u-avatar ></u-avatar>
 			</view>
 			<view class="usertxt">
 				<view class="username">小猹猹</view>
@@ -27,6 +27,9 @@
 			datatime: {
 				type:String,
 				default:"2023-4-15 18:39"
+			},
+			commentData: {
+				type:Object,
 			}
 		},
 		data() {

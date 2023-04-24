@@ -2,6 +2,7 @@
   "navigationBarTitleText": "消息",
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "u-tag": "/uni_modules/uview-ui/components/u-tag/u-tag"
+    "u-divider": "/uni_modules/uview-ui/components/u-divider/u-divider",
+    "user-message-card": "/components/userMessageCard/userMessageCard"
   }
 }

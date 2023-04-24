@@ -1,0 +1,1 @@
+<view class="postbox"><block wx:for="{{postData}}" wx:for-item="item" wx:for-index="index" wx:key="index"><view><page-card vue-id="{{'7258e155-1-'+index}}" propData="{{item}}" deletshow="{{true}}" userCard="{{true}}" bind:__l="__l"></page-card></view></block></view>

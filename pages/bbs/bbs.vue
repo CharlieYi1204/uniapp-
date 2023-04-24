@@ -28,8 +28,8 @@
                 previousMargin="30"
                 nextMargin="30"
                 circular
-				keyName="image"
                 :autoplay="true"
+				keyName="image"
 				showTitle
                 radius="5"
 				bgColor="#DFE6E9"
@@ -57,31 +57,13 @@
 	export default {
 		data() {
 			return {
-			// 		title1:"好消息！地铁、公交通通5折！天府新区学生卡优惠政策升级→",
-			// 		title2:"小天年度账单出炉！你坐车花了多少钱？",
-			// 		content1:`为鼓励公交绿色出行，缓解城市交通拥堵，积极响应四川天府新区政策
-			// 认真践行“全龄友好、幸福出行”服务理念，为天府新区未满18周岁中小学生线上线下办理学生卡优惠政策升级业务。
-			// 天府新区学生卡优惠政策升级情况及办理指南，小天已经为您一一整理好啦，请查收！`,
-			// 		content2:`不知不觉小天陪伴你,走过了无数个日日夜夜,也见证了你每一次的奔波,有你相伴的日子,每一天都很温暖.`,
-			// 		text1:"成都交通卡/码联盟+1,攀枝花市米易县也可以刷卡啦",
+					text1:"成都交通卡/码联盟+1,攀枝花市米易县也可以刷卡啦",
 					pageData: [],
 					modalShow:false,
 					isActive:false,
 					modalTitle:"提示",
 					modalContent:"要去发送新帖子吗？",
-				   list3: [{
-					   image:`${this.$imgBaseUrl}/images/tft2.jpg`,
-					   title: '一起来学习在线充值小技巧',
-				   },
-				   {
-						image:`${this.$imgBaseUrl}/images/tft3.jpg`,
-						title: '小天出行',
-				   },
-				   {
-					   image:`${this.$imgBaseUrl}/images/tft4.jpg`,
-					   title: '智慧出行',
-				   }
-                ],
+				   list3: [],
 				city: [{
 					name:"成都市"
 				},
@@ -98,6 +80,20 @@
 			}
 		},
 		methods: {
+			//获取轮播图数据 
+			getSwiperData() {
+				uni.$u.http.get("bbs/getWonderfulPost").then(res => {
+					let data = res.data.data
+					let swpierData = data.map(item =>{
+						return {
+							id:item.id,
+							image:item.image[0],
+							title:item.title,
+						}
+					})
+					this.list3 = swpierData
+				})
+			},
 			//点击跳转至搜索页面
 			toSearch() {
 				uni.navigateTo({
@@ -106,8 +102,9 @@
 			},
 			//点击轮播图跳转至帖子详情页
 			toPageDetail(index){
+				let postID = this.list3[index].id
 				uni.navigateTo({
-					url:`/pages/bbs/pageDetail/pageDetail?pageID=${index}`
+					url:`/pages/bbs/pageDetail/pageDetail?postID=${postID}`
 				})
 			},
 			//跳转到板块详情页
@@ -139,11 +136,21 @@
 					let data = res.data.data 
 					this.pageData = data
 				})
-			}
+			},
+		},
+		onShow(){
+			this.getPageData()
 		},
 		onLoad() {
+			this.getSwiperData()
 			this.getPageData()
-		}
+			uni.showLoading({
+					title: '加载中'
+				});
+		},
+		onReady() {
+			uni.hideLoading();
+		},
 	}
 </script>
 

@@ -32,6 +32,7 @@
 			//从地图组件获取当前点击的城市名称
 			getMapComponentsData(city,isProvince,isDistrict,cardSupport,supportDistrict,clickDisCode) {
 				this.cityName = city
+				console.log(this.cityName)
 				this.isProvince = isProvince
 				this.isDistrict = isDistrict
 				this.isSupportArea = cardSupport
@@ -115,10 +116,18 @@
 		mounted() {
 			//获取卡/码支持数据
 			this.getSupport()
-		}
+		},
 		// onLoad() { 
 		// 	// this.getMapData()
 		// }
+		onLoad(){
+		uni.showLoading({
+					title: '加载中'
+				});
+		},
+		onReady() {
+			uni.hideLoading();
+		},
 	}
 </script>
 

@@ -1,0 +1,1 @@
+.author-box{width:100%;display:flex;padding:30rpx 30rpx;background-color:#fff;border-radius:20rpx}.author-box .usertxt{display:flex;flex:1;flex-direction:column;justify-content:space-between;padding-left:20rpx}.author-box .righttxt{display:flex;padding:0 15rpx;text-align:right;flex-direction:column;justify-content:space-between}

@@ -1,13 +1,36 @@
 <template>
-	<view class="page-card">
+	<view class="page-card" v-if="isDelete">
+		<!-- 模态框，用于确认删除帖子 -->
+		<u-toast ref="uToast"></u-toast>
+		<u-modal :show="modalShow"
+		title="删除帖子?" 
+		content="请确认是否删除" 
+		cancelText='取消' 
+		showCancelButton
+		buttonReverse
+		@cancel="hiddenModal"
+		@confirm="toDeletePost"
+		></u-modal>
 		<!-- 帖子预览顶部，头像、用户名及发帖时间 -->
 		<view class="author-box">
-			<view class="useravatar" @click="toUserDetail">
-				<u-avatar :src="userAvatar"></u-avatar>
+			<view class="author-left">
+				<view class="useravatar" @click="toUserDetail">
+					<u-avatar :src="userAvatar"></u-avatar>
+				</view>
+				<view class="usertxt">
+					<view class="username">{{userName}}</view>
+					<view class="datatime" style="color:#888;font-size: 20rpx;">{{propData.create_time}}</view>
+				</view>
 			</view>
-			<view class="usertxt">
-				<view class="username">{{userName}}</view>
-				<view class="datatime" style="color:#888;font-size: 20rpx;">{{propData.create_time}}</view>
+			<view class="author-right">
+				<view class="delet-button">
+					<u-button type="primary" size="mini" text="删除帖子" icon="trash" plain shape="circle" color="#12B5A1"  v-if="deletshow"
+					@click="deletPost"></u-button>
+				</view>
+				<view v-if="collectCard">
+					<u-button type="primary" size="mini" text="收藏" icon="star" plain shape="circle" color="#12B5A1" @click="isFocus" v-if="!isStar"></u-button>
+					<u-button type="primary" size="mini" text="取消收藏" icon="star-fill" plain shape="circle" color="#888" @click="isFocus" v-if="isStar"></u-button>
+				</view>
 			</view>
 		</view>
 		<!-- 标题和内容简介 -->
@@ -16,24 +39,24 @@
 			<view class="content">{{propData.content}}</view>
 		</view>
 		<!-- 预览图片，最多显示三个 -->
-		<view class="pageImg-box" @click="toPageDetil">
-			<view class="image-box" v-for="(item,index) in propData.image" v-if="index <= 3">
+		<view class="pageImg-box" @click="toPageDetil" :class="!userCard ? '' : 'pageimg-userbox'">
+			<view class="image-box" v-for="(item,index) in propData.image" :key="index" v-if="index <= 2" >
 				<image :src="item" mode="aspectFill"></image>
 			</view>
 		</view>
 			<!-- 下方点赞、评论、阅读量查看 -->
-		<view class="active-box">
+		<view class="active-box" v-if="!userCard">
 			<view class="active-img" @click="changeLikeStatus">
 				<image :src="isLike ? `${$imgBaseUrl}/images/like_selected.png` : `${$imgBaseUrl}/images/like.png`"></image>
 				<view>{{likeCount}}</view>
 			</view>
 			<view class="active-img">
 				<image src="../../static/icon/eyes.png"></image>
-				<view>5</view>
+				<view>{{propData.visit_count}}</view>
 			</view>
-			<view class="active-img">
+			<view class="active-img" @click="toPageDetil">
 				<image src="../../static/icon/commit.png"></image>
-				<view>5</view>
+				<view>{{commentNum}}</view>
 			</view>
 		</view>
 	</view>
@@ -65,6 +88,18 @@
 			title: {
 				type:String
 			},
+			deletshow:{
+				type:Boolean,
+				default:false
+			},
+			userCard: {
+				type:Boolean,
+				default:false
+			},
+			collectCard: {
+				type:Boolean,
+				default:false
+			},
 			//父组件传过来的值
 			propData: {
 				type:Object,
@@ -82,16 +117,89 @@
 		},
 		data() {
 			return {
+				collectCard:false,
+				isStar:false,
 				$imgBaseUrl:Vue.prototype.$imgBaseUrl,
 				isLike:null,
-				likeCount:5,
+				likeCount:null,
 				userAvatar:null,
 				userName:null,
+				commentNum:null,
 				// 从token中获取当前已登录用户的ID
 				currentUserID:null,
+				modalShow:false,
+				isDelete:true,
 			};
 		},
 		methods: {
+			//新增收藏
+			addCollect() {
+				uni.$u.http.post('/bbs/addCollect', {post_id: `${this.propData.id}`, user_id: `${this.currentUserID}`} ).then(res => {
+					this.isStar = !this.isStar
+				}).catch(err => {
+					console.log(err)
+				})
+			},
+			// 取消收藏
+			cancelCollect() {
+				uni.$u.http.post('/bbs/cancelCollect', {post_id: `${this.propData.id}`, user_id: `${this.currentUserID}`} ).then(res => {
+						this.isStar = !this.isStar
+					}).catch(err => {
+						console.log(err)
+					})
+				},
+			//获取帖子收藏状态
+			getCollectState() {
+				uni.$u.http.get('/bbs/getCollectState', {params: {user_id:`${this.currentUserID}`, post_id:`${this.propData.id}`}}).then(res => {
+						this.isStar = res.data
+					}).catch(err => {
+					console.log(err)
+				})
+			},
+			//设置关注状态 
+			isFocus(){
+				if(this.isStar) {
+					this.cancelCollect()
+				}else {
+					this.addCollect()
+				}
+			},
+			// 确认删除帖子
+			toDeletePost() {
+				console.log(111)
+				uni.$u.http.post("/bbs/deletePost",{post_id: `${this.propData.id}`,user_id: `${this.propData.user_id}`}).then(res => {
+					console.log("删除成功",res)
+					this.modalShow = false
+					this.$refs.uToast.show({
+						type:"success",
+						message:"删除成功",
+						duration:800
+					})
+					this.isDelete=false
+				}).catch(err => {
+					console.log(err)
+				})
+			},
+			//删除帖子
+			deletPost(){
+				this.modalShow = true
+			},
+			hiddenModal() {
+				this.modalShow = false
+			},
+			//获取当前帖子的评论量
+			getCommmentNum() {
+				uni.$u.http.get('/bbs/getCommentCountByPostID', {params: {post_id:`${this.propData.id}`}}).then(res => {
+					this.commentNum = res.data[0].commentNum
+				}).catch(err => {
+					console.log(err)
+				}) 
+			},
+			//增加浏览量
+			addVisitCount() {
+					uni.$u.http.get('/bbs/addVisitCount', {params: {post_id:`${this.propData.id}`}}).then(res => { 
+					})
+			},
 			//获取所发帖用户的信息
 			getPostAuthor() {
 				const id = this.propData.user_id
@@ -111,7 +219,6 @@
 				//获取当前贴的点赞数量
 				const postID = this.propData.id
 				uni.$u.http.get('/bbs/getLikesNum', {params: {post_id:`${postID}`}}).then(res => {
-					console.log (res)
 					this.likeCount = res.data.data[0].likesNum
 				})
 				// 从token获取当前已登录用户的ID,通过当前帖子ID和用户ID获取已点赞情况
@@ -121,37 +228,47 @@
 					this.isLike = res.data
 				})
 			},
+			//改变点赞状态及其数据
 			changeLikeStatus() {
+				const postID = this.propData.id
 				if(!this.isLike){
-					const postID = this.propData.id
+					//点击添加赞
 					uni.$u.http.get('/bbs/addLikes', {params: {post_id:`${postID}`,user_id:`${this.currentUserID}`}}).then(res => {
-						console.log (res,"111")
+						//获取加入后的记录
+						uni.$u.http.get('/bbs/getLikesNum', {params: {post_id:`${postID}`}}).then(res => {
+							this.likeCount = res.data.data[0].likesNum
+						})
 					})
-					uni.$u.http.get('/bbs/getLikesNum', {params: {post_id:`${postID}`}}).then(res => {
-						console.log (res,"222")
-						this.likeCount = res.data.data[0].likesNum
-					})
+					
 				}
 				else{
-					this.likeCount--
+					uni.$u.http.get('/bbs/delLikes', {params: {post_id:`${postID}`,user_id:`${this.currentUserID}`}}).then(res => {
+						uni.$u.http.get('/bbs/getLikesNum', {params: {post_id:`${postID}`}}).then(res => {
+							this.likeCount = res.data.data[0].likesNum
+						})
+					})
 				}
 				this.isLike = !this.isLike
 			},
 			toPageDetil() {
+				const postID = this.propData.id
+				this.addVisitCount()
 				uni.navigateTo({
-					url:'/pages/bbs/pageDetail/pageDetail'
+					url:`/pages/bbs/pageDetail/pageDetail?postID=${postID}`
 				})
 			},
 			toUserDetail() {
 				uni.navigateTo({
-					url:'/pages/bbs/userDetail/userDetail'
+					url:`/pages/bbs/userDetail/userDetail?userID=${this.propData.user_id}`
 				})
 			}
 		},
 		mounted () {
 			this.getPostAuthor()
 			this.getLikesNum()
-		}
+			this.getCommmentNum()
+			this.getCollectState()
+	}
 	}
 </script>
 
@@ -167,6 +284,10 @@
 		width: 100%;
 		display: flex;
 		padding:30rpx 30rpx;
+		justify-content: space-between;
+		.author-left {
+			display: flex;
+		}
 		.usertxt{
 			display: flex;
 			flex-direction: column;
@@ -230,7 +351,9 @@
 				height: 100%;
 			}
 		}
-		
+	}
+	.pageimg-userbox{
+		padding-bottom: 25rpx;
 	}
 }
 </style>

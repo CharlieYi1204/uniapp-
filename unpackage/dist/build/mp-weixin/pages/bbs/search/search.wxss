@@ -1,0 +1,1 @@
+.search-box{padding:20rpx 20rpx}.search-box .search{padding-bottom:20rpx}.search-box .content-category{display:flex;padding:30rpx 0rpx}.search-box .content-category .category{padding:0rpx 20rpx;font-size:30rpx}.search-box .content-category .activecate{color:#12b5a1}

@@ -14,6 +14,7 @@ import {LabelLayout,UniversalTransition} from 'echarts/features';
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 是必须的一步
 import {CanvasRenderer} from 'echarts/renderers';
 
+
 //全局配置baseURL
 uni.$u.http.setConfig((config) => {
     /* config 为默认全局配置*/
@@ -24,14 +25,6 @@ uni.$u.http.setConfig((config) => {
 Vue.prototype.$imgBaseUrl = 'http://192.168.73.147:3000';
 
 //定义全局函数
-Vue.prototype.$myFunction = () => {
-	const token = uni.getStorageSync("user_token")
-	if(token) {
-		uni.$u.http.get("/users/verifyToken",{ header: { Authorization: `Bearer ${token}` }}).then(res => { 
-			return res;
-		})
-	}
-};
 
 try {
   function isPromise(obj) {

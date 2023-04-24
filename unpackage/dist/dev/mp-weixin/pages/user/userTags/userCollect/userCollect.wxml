@@ -1,0 +1,1 @@
+<view class="collect-box"><block wx:for="{{postData}}" wx:for-item="item" wx:for-index="index" wx:key="index"><view><page-card vue-id="{{'03c1bea7-1-'+index}}" propData="{{item}}" userCard="{{true}}" collectCard="{{true}}" bind:__l="__l"></page-card></view></block></view>

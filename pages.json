@@ -4,6 +4,23 @@
 		},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 	{
+	            "path" : "pages/user/user",
+	            "style" :                                                                                    
+	            {
+	                "navigationBarTitleText": "个人",
+	                "enablePullDownRefresh": false
+	            }
+	},
+	{
+	    "path" : "pages/user/userTags/userPosts/userPosts",
+	    "style" :                                                                                    
+	    {
+	        "navigationBarTitleText": "帖子",
+	        "enablePullDownRefresh": false
+	    }
+	    
+	},
+	{
 	    "path" : "pages/bbs/bbs",
 	    "style" :                                                                                    
 	    {
@@ -62,14 +79,6 @@
 				"navigationBarTitleText": "查询"
 	}
 		},
-	{
-	            "path" : "pages/user/user",
-	            "style" :                                                                                    
-	            {
-	                "navigationBarTitleText": "个人",
-	                "enablePullDownRefresh": false
-	            }
-	},
 	{
 	    "path" : "pages/user/login/login",
 	    "style" :                                                                                    
@@ -139,6 +148,69 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "搜索",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/userTags/userCollect/userCollect",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "收藏",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/userTags/userFollow/userFollow",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的关注",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/userTags/userFans/userFans",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的粉丝",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/userFunc/userManage/userManage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "个人信息维护",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/userFunc/visitHistory/visitHistory",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "浏览历史",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/userFunc/userFollowBlock/userFollowBlock",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "关注板块",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/userFunc/userLikePost/userLikePost",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "赞过的帖子",
                 "enablePullDownRefresh": false
             }
             

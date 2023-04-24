@@ -3,7 +3,7 @@
 		<userTopIcon :isLogin="isLogin" :userInfo="useInfo"></userTopIcon>
 	<!-- 中部帖子、收藏数量栏目 -->
 			<view class="user-newsnum">
-				<view class="item" v-for="item in userNewsCollect">
+				<view class="item" v-for="(item,index) in userNewsCollect" :key="index" @click="toDeatilPage(index)">
 					<view class="info-num" :style="{color: item.color}" v-if="isLogin"> {{item.num}} </view>
 					<view class="info-num" :style="{color: item.color}" v-if="!isLogin"> -- </view>
 					<view class="info-title">{{item.title}}</view>
@@ -14,7 +14,8 @@
 					<view 
 					v-for="(item,index) in userFunc"
 					:key="index"
-					class="row">
+					class="row"
+					@click="goToDetail(index)">
 					<view class="func-icon">
 						<image :src="item.icon" ></image>
 					</view>
@@ -49,21 +50,107 @@
 						title:"粉丝",
 						num:12,
 						color:"rgb(225, 112, 85)"
-					}],
-					userFunc:[{
-						title:"修改个人信息",
-						icon:"/static/icon/edit.png"
-					},
-					{
-						title:"查看浏览历史",
-						icon:"/static/icon/history.png"
-					}],
-					useInfo: {
-					},
+					}],                                          
+					userFunc:[
+						{
+							title:"个人信息管理",
+							icon:"/static/icon/edit.png"
+						},
+						{
+							title:"查看浏览历史",
+							icon:"/static/icon/history.png"
+						},
+						{
+							title:"关注的板块",
+							icon:"/static/icon/block.png"
+						},{
+							title:"赞过的帖子",
+							icon:"/static/icon/user_like.png"
+						}],
+					useInfo: {},
 					isLogin:false
 				};
 			},
 			methods: {
+				goToDetail(i) {
+					switch(i){
+						case 0:
+						uni.navigateTo({
+							url:`/pages/user/userFunc/userManage/userManage?user_id=${this.useInfo.user_id}`
+						})
+						break;
+						case 1:
+						uni.navigateTo({
+							url:`/pages/user/userFunc/visitHistory/visitHistory?user_id=${this.useInfo.user_id}`
+						})
+						break;
+						case 2:
+						uni.navigateTo({
+							url:`/pages/user/userFunc/userFollowBlock/userFollowBlock?user_id=${this.useInfo.user_id}`
+						})
+						break;
+						case 3:
+						uni.navigateTo({
+							url:`/pages/user/userFunc/userLikePost/userLikePost?user_id=${this.useInfo.user_id}`
+						})
+						break;
+					}
+				},
+				getNum() {
+					//获取发帖数量
+					uni.$u.http.post('/bbs/getPostNumByUserID',  {user_id:`${this.useInfo.user_id}`}).then(res => {
+							console.log(res.data[0].post_num)
+							this.userNewsCollect[0].num = res.data[0].post_num
+						}).catch(err => {
+						console.log(err)
+					})
+					//获取收藏数量
+					uni.$u.http.post('/bbs/getCollectNumByUserID',  {user_id:`${this.useInfo.user_id}`}).then(res => {
+							
+							this.userNewsCollect[1].num = res.data[0].collect_num
+						}).catch(err => {
+						console.log(err)
+					})
+					//获取关注数量
+					uni.$u.http.post('/bbs/getFollowNumByUserID',  {user_id:`${this.useInfo.user_id}`}).then(res => {
+							
+						this.userNewsCollect[2].num = res.data[0].follow_num
+							
+						}).catch(err => {
+						console.log(err)
+					})
+					//获取粉丝数量
+					uni.$u.http.post('/bbs/getFansNumByUserID',  {user_id:`${this.useInfo.user_id}`}).then(res => {
+							this.userNewsCollect[3].num = res.data[0].fans_num
+						}).catch(err => {
+						console.log(err)
+					})
+				},
+				//跳转至关注、收藏等详情页
+				toDeatilPage(i) {
+					const currentID = uni.getStorageSync("user_id")
+					console.log(i)
+					if (i === 0)
+					{
+						uni.navigateTo({
+							url:`/pages/user/userTags/userPosts/userPosts?user_id=${currentID}`
+						})
+					}else if(i===1){
+						console.log(11111)
+						uni.navigateTo({
+							url:`/pages/user/userTags/userCollect/userCollect?user_id=${currentID}`
+						})
+					}else if(i===2){
+						uni.navigateTo({
+							url:`/pages/user/userTags/userFollow/userFollow?user_id=${currentID}`
+						})
+					}else{
+						uni.navigateTo({
+							url:`/pages/user/userTags/userFans/userFans?user_id=${currentID}`
+						})
+
+					}
+				},
 				//去登录
 				toLogin() {
 					uni.navigateTo({
@@ -84,6 +171,7 @@
 								//this.useInfo.username = user.username
 								this.isLogin = true
 								this.useInfo = res.data.user.tokenData
+								this.getNum()
 								uni.setStorageSync('user_id', this.useInfo.user_id);
 								console.log(this.useInfo)
 								} else {
@@ -91,6 +179,7 @@
 								this.useInfo = {icon: "/images/user_bg.jpg"}
 								//token过期则清除token
 								uni.removeStorageSync('user_token');
+								uni.removeStorageSync('user_id');
 								uni.setStorageSync('isLogin', false);
 								}
 								
@@ -98,6 +187,9 @@
 								console.log(err)
 							})
 						} else {
+						uni.removeStorageSync('user_token');
+						uni.removeStorageSync('user_id');
+						uni.setStorageSync('isLogin', false);
 						uni.showToast({ title: '请先登录', icon: 'none' })
 						this.useInfo = {icon: "/images/user_bg.jpg"}
 					}
@@ -106,6 +198,8 @@
 			logOut(){
 				console.log('111')
 				uni.removeStorageSync('user_token');
+				uni.removeStorageSync('user_id');
+				uni.setStorageSync('isLogin', false);
 				this.$refs.uToast.show({
 					message:"退出登录成功",
 					type:"success",
@@ -118,6 +212,9 @@
 					}
 				})
 			}
+			},
+			onShow() {
+				this.getNum()
 			},
 			mounted() {
 				this.getUserInfo()

@@ -4,12 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
+
 //路由路径
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var geoRouter = require('./routes/geo')
 var mapRouter = require('./routes/map')
 var bbsRouter = require('./routes/bbs')
+var upLoadRouter = require('./routes/upload')
 var app = express();
 
 //引入body-parser中间件以来解析请求体中的数据
@@ -32,6 +35,7 @@ app.use('/users', usersRouter);
 app.use('/geo',geoRouter)
 app.use('/map',mapRouter)
 app.use('/bbs',bbsRouter)
+app.use('/upload',upLoadRouter)
 
 app.listen('3000')
 

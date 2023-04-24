@@ -5,26 +5,26 @@
 			<!-- 左侧头像和发帖时间 -->
 			<view class="author-left">
 				<view class="useravatar" @click="toUserDetail">
-					<u-avatar :src="propUserHeadImgSrc"></u-avatar>
+					<u-avatar :src="userData.icon"></u-avatar>
 				</view>
 				<view class="usertxt">
-					<view class="username">用户名</view>
-					<view class="datatime" style="color:#888;font-size: 20rpx;">{{datatime}}</view>
+					<view class="username">{{userName}}</view>
+					<view class="datatime" style="color:#888;font-size: 20rpx;">{{commentData.create_time}}</view>
 				</view>
 			</view>
 			<!-- 右侧点赞按钮 -->
-			<view class="author-right">
+<!-- 			<view class="author-right">
 				<view class="focus-button">
 					<view class="action-star" style="display:flex;align-items:center;" @click="changeCommntLike">
 						<image :src="isCommentLike ? `${$imgBaseUrl}/images/like_selected.png` : `${$imgBaseUrl}/images/like_g.png`"></image>
 						<text>&nbsp;{{commentLikeNum}}</text>
 					</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<!-- 评论内容 -->
 		<view class="comment-txt" @click="reply">
-			在哪里可以更换呢？要不要钱啊！！！！为什么电信、移动NFC卡和天府通-华为内测卡可以使用次数，后面的卡就不行了？
+			{{commentData.content}}
 		</view>
 	</view>
 </template>
@@ -35,48 +35,67 @@
 		name:"pageComment",
 		props: {
 			propUserHeadImgSrc: {
-				type:String,
+				type:String,                          
 				default:"../../static/img/tft1.jpg"
-			},
-			isSubComment: {
-				type:Boolean,
-				default:false
 			},
 			commentID:  {
 				type:Number
-			}
+			},
+			//父组件传过来的评论数据
+			propcommentData: {
+				type:Object
+			},
 		},
 		data() {
 			return {
+				userData:null,
+				userName:null,
+				commentData:this.propcommentData,
 				$imgBaseUrl:Vue.prototype.$imgBaseUrl,
-				commentLikeNum:0,
-				isCommentLike:false,
-				datatime:'2023-4-16 14:53',
+				// commentLikeNum:0,
+				// isCommentLike:false,
 				ID:this.commentID
 			};
 		},
 		methods: {
 			//点赞~
-			changeCommntLike() {
-				if(!this.isCommentLike){
-					this.commentLikeNum++
-				}else {
-					this.commentLikeNum--
-				}
-				this.isCommentLike = !this.isCommentLike
-			},
+			// changeCommntLike() {
+			// 	if(!this.isCommentLike){
+			// 		this.commentLikeNum++
+			// 	}else {
+			// 		this.commentLikeNum--
+			// 	}
+			// 	this.isCommentLike = !this.isCommentLike
+			// },
 			//跳转至用户详情
 			toUserDetail() {
 				uni.navigateTo({
-					url:"/pages/bbs/userDetail/userDetail"
+					url:`/pages/bbs/userDetail/userDetail`
 				})
 			},
 			//点击评论，聚焦回复框
 			reply() {
 				this.$emit("getCommentData",this.ID)
+			},
+				
+			getUserInfo() {
+				uni.$u.http.get('/users/getIDTargetUser', {params: {user_id: `${this.commentData.user_id}`}}).then(res => {
+					this.userData = res.data.data[0]
+					console.log(this.userData)
+					if(this.userData.nickname !== null) {
+						this.userName = this.userData.nickname
+					}
+					else {
+						this.userName = `用户${this.userData.user_id}`
+					}
+				}).catch(err => {
+					console.log(err)
+				})
 			}
 		},
-		
+		mounted() {
+			this.getUserInfo()
+		}
 	}
 </script>
 
@@ -96,7 +115,7 @@
 			.usertxt{
 				display: flex;
 				flex-direction: column;
-				justify-content: space-between;
+				justify-content: space-around;
 				padding-left: 20rpx;
 				.username {
 					font-weight: bold;
@@ -120,9 +139,9 @@
 		}
 	}
 	.comment-txt {
-		font-size: 25rpx;
+		font-size: 30rpx;
 		padding: 15rpx 0rpx;
-		padding-left:90rpx;
+		padding-left: 100rpx;
 	}
 }
 </style>

@@ -177,6 +177,15 @@
 						this.$refs.form.validate().then(res => {
 							//效验通过后，发送POST请求至数据库
 							let user = this.model1.userInfo
+							if (user.gender === "男") {
+								user.gender = 1
+							}
+							else if(user.gender === "女"){
+								user.gender = 0
+							}
+							else {
+								user.gender = -1
+							}
 							uni.$u.http.post('/users/register',{
 								username: user.username,
 								nickname: user.nickname,
@@ -198,6 +207,7 @@
 								console.log(err)
 							})
 						}).catch(errors => {
+							console.log(errors)
 							uni.$u.toast('注册失败')
 						})
 					}

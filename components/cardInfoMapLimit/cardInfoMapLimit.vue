@@ -106,6 +106,7 @@
 			registerMap() {
 				//返回省级地图，使两个变量初始化
 				console.log(this.supportCity)
+				this.cityName = "四川省"
 				this.isDistrict = false
 				this.isCity = false
 				this.cardSupport = true

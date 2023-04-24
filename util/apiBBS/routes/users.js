@@ -9,6 +9,8 @@ router.get('/getUserName',user.getUserName)
 router.post('/userLogin',user.userLogin)
 router.get('/verifyToken',user.verifyToken)
 router.get("/getIDTargetUser",user.getIDTargetUser)
+router.post("/updateUserInfo",user.updateUserInfo)
+
 module.exports = router;
 
 

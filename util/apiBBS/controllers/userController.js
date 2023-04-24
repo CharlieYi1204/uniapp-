@@ -1,7 +1,27 @@
 let config = require('../util/config')
-let imgGlobalURL = require('../routes/global')
+let globalURL = require('../routes/global');
 //引入 jsonwebtoken以用来验证用户登录状态
 const jwt = require('jsonwebtoken');
+
+
+  // //处理data对象数组中的time属性和image属性
+  // let imgURl=globalURL.imgGlobalURL
+  // data.forEach(item => {
+  //     if(item.image === "null" || item.image === null) {
+  //         item.image = null
+  //     } else {
+  //         item.image = item.image.split(",")
+  //         // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+  //         item.image.forEach((imgitem,itemIndex) => {
+  //             imgitem = `${imgURl}${imgitem}`
+  //             item.image[itemIndex] = imgitem
+  //         })
+  //     }
+  //     let create_time = new Date(item.create_time)
+  //     let updated_time = new Date(item.updated_time)
+  //     item.create_time = `${create_time.getFullYear()}年${create_time.getMonth()+1}月${create_time.getDate()+1}日 ${create_time.getHours()}:${create_time.getMinutes()}`
+  //     item.updated_time = `${updated_time.getFullYear()}年${updated_time.getMonth()+1}月${updated_time.getDate()+1}日 ${updated_time.getHours()}:${create_time.getMinutes()}`
+  //    })
 
 //获取所有用户信息
 getUser = (req,res)=> {
@@ -11,6 +31,19 @@ getUser = (req,res)=> {
     if(err){
       console.log('连接出错了')
     }else{
+      let imgURl = globalURL.imgGlobalURL
+      data.forEach(item => {
+        if (item.icon === "null" || item.icon === null) {
+          item.icon = null
+        } else {
+          item.icon = item.icon.split(",")
+          // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+          item.icon.forEach((imgitem, itemIndex) => {
+            imgitem = `${imgURl}${imgitem}`
+            item.icon[itemIndex] = imgitem
+          })
+        }
+      })
       res.send({
         'list':data
       })
@@ -23,24 +56,52 @@ getUser = (req,res)=> {
 //获取指定user_id用户信息
 getIDTargetUser = (req,res)=> {
   let {user_id} = req.query;
-  let imgURL = imgGlobalURL.imgGlobalURL
   let sql = `select * from user where user_id=?`
   let sqlArr = [user_id];
   let callBack = (err,data) => {
     if (err) {
       console.log("连接出错了",err)
     } else {
-      data.forEach( item => {
-        item.icon = `${imgURL}${item.icon}`
+      let imgURl = globalURL.imgGlobalURL
+      data.forEach(item => {
+        if (item.icon === "null" || item.icon === null) {
+          item.icon = null
+        } else {
+          item.icon = item.icon.split(",")
+          // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+          item.icon.forEach((imgitem, itemIndex) => {
+            imgitem = `${imgURl}${imgitem}`
+            item.icon[itemIndex] = imgitem
+          })
+        }
       })
       res.send({
-        'data': data
+        'list':data
       })
     }
   }
   config.sqlConnect(sql,sqlArr,callBack)
 }
 
+//修改用户信息
+updateUserInfo =  (req,res)=> {
+  let {nickname,gender,signature,icon,user_id} = req.body;
+  let sql = `update user set nickname=?,gender=?,signature=?,icon=? where user_id=?`
+  let sqlArr = [nickname,gender,signature,icon,user_id];
+  console.log(sql)
+  console.log(sqlArr)
+  let callBack = (err,data) => {
+    if (err) {
+      console.log("连接出错了")
+    } else {
+      res.send({
+        "message":"修改成功",
+          "data":data
+      })
+    }
+  }
+  config.sqlConnect(sql,sqlArr,callBack)
+}
 
 //获取指定用户信息
 getTargetUser = (req,res)=> {
@@ -61,6 +122,44 @@ getTargetUser = (req,res)=> {
   config.sqlConnect(sql,sqlArr,callBack)
 }
 
+//根据用户ID获取用户信息
+getUserInfoByUserID = (req,res) => {
+  let {
+    user_id
+  } = req.query
+  let sql = `select * from user where user_id = ?`
+  let sqlArr = [user_id]
+  let callBack = (err,data) => {
+    if(err) {
+        console.log("连接出错")
+        console.log(err)
+    }else {
+      //处理data对象数组中的time属性和image属性
+      let imgURl=globalURL.imgGlobalURL
+      data.forEach(item => {
+          if(item.image === "null" || item.image === null) {
+              item.image = null
+          } else {
+              item.image = item.image.split(",")
+              // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+              item.image.forEach((imgitem,itemIndex) => {
+                  imgitem = `${imgURl}${imgitem}`
+                  item.image[itemIndex] = imgitem
+              })
+          }
+          //处理对象
+          let create_time = new Date(item.create_time)
+          let updated_time = new Date(item.updated_time)
+          item.create_time = `${create_time.getFullYear()}年${create_time.getMonth()+1}月${create_time.getDate()+1}日 ${create_time.getHours()}:${create_time.getMinutes()}`
+          item.updated_time = `${updated_time.getFullYear()}年${updated_time.getMonth()+1}月${updated_time.getDate()+1}日 ${updated_time.getHours()}:${create_time.getMinutes()}`
+      })
+      res.send({
+          'data':data
+      })
+    }
+  }
+  config.sqlConnect(sql,sqlArr,callBack)
+}
 
 //获取用户名
 getUserName = (req,res) => {
@@ -100,6 +199,7 @@ userRegister = (req,res) => {
     gender];
     let callBack = (err,data) => {
       if (err) {
+        console.log(err)
         res.send({
           msg :"注册失败"
         })
@@ -158,6 +258,8 @@ verifyToken = (req,res) => {
    }
 
 
+  
+
 module.exports = {
     getUser,
     getTargetUser,
@@ -165,5 +267,6 @@ module.exports = {
     getUserName,
     userLogin,
     verifyToken,
-    getIDTargetUser
+    getIDTargetUser,
+    updateUserInfo
 }
