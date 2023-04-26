@@ -129,7 +129,9 @@
 			getData() {
 				//获取用户信息
 				uni.$u.http.get('/users/getIDTargetUser', {params: {user_id:`${this.userID}`}}).then(res => {
+					console.log(res)
 						this.userData = res.data.data[0]
+						console.log("111111")
 						if(this.userData.signature === null) {
 							this.userData.signature = '这个人很懒，什么都没留下'
 							}
@@ -141,6 +143,8 @@
 								}).catch(err => {
 								console.log(err)
 							})
+						}).catch(err => {
+							console.log(err)
 						})
 				//获取关注数量
 				uni.$u.http.get('/bbs/getFollowNum', {params: {follower_id:`${this.userID}`}}).then(res => {

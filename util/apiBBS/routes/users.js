@@ -10,6 +10,8 @@ router.post('/userLogin',user.userLogin)
 router.get('/verifyToken',user.verifyToken)
 router.get("/getIDTargetUser",user.getIDTargetUser)
 router.post("/updateUserInfo",user.updateUserInfo)
+router.post("/changUserBanned",user.changUserBanned)
+
 
 module.exports = router;
 

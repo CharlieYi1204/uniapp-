@@ -37,6 +37,43 @@ getPostData = (req,res) => {
     config.sqlConnect(sql,sqlArr,callBack)
 }
 
+//获取待审核的帖子 
+getCheckPost =(req,res) => {
+    let {
+    } = req.query
+    let sql = `select * from posts where is_pass = 0 order by create_time desc`
+    let sqlArr = [];
+    let callBack = (err,data) => {
+    // 处理data对象数组中的time属性和image属性
+        let imgURl=globalURL.imgGlobalURL
+        data.forEach(item => {
+            if(item.image === "null" || item.image === null) {
+                item.image = null
+            } else {
+                item.image = item.image.split(",")
+                // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+                item.image.forEach((imgitem,itemIndex) => {
+                    imgitem = `${imgURl}${imgitem}`
+                    item.image[itemIndex] = imgitem
+                })
+            }
+            let create_time = new Date(item.create_time)
+            let updated_time = new Date(item.updated_time)
+            item.create_time = `${create_time.getFullYear()}年${create_time.getMonth()+1}月${create_time.getDate()+1}日 ${create_time.getHours()}:${create_time.getMinutes()}`
+            item.updated_time = `${updated_time.getFullYear()}年${updated_time.getMonth()+1}月${updated_time.getDate()+1}日 ${updated_time.getHours()}:${create_time.getMinutes()}`
+        })
+
+        if(err) {
+            res.send(err)
+            console.log("连接出错了")
+        } else {
+            res.send({
+                "data":data
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
 
 //获取精选帖子
 getWonderfulPost = (req,res) => {
@@ -782,7 +819,8 @@ module.exports = {
     getPostNumByUserID,
     getCollectNumByUserID,
     getFollowNumByUserID,
-    getFansNumByUserID
+    getFansNumByUserID,
+    getCheckPost,
 }
 
 

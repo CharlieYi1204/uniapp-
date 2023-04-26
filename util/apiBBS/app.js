@@ -13,6 +13,7 @@ var geoRouter = require('./routes/geo')
 var mapRouter = require('./routes/map')
 var bbsRouter = require('./routes/bbs')
 var upLoadRouter = require('./routes/upload')
+var blockRouter = require('./routes/block')
 var app = express();
 
 //引入body-parser中间件以来解析请求体中的数据
@@ -29,6 +30,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//解决跨域问题
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    next()
+})
+
 //路由路径设置
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -36,6 +45,7 @@ app.use('/geo',geoRouter)
 app.use('/map',mapRouter)
 app.use('/bbs',bbsRouter)
 app.use('/upload',upLoadRouter)
+app.use('/block',blockRouter)
 
 app.listen('3000')
 

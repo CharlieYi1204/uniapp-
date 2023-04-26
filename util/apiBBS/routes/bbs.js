@@ -32,6 +32,7 @@ router.post("/getPostNumByUserID",bbs.getPostNumByUserID)
 router.post("/getCollectNumByUserID",bbs.getCollectNumByUserID)
 router.post("/getFollowNumByUserID",bbs.getFollowNumByUserID)
 router.post("/getFansNumByUserID",bbs.getFansNumByUserID)
+router.get('/getCheckPost',bbs.getCheckPost)
 
 
 module.exports = router;

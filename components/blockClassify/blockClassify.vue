@@ -21,7 +21,7 @@
 								{{item.name}}
 							</view>
 							<view style="font-size: 20rpx;color:#888;padding-top:20rpx">
-								帖子数量：-
+								帖子数量：{{item.num}}
 							</view>
 						</view>
 					</view>
@@ -42,18 +42,23 @@
 				type:Array,
 				default() {
 					return  [{
-					name:"成都市"
+					name:"成都市",
+					num:4
 				},
 				{
-					name:"德阳市"
+					name:"德阳市",
+					num:6
 				},
 				{
-					name:"眉山市"
+					name:"眉山市",
+					num:2
 				},
 				{
-					name:"资阳市"
+					name:"资阳市",
+					num:10
 				},{
-					name:"雅安市"
+					name:"雅安市",
+					num:3
 				}]
 				}
 			},

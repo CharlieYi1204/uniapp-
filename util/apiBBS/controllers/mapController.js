@@ -65,10 +65,28 @@ getCardSupport = (req,res) => {
 }
 //根据adcode，获取区(县)区域卡/码支持的支付方式和具体优惠
 getCardDiscount = (req,res) => {
-    let {districtcode} = req.body
+    let {districtcode} = req.query
     const sql = `select * from card_payment where districtcode=?`
     const sqlArr = [
         districtcode
+    ]
+    let callBack = (err,data) => {
+        if(err){
+            res.send({msg:"数据获取失败"})
+        }
+        else {
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//获取卡/码支持的所有信息
+getCardInfo = (req,res) => {
+    let {} = req.query
+    const sql = `select sichuan_map.cityname,supportcity.citycode,sichuan_map.districtname,supportcity.districtcode from supportcity,sichuan_map WHERE sichuan_map.citycode = supportcity.citycode and sichuan_map.districtcode = supportcity.districtcode`
+    const sqlArr = [
+        
     ]
     let callBack = (err,data) => {
         if(err){
@@ -82,9 +100,33 @@ getCardDiscount = (req,res) => {
     }
     config.sqlConnect(sql,sqlArr,callBack)
 }
+
+//删除卡/码支持城市
+deleteSupportDelete = (req,res) => {
+    let {code} = req.body
+    const sql = `delete from supportcity where districtcode = ?`
+    const sqlArr = [
+        code
+    ]
+    let callBack = (err,data) => {
+        if(err){
+            res.send({msg:"失败"})
+        }
+        else {
+            res.send({
+                msg:"删除成功",
+                data:data
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
 module.exports = {
     addMapData,
     getMapData,
     getCardSupport,
-    getCardDiscount
+    getCardDiscount,
+    getCardInfo,
+    deleteSupportDelete
 }

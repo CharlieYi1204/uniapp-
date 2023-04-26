@@ -1,6 +1,8 @@
 {
   "pages": [
+    "pages/index/index",
     "pages/user/user",
+    "pages/bbs/chat/chat",
     "pages/user/userTags/userPosts/userPosts",
     "pages/bbs/bbs",
     "pages/bbs/sendPost/sendPost",
@@ -8,14 +10,12 @@
     "pages/bbs/pageDetail/pageDetail",
     "pages/bbs/userDetail/userDetail",
     "pages/bbs/bolckClassifyDetail/bolckClassifyDetail",
-    "pages/index/index",
     "pages/user/login/login",
     "pages/user/login/signup/signup",
     "pages/message/message",
     "pages/index/cardBalanceQuery/cardBalanceQuery",
     "pages/index/cardTimesbalance/cardTimesbalance",
     "pages/message/notice/notice",
-    "pages/bbs/chat/chat",
     "pages/bbs/search/search",
     "pages/user/userTags/userCollect/userCollect",
     "pages/user/userTags/userFollow/userFollow",

@@ -123,9 +123,9 @@
 			},
 			getUserData() {
 				uni.$u.http.get('/users/getIDTargetUser',  {params: {user_id:`${this.userID}`}}).then(res => {
-						console.log(res.data.list[0])
-						this.userData = res.data.list[0]
-						let data = res.data.list[0]
+						console.log(res.data.data[0])
+						this.userData = res.data.data[0]
+						let data = res.data.data[0]
 						this.icon = data.icon[0]
 						let userInfo = this.model1.userInfo
 						userInfo.user_id = data.user_id
@@ -165,6 +165,7 @@
 		padding:30rpx 30rpx;
 		background-color: #fff;
 		border-radius: 20rpx;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		.author-box{
 			display: flex;

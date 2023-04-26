@@ -76,7 +76,7 @@ getIDTargetUser = (req,res)=> {
         }
       })
       res.send({
-        'list':data
+        'data':data
       })
     }
   }
@@ -122,7 +122,7 @@ getTargetUser = (req,res)=> {
   config.sqlConnect(sql,sqlArr,callBack)
 }
 
-//根据用户ID获取用户信息
+//根据用户ID获取用户信息 get请求
 getUserInfoByUserID = (req,res) => {
   let {
     user_id
@@ -257,6 +257,36 @@ verifyToken = (req,res) => {
     }
    }
 
+//设置用户封禁状态
+changUserBanned = (req,res) => {
+  let {
+    user_id,banned
+  } = req.body
+  const sql = `update user set is_banned = ? where user_id = ?`
+  const sqlArr = [ banned,user_id];
+    let callBack = (err,data) => {
+      if (err) {
+        console.log(err)
+        res.send({
+          msg :"更新失败"
+        })
+      } else {
+        if(banned === 1){
+          res.send({
+            msg :"已封禁用户",
+            data:data
+          })
+        } else {
+          res.send({
+            msg :"用户解封成功",
+            data:data
+          })
+        }
+      }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+
+}
 
   
 
@@ -268,5 +298,6 @@ module.exports = {
     userLogin,
     verifyToken,
     getIDTargetUser,
-    updateUserInfo
+    updateUserInfo,
+    changUserBanned
 }

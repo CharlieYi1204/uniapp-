@@ -65,16 +65,20 @@
 					modalContent:"要去发送新帖子吗？",
 				   list3: [],
 				city: [{
-					name:"成都市"
+					name:"成都市",
+					num:4
 				},
 				{
-					name:"德阳市"
+					name:"德阳市",
+					num:6
 				},
 				{
-					name:"眉山市"
+					name:"眉山市",
+					num:2
 				},
 				{
-					name:"资阳市"
+					name:"资阳市",
+					num:10
 				}],
 				UserHeadImgSrc:`${this.$imgBaseUrl}images/user_bg.jpg`
 			}

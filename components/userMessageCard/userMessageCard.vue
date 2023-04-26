@@ -1,17 +1,17 @@
 <template>
 	<view>
-		<view class="author-box">
+		<view class="author-box" @click="toChat">
 			<view class="useravatar" @click="toUserDetail">
-				<u-avatar :src="userAvatar"></u-avatar>
+				<u-avatar :src="userData.icon[0]"></u-avatar>
 			</view>
 			<view class="usertxt">
-				<view class="username">这里是用户名</view>
-				<view class="datatime" style="color:#888;font-size: 20rpx;">这里是用户内容</view>
+				<view class="username">{{userData.nickname}}</view>
+				<view class="datatime" style="color:#888;font-size: 20rpx;">你好，请问一下...</view>
 			</view>
 			<view class="righttxt">
-				<view class="username">时间</view>
+				<view class="username">2023/5/6</view>
 				<view class="datatime" style="color:#888;font-size: 20rpx;align-self: flex-end;">
-					<u-badge :isDot="true" type="success"></u-badge>
+					<u-badge :isDot="showDot" type="success" @click="showDot = false"></u-badge>
 				</view>
 			</view>
 		</view>
@@ -28,8 +28,26 @@
 		// }
 		data() {
 			return {
-				
+				userData:null,
+				showDot:true,
+				text:"你好，想请问一下雅安雨城区13路可以使用天府通吗？"
 			};
+		},
+		methods: {
+			getUserData() {
+				uni.$u.http.get("/users/getIDTargetUser",{params:{user_id:51}}).then(res =>{
+					console.log(res)
+					this.userData = res.data.data[0]
+				})
+			},
+			toChat() {
+				uni.navigateTo({
+					url:"/pages/bbs/chat/chat"
+				})
+			}
+		},
+		mounted() {
+			this.getUserData()
 		}
 	}
 </script>
