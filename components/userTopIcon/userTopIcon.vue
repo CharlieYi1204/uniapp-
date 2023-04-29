@@ -3,9 +3,9 @@
 		<!-- 头部头像区域 -->
 		<view class="top">
 			<view class="usericon" @click="toLogin()">
-					<image :src="imgsrc" mode="aspectFill" @click="imgUrl()"></image>
+					<image :src="isLogin === true ? userData.icon[0] : imgsrc" mode="aspectFill" @click="toLogin()"></image>
 					<view v-if="!isLogin">请登录</view>
-					<view v-if="isLogin && !notSetNickname" class="username">{{userInfo.nickname}}</view>
+					<view v-if="isLogin && !notSetNickname" class="username">{{userData.nickname}}</view>
 					<view v-if="isLogin && notSetNickname" class="username">未设置昵称</view>
 			</view>
 		</view>
@@ -14,7 +14,8 @@
 </template>
 
 <script>
-	 import Vue from 'vue'
+	 import { number } from 'echarts';
+import Vue from 'vue'
 	export default {
 		name:"userTopIcon",
 		props: {
@@ -30,21 +31,31 @@
 						icon:"/images/user_bg.jpg"
 					}
 				}
-			}
+			},
 		},
 		data() {
 			return {
-				$imgBaseUrl:Vue.prototype.$imgBaseUrl 
+				userID: this.userInfo.user_id,
+				userData:null,
 			};
 		},
 		methods: {
-			toLogin() {
-				uni.navigateTo({
-					url:"/pages/user/login/login"
+			//获取用户数据 
+			getUserData() {
+				uni.$u.http.get("/users/getIDTargetUser",{params:{user_id:this.userID}}).then(res => {
+					this.userData = res.data.data[0]
 				})
 			},
-			imgUrl(){
-				console.log(this.imgsrc)
+			toLogin(){
+				if(this.isLogin === false) {
+					uni.navigateTo({
+						url:"/pages/user/login/login"
+					})
+				}else {
+					uni.navigateTo({
+						url:`/pages/bbs/userDetail/userDetail?userID=${this.userID}`
+					})
+				}
 			}
 		},
 		computed: {
@@ -52,10 +63,19 @@
 				return this.userInfo.nickname == '' || this.userInfo.nickname == null
 			},
 			imgsrc() {
-				return this.$imgBaseUrl + this.userInfo.icon
+				return this.$imgBaseUrl + '/images/user_bg.jpg'
 			}
 		},
+		mounted() {
+			this.getUserData()
+			const userid = uni.getStorageSync("user_id")
+			console.log(userid)
+			this.userID = userid
+		},
+		onShow() {
+			this.getUserData()
 		}
+	}
 </script>
 
 <style lang="scss" scoped>

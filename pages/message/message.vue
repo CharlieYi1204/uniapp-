@@ -2,19 +2,19 @@
 	<view class="message">
 		<!-- 顶部图标j及选项-->
 		<view class="title">
-			<view class="title-item">
+			<view class="title-item" @click="toLike">
 				<view class="title-img-box">
 					<image src="../../static/icon/message_like.png"></image>
 				</view>
 				<view>赞</view>
 			</view>
-			<view class="title-item">
+			<view class="title-item" @click="toComment">
 				<view class="title-img-box">
 					<image src="../../static/icon/message_commt.png"></image>
 				</view>
 				<view>评论</view>
 			</view>
-			<view class="title-item">
+			<view class="title-item" @click="toNotice">
 				<view class="title-img-box">
 					<image src="../../static/icon/message.png"></image>
 				</view>
@@ -36,7 +36,30 @@
 			};
 		},
 		methods: {
-			
+			toComment(){
+				uni.navigateTo({
+					url:"/pages/message/comment/comment"
+				})
+			},
+			toLike() {
+				uni.navigateTo({
+					url:"/pages/message/likes/likes"
+				})
+			},
+			toNotice() {
+				uni.navigateTo({
+					url:"/pages/message/notice/notice"
+				})
+			}
+		},
+		onShow(){
+			const isLogin = uni.getStorageSync("isLogin")
+			// consol.log(isLogin)
+			 if (!isLogin) {
+			      uni.reLaunch({
+			        url: '/pages/user/login/login'
+			      })
+			    }
 		}
 	}
 </script>

@@ -241,21 +241,22 @@ userLogin = (req,res) => {
 }
 
 //验证token，获取登录信息
-verifyToken = (req,res) => {
-   const authHeader = req.headers.authorization;
-   if(authHeader) {
+verifyToken = (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader) {
     const token = authHeader.split(' ')[1];
     //验证token
-    jwt.verify(token,'secret',(err,user) => {
-      if(err) {
-        return res.json({ code: 403, message: '登录信息已过期'});
+    jwt.verify(token, 'secret', (err, user) => {
+      if (err) {
+        return res.json({ code: 403, message: '登录信息已过期' });
       }
       res.json({ code: 200, message: '获取用户信息成功', user });
-    });}
-    else {
-      res.sendStatus(401);
-    }
-   }
+    });
+  }
+  else {
+    res.sendStatus(401);
+  }
+}
 
 //设置用户封禁状态
 changUserBanned = (req,res) => {
@@ -285,9 +286,41 @@ changUserBanned = (req,res) => {
       }
     }
     config.sqlConnect(sql,sqlArr,callBack)
-
 }
 
+//搜索用户
+searchUser = (req,res) => {
+  let {
+    keywords
+  } = req.query
+  const sql = `select user_id,user_name,nickname,signature,gender,icon from user where user_id like ? or user_name like ? or nickname like ?`
+  const sqlArr = [`%${keywords}%`,`%${keywords}%`,`%${keywords}%`];
+  console.log(sqlArr)
+    let callBack = (err,data) => {
+      if (err) {
+        console.log(err)
+        res.send({
+          msg :"检索失败"
+        })
+      } else {
+        let imgURl = globalURL.imgGlobalURL
+        data.forEach(item => {
+          if (item.icon === "null" || item.icon === null) {
+            item.icon = null
+          } else {
+            item.icon = item.icon.split(",")
+            // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+            item.icon.forEach((imgitem, itemIndex) => {
+              imgitem = `${imgURl}${imgitem}`
+              item.icon[itemIndex] = imgitem
+            })
+          }
+        })
+        res.send(data)
+      }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
   
 
 module.exports = {
@@ -299,5 +332,8 @@ module.exports = {
     verifyToken,
     getIDTargetUser,
     updateUserInfo,
-    changUserBanned
+    changUserBanned,
+    searchUser
 }
+
+

@@ -1,1 +1,1 @@
-<view class="blockdetail"><block-classify vue-id="44d077e2-1" classifyTitle="城市板块" bind:__l="__l"></block-classify><block-classify vue-id="44d077e2-2" classifyTitle="支付方式板块" blockName="{{blockMethos}}" bind:__l="__l"></block-classify></view>
+<view class="blockdetail"><block wx:for="{{classifyData}}" wx:for-item="item" wx:for-index="index" wx:key="index"><view><block-classify vue-id="{{'44d077e2-1-'+index}}" classifyData="{{item}}" classifyTitle="{{item.classify_name+'板块'}}" bind:__l="__l"></block-classify></view></block></view>

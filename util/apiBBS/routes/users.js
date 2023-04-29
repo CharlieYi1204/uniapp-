@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var user = require('../controllers/userController')
-/* GET home page. */
+
+// 根路径 "/users"
+
 router.get('/', user.getUser);
 router.get('/getTargetUser', user.getTargetUser)
 router.post('/register',user.userRegister)
@@ -11,7 +13,7 @@ router.get('/verifyToken',user.verifyToken)
 router.get("/getIDTargetUser",user.getIDTargetUser)
 router.post("/updateUserInfo",user.updateUserInfo)
 router.post("/changUserBanned",user.changUserBanned)
-
+router.get("/searchUser",user.searchUser)
 
 module.exports = router;
 

@@ -4,6 +4,7 @@
   "usingComponents": {
     "u-search": "/uni_modules/uview-ui/components/u-search/u-search",
     "page-card": "/components/pageCard/pageCard",
-    "user-title": "/components/userTitle/userTitle"
+    "user-title": "/components/userTitle/userTitle",
+    "u-empty": "/uni_modules/uview-ui/components/u-empty/u-empty"
   }
 }

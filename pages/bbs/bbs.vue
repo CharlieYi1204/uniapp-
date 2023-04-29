@@ -39,18 +39,16 @@
 		</view>	
 		<!-- 公告通知小喇叭 -->
 		 <view>
-		    <u-notice-bar :text="text1" mode="link" speed="150" url="/pages/componentsB/tag/tag" custom-style="margin-bottom:20rpx;border-radius: 20rpx;"></u-notice-bar>
+		    <u-notice-bar :text="text1" mode="link" speed="150" url="/pages/message/notice/noticedetail/noticedetail" custom-style="margin-bottom:20rpx;border-radius: 20rpx;"></u-notice-bar>
 		  </view>
 		<!-- 板块专区 -->
-		<blockClassify classifyTitle="热门板块" :moreBlock="true" :blockName="city"></blockClassify>
-		
+		<blockClassify classifyTitle="热门板块" :moreBlock="true" :propBlockName="blockData"></blockClassify>
 			<!-- 热门帖子 -->
 			<u-divider text="热门帖子"></u-divider>
 			<view v-for="(item,index) in pageData" :key="index">
-				<pageCard :propUserHeadImgSrc="UserHeadImgSrc" :propData="item"></pageCard>
+				<pageCard :propData="item"></pageCard>
 			</view>
 		</view>
-		
 </template>
 
 <script>
@@ -63,27 +61,40 @@
 					isActive:false,
 					modalTitle:"提示",
 					modalContent:"要去发送新帖子吗？",
-				   list3: [],
-				city: [{
-					name:"成都市",
-					num:4
-				},
-				{
-					name:"德阳市",
-					num:6
-				},
-				{
-					name:"眉山市",
-					num:2
-				},
-				{
-					name:"资阳市",
-					num:10
-				}],
-				UserHeadImgSrc:`${this.$imgBaseUrl}images/user_bg.jpg`
+				    list3: [],
+				    blockData:null,
 			}
 		},
 		methods: {
+			//获取热门板块
+			getHotBlock(){
+				uni.$u.http.get("/bbs/getHotBlock").then(res => {
+					const data = res.data
+					this.blockData = data.map(item => {
+						return {
+							id:item.id,
+							name:item.name
+						}
+					})
+					uni.$u.http.get("/bbs/getBlockPostNum").then(res => {
+						let num = res.data
+						// 遍历板块分类
+						this.blockData.forEach(block => {
+							// 在板块中有帖子的数据中查找
+							let found = num.find(postnum => postnum.category_id === block.id)
+							// 找到后,将对应的帖子数量赋值给板块对象中的属性
+							if(found){
+								block.num = found.post_num
+							}else {
+								block.num = 0
+							}
+						})
+						this.$forceUpdate();
+					console.log(this.blockData)
+				 })
+				})
+			},
+
 			//获取轮播图数据 
 			getSwiperData() {
 				uni.$u.http.get("bbs/getWonderfulPost").then(res => {
@@ -144,10 +155,18 @@
 		},
 		onShow(){
 			this.getPageData()
+			const isLogin = uni.getStorageSync("isLogin")
+			// consol.log(isLogin)
+			 if (!isLogin) {
+			      uni.reLaunch({
+			        url: '/pages/user/login/login'
+			      })
+			    }
 		},
 		onLoad() {
 			this.getSwiperData()
 			this.getPageData()
+			this.getHotBlock()
 			uni.showLoading({
 					title: '加载中'
 				});
@@ -188,39 +207,6 @@
 	}
 	.notice-box{
 		padding-bottom: 20rpx;
-		
 	}
-	.bbs-blockbox{
-		background-color: #fff;
-		padding:15rpx 15rpx;
-		border-radius: 20rpx;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		.blocktitle {
-			padding:15rpx 15rpx;
-			font-size:40rpx;
-			font-weight: bold;
-			color:#12B5A1;	
-		}
-		.content-box {
-			display: flex;
-			flex-wrap: wrap;
-			align-items: center;
-			justify-content: space-around;
-			width: 100%;
-			padding:0rpx 10rpx;
-			padding-left: 20rpx;
-			.content-view{
-				width: 50%;
-				display: flex;
-				align-items: center;
-				padding-bottom:20rpx;
-				padding-left: 20rpx;
-				height:120rpx;
-			}
-			.right-txt {
-				padding-left:20rpx;
-			}
-		}
-		}
 }
 </style>

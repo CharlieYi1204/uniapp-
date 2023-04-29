@@ -44,8 +44,10 @@
 		<view v-for="(item,index) in postData" :key="index">
 			<pageCard v-if="navIndex === 0" :propData="item"></pageCard>
 		</view>
+		<view v-for="(item,index) in commentData" :key="index">
+			<userComment v-if="navIndex === 1" :propUserData="userData" :commentData="item"></userComment>
+		</view>
 		
-		<userComment v-if="navIndex === 1"></userComment>
 	</view>
 </template>
 
@@ -68,6 +70,7 @@
 		},
 		data() {
 			return {
+				commentData:[],
 				//根据路由传参，获取到用户数据
 				userData:{},
 				//路由传参获取发帖人ID
@@ -84,6 +87,14 @@
 			};
 		},
 		methods:{
+			//获取当前用户的评论 
+			getCommentByUserID() {
+				uni.$u.http.get("/bbs/getCommentByUserID",{params:{user_id:`${this.userID}`}}).then(res => {
+					console.log(res.data)
+					this.commentData = res.data
+				})
+			},
+			//关注与取消关注功能与页面控制
 			isFoucs(){
 				if(this.isFocused) {
 					this.cancleFouces()
@@ -172,6 +183,7 @@
 		},
 		mounted() {
 			this.getData()
+			this.getCommentByUserID()
 		}
 	}
 </script>

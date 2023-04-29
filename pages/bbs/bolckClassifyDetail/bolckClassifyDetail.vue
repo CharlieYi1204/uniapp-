@@ -1,7 +1,8 @@
 <template>
 	<view class="blockdetail">
-		<blockClassify classifyTitle="城市板块" ></blockClassify>
-		<blockClassify classifyTitle="支付方式板块" :blockName="blockMethos"></blockClassify>
+		<view v-for="(item,index) in classifyData" :key="index">
+			<blockClassify :classifyData="item" :classifyTitle="item.classify_name + '板块'" ></blockClassify>
+		</view>
 	</view>
 </template>
 
@@ -9,20 +10,18 @@
 	export default {
 		data() {
 			return {
-				blockMethos: [{
-						name:"实体卡",
-						num:12
-					},
-					{
-						name:"NFC",
-						num:16
-					},
-					{
-						name:"天府通APP",
-						num:11
-					},
-				]
+				classifyData:[],
 			};
+		},
+		methods: {
+			getClassify() {
+				uni.$u.http.get("/bbs/getClassify").then(res => {
+					this.classifyData = res.data
+				})
+			}
+		},
+		mounted() {
+			this.getClassify()
 		}
 	}
 </script>

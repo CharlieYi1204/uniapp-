@@ -12,15 +12,15 @@
 					<view class="datatime" style="color:#888;font-size: 20rpx;">{{commentData.create_time}}</view>
 				</view>
 			</view>
-			<!-- 右侧点赞按钮 -->
-<!-- 			<view class="author-right">
-				<view class="focus-button">
-					<view class="action-star" style="display:flex;align-items:center;" @click="changeCommntLike">
-						<image :src="isCommentLike ? `${$imgBaseUrl}/images/like_selected.png` : `${$imgBaseUrl}/images/like_g.png`"></image>
-						<text>&nbsp;{{commentLikeNum}}</text>
+			<!-- 右侧为是当前用户评论的删除接口 -->
+			<view class="author-right">
+				<view class="focus-button" v-if="userData.user_id === currentUserID" @click="deleteComment()">
+					<view class="action-star" style="display:flex;align-items:center;">
+						<u-icon name="trash" size="25" color="#888"></u-icon>
+						<text style="color: #888;font-size: 25rpx;">删除</text>
 					</view>
 				</view>
-			</view> -->
+			</view>
 		</view>
 		<!-- 评论内容 -->
 		<view class="comment-txt" @click="reply">
@@ -41,6 +41,9 @@
 			commentID:  {
 				type:Number
 			},
+			postID: {
+				type:Number
+			},
 			//父组件传过来的评论数据
 			propcommentData: {
 				type:Object
@@ -54,33 +57,60 @@
 				$imgBaseUrl:Vue.prototype.$imgBaseUrl,
 				// commentLikeNum:0,
 				// isCommentLike:false,
-				ID:this.commentID
+				ID:this.commentID,
+				currentUserID:null,
 			};
 		},
 		methods: {
-			//点赞~
-			// changeCommntLike() {
-			// 	if(!this.isCommentLike){
-			// 		this.commentLikeNum++
-			// 	}else {
-			// 		this.commentLikeNum--
-			// 	}
-			// 	this.isCommentLike = !this.isCommentLike
-			// },
+			// 删除评论
+			deleteComment() {
+				console.log("1111")
+				//模态框
+				const id =  this.commentData.id
+				const postID = this.postID
+				//防止this的指向发生变化
+				const self = this
+				uni.showModal({
+					title: '提示',
+					content: '确定要删除这条评论吗',
+					success: function (res) {
+						if (res.confirm) {
+							//通过组件传值，调用父组件获取评论方法，避免删除页面之后需要刷新
+							uni.$u.http.post("/bbs/deleteComment",{comment_id:id}).then( res => {
+								console.log(postID)
+								self.deleteGetData()
+								uni.showToast({
+									title: '删除成功',
+									duration: 1000,
+									icon:"success"
+								});
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				})
+				
+			},
 			//跳转至用户详情
 			toUserDetail() {
 				uni.navigateTo({
-					url:`/pages/bbs/userDetail/userDetail`
+					url:`/pages/bbs/userDetail/userDetail?${this.commentData.user_id}`
 				})
 			},
-			//点击评论，聚焦回复框
-			reply() {
-				this.$emit("getCommentData",this.ID)
+			//点击评论内容，回复框显示所选用户
+			deleteGetData() {
+				console.log("2222")
+				this.$emit("deleteGetData",this.postID)
 			},
-				
+			reply() {
+				this.$emit("getCommentData",this.userName,this.commentData.user_id,this.commentData.id)
+			},
 			getUserInfo() {
 				uni.$u.http.get('/users/getIDTargetUser', {params: {user_id: `${this.commentData.user_id}`}}).then(res => {
 					this.userData = res.data.data[0]
+					this.currentUserID = uni.getStorageSync("user_id")
+					console.log(this.currentUerID)
 					console.log(this.userData)
 					if(this.userData.nickname !== null) {
 						this.userName = this.userData.nickname

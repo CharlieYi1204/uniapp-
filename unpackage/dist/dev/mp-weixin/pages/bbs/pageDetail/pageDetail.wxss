@@ -56,6 +56,7 @@
 .page-detail .post-box .post-context {
   padding-top: 20rpx;
   text-indent: 20rpx;
+  line-height: 50rpx;
 }
 .page-detail .post-box .post-img .img-box {
   padding-top: 15rpx;
@@ -105,6 +106,8 @@
   padding-top: 0rpx;
 }
 .page-detail .comment-box .comment-title {
+  display: flex;
+  justify-content: space-between;
   font-weight: bold;
   padding: 30rpx 0rpx;
   padding: 20rpx;

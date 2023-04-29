@@ -3,12 +3,82 @@
 			"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
 		},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	   {
+	        "path" : "pages/bbs/bbs",
+	        "style" :                                                                                    
+	        {
+	            "navigationBarTitleText": "交流",
+	            "enablePullDownRefresh": false
+	        }
+	    	
+	    },
+	   {
+	       "path" : "pages/bbs/bolckClassifyDetail/bolckClassifyDetail",
+	       "style" :                                                                                    
+	       {
+	           "navigationBarTitleText": "板块分类",
+	           "enablePullDownRefresh": false
+	       }
+	   },
+	   {
+	           "path" : "pages/bbs/blockDetail/blockDetail",
+	           "style" :                                                                                    
+	           {
+	               "navigationBarTitleText": "板块详情",
+	               "enablePullDownRefresh": false
+	           }
+	           
+	   },
+	   {
+	   		"path": "pages/index/index",
+	   		"style": 
+	   		{
+	   			"navigationBarTitleText": "查询"
+	   		}
+	   }
+	   ,{
+	       "path" : "pages/user/login/login",
+	       "style" :                                                                                    
+	       {
+	           "navigationBarTitleText": "登录",
+	           "enablePullDownRefresh": false
+	       }
+	       
+	   },
+	   {
+	       "path" : "pages/message/notice/noticedetail/noticedetail",
+	       "style" :                                                                                    
+	       {
+	           "navigationBarTitleText": "公告详情",
+	           "enablePullDownRefresh": false
+	       }
+	   }, 
+	   {
+	       "path" : "pages/message/notice/notice",
+	       "style" :                                                                                    
+	       {
+	           "navigationBarTitleText": "公告",
+	           "enablePullDownRefresh": false
+	       }
+	       
+	   },      
+		{
+	        "path" : "pages/message/message",
+	        "style" :                                                                                    
+	        {
+	            "navigationBarTitleText": "消息",
+	            "enablePullDownRefresh": false
+	        }
+	        
+	    },
 	{
-			"path": "pages/index/index",
-			"style": 
-			{
-				"navigationBarTitleText": "查询"
-			}
+	    "path" : "pages/bbs/search/search",
+	    "style" :                                                                                    
+	    {
+	        "navigationBarTitleText": "搜索",
+	        "enablePullDownRefresh": false
+	    }
+	    
 	},
 	{
 	            "path" : "pages/user/user",
@@ -37,15 +107,6 @@
 	    
 	},
 	{
-	    "path" : "pages/bbs/bbs",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "交流",
-	        "enablePullDownRefresh": false
-	    }
-		
-	},
-	{
 	    "path" : "pages/bbs/sendPost/sendPost",
 	    "style" :                                                                                    
 	    {
@@ -53,17 +114,7 @@
 	        "enablePullDownRefresh": false
 	    }
 	    
-	},
-	{
-            "path" : "pages/bbs/blockDetail/blockDetail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "板块详情",
-                "enablePullDownRefresh": false
-            }
-            
-        },
-	
+	},	
 	{
 	    "path" : "pages/bbs/pageDetail/pageDetail",
 	    "style" :                                                                                    
@@ -81,24 +132,6 @@
 		}
 	},
 	{
-	    "path" : "pages/bbs/bolckClassifyDetail/bolckClassifyDetail",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "板块分类",
-	        "enablePullDownRefresh": false
-	    }
-	    
-	},
-	{
-	    "path" : "pages/user/login/login",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "登录",
-	        "enablePullDownRefresh": false
-	    }
-	    
-	},
-	{
 	    "path" : "pages/user/login/signup/signup",
 	    "style" :                                                                                    
 	    {
@@ -106,17 +139,7 @@
 	        "enablePullDownRefresh": false
 	    }
 	    
-	},
-
-        {
-            "path" : "pages/message/message",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "消息",
-                "enablePullDownRefresh": false
-            }
-            
-        }
+	}
         ,{
             "path" : "pages/index/cardBalanceQuery/cardBalanceQuery",
             "style" :                                                                                    
@@ -134,25 +157,7 @@
                 "enablePullDownRefresh": false
             }
             
-        }
-        ,{
-            "path" : "pages/message/notice/notice",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "公告",
-                "enablePullDownRefresh": false
-            }
-            
-        }        
-        ,{
-            "path" : "pages/bbs/search/search",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "搜索",
-                "enablePullDownRefresh": false
-            }
-            
-        }
+        } 
         ,{
             "path" : "pages/user/userTags/userCollect/userCollect",
             "style" :                                                                                    
@@ -212,6 +217,24 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "赞过的帖子",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/message/likes/likes",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "获赞",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/message/comment/comment",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "获评",
                 "enablePullDownRefresh": false
             }
             

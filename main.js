@@ -14,7 +14,38 @@ import {LabelLayout,UniversalTransition} from 'echarts/features';
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 是必须的一步
 import {CanvasRenderer} from 'echarts/renderers';
 
-
+//引入拦截器
+// import './router/index.js'
+// Vue.prototype.hasLogin = async function () {
+// 	const token = uni.getStorageSync("user_token")
+// 	if (token) {
+// 		try {
+// 			const res = await uni.$u.http.get("/users/verifyToken", {
+// 				header: {
+// 					Authorization: `Bearer ${token}`
+// 				}
+// 			})
+// 		const {code,message,user} = res.data;
+// 				if (code == 200) {
+// 					// 获取用户信息成功，更新页面数据)
+// 					//this.useInfo.username = user.username
+// 					return true
+// 				} else {
+// 					//token过期则清除token
+// 					uni.removeStorageSync('user_token');
+// 					uni.removeStorageSync('user_id');
+// 					uni.setStorageSync('isLogin', false);
+// 					return false
+// 				}}
+// 				catch(err) {
+// 				console.log(err)
+// 				return false
+// 				}
+// 	} else {
+// 		uni.setStorageSync('isLogin', false);
+// 		return false
+// 	}
+// }
 //全局配置baseURL
 uni.$u.http.setConfig((config) => {
     /* config 为默认全局配置*/

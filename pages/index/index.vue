@@ -32,7 +32,6 @@
 			//从地图组件获取当前点击的城市名称
 			getMapComponentsData(city,isProvince,isDistrict,cardSupport,supportDistrict,clickDisCode) {
 				this.cityName = city
-				console.log(this.cityName)
 				this.isProvince = isProvince
 				this.isDistrict = isDistrict
 				this.isSupportArea = cardSupport
@@ -67,7 +66,6 @@
 					})
 					this.supportCity = supportCity
 					this.supportDistrictName = supportCity
-					console.log(this.supportCity)
 				})
 			}
 			// //从高德地图行政区查询API获取数据

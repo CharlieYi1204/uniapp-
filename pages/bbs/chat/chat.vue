@@ -7,13 +7,15 @@
 					<view class="useravatar">
 						<image :src="item.src"></image>
 					</view>
-					<view class="content-text">{{item.value}}</view>
+					<view class="content-box">
+					<text class="content-text">{{item.value}}</text>
+					</view>
 				</view>
 			</view>
 			<view class="message-box" v-if="item.uid === 1003">
 				<view class="message-to">
-					<view class="content-text">
-						{{item.value}}
+					<view class="content-box">
+					<text class="content-text">{{item.value}}</text>
 					</view>
 					<view class="useravatar">
 						<image :src="item.src"></image>
@@ -86,13 +88,16 @@
 					height:100%;
 				}
 			}
-			.content-text{
+			.content-box{
 				margin-left: 10rpx;
-				padding:20rpx 20px;
 				width: 50%;
-				background-color: #fff;
 				border-radius: 20rpx;
-				
+				.content-text {
+					background-color: #fff;
+					display: inline-block; 
+					border-radius: 20rpx; 
+					padding:20rpx 20rpx;
+				}
 			}
 		}
 		.message-to {
@@ -107,13 +112,17 @@
 					height:100%;
 				}
 			}
-			.content-text{
-				text-align: right;
+			.content-box{
 				margin-right: 10rpx;
-				padding:20rpx 20px;
-				background-color: #fff;
 				width: 50%;
 				border-radius: 20rpx;
+				text-align: right;
+				.content-text {
+					background-color: #fff;
+					display: inline-block; 
+					border-radius: 20rpx; 
+					padding:20rpx 20rpx;
+				}
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 <template>
 	<view class="user">
-		<userTopIcon :isLogin="isLogin" :userInfo="useInfo"></userTopIcon>
+		<userTopIcon v-if="isLogin" :isLogin="isLogin" :userInfo="useInfo"></userTopIcon>
+		<userTopIcon v-if="!isLogin"></userTopIcon>
 	<!-- 中部帖子、收藏数量栏目 -->
 			<view class="user-newsnum">
 				<view class="item" v-for="(item,index) in userNewsCollect" :key="index" @click="toDeatilPage(index)">
@@ -99,7 +100,6 @@
 				getNum() {
 					//获取发帖数量
 					uni.$u.http.post('/bbs/getPostNumByUserID',  {user_id:`${this.useInfo.user_id}`}).then(res => {
-							console.log(res.data[0].post_num)
 							this.userNewsCollect[0].num = res.data[0].post_num
 						}).catch(err => {
 						console.log(err)
@@ -129,14 +129,12 @@
 				//跳转至关注、收藏等详情页
 				toDeatilPage(i) {
 					const currentID = uni.getStorageSync("user_id")
-					console.log(i)
 					if (i === 0)
 					{
 						uni.navigateTo({
 							url:`/pages/user/userTags/userPosts/userPosts?user_id=${currentID}`
 						})
 					}else if(i===1){
-						console.log(11111)
 						uni.navigateTo({
 							url:`/pages/user/userTags/userCollect/userCollect?user_id=${currentID}`
 						})
@@ -161,7 +159,6 @@
 				getUserInfo() {
 					//获取当前已存在的token
 					const token = uni.getStorageSync("user_token")
-					console.log(token)
 					//判断token是否存在，若存在即向后台验证
 					if(token) {
 						uni.$u.http.get("/users/verifyToken",{ header: { Authorization: `Bearer ${token}` }}).then(res => { 
@@ -173,7 +170,6 @@
 								this.useInfo = res.data.user.tokenData
 								this.getNum()
 								uni.setStorageSync('user_id', this.useInfo.user_id);
-								console.log(this.useInfo)
 								} else {
 								uni.showToast({ title: message, icon: 'none' });
 								this.useInfo = {icon: "/images/user_bg.jpg"}
@@ -196,7 +192,6 @@
 			},
 			//注销，退出并清除token至登录页
 			logOut(){
-				console.log('111')
 				uni.removeStorageSync('user_token');
 				uni.removeStorageSync('user_id');
 				uni.setStorageSync('isLogin', false);
@@ -215,6 +210,15 @@
 			},
 			onShow() {
 				this.getNum()
+				//登录拦截 
+				const isLogin = uni.getStorageSync("isLogin")
+				// consol.log(isLogin)
+				 if (!isLogin) {
+				      uni.reLaunch({
+				        url: '/pages/user/login/login'
+				      })
+				    }
+				
 			},
 			mounted() {
 				this.getUserInfo()

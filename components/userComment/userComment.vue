@@ -2,19 +2,19 @@
 	<!-- 该组件主要用于用户卡片页面的评论展示功能 -->
 	<view class="cardComment">
 		<view class="author-box">
-			<view class="useravatar" @click="toUserDetail">
-				<u-avatar ></u-avatar>
+			<view class="useravatar">
+				<u-avatar :src="userData.icon"></u-avatar>
 			</view>
 			<view class="usertxt">
-				<view class="username">小猹猹</view>
-				<view class="datatime" style="color:#888;font-size: 20rpx;">评论于：{{datatime}}</view>
+				<view class="username">{{userName}}</view>
+				<view class="datatime" style="color:#888;font-size: 20rpx;">评论于：{{commentData.create_time}}</view>
 			</view>
 		</view>
 		<!-- 评论内容及引用的文章 -->
-		<view class="commit-txt">我觉得这个东西说得很好我非常赞同，不用再担心卡片丢失啦！
+		<view class="commit-txt">{{commentData.comment_content}}
 		<view class="commit-page" @click="toPageDetail()">
-			<view class="page-title">天府通-NFC卡正式上线啦！</view>
-			<view class="page-content">轻轻一碰，出行更方便，更像享受天府通实体卡同等折扣，快来体验吧！换手机也不怕， 支持免费将卡片旧手机迁移至新手机，余额卡号都不变，没网没电也能刷！</view>
+			<view class="page-title">{{commentData.title}}</view>
+			<view class="page-content">{{commentData.post_content}}</view>
 		</view>
 		</view>
 	</view>
@@ -30,19 +30,33 @@
 			},
 			commentData: {
 				type:Object,
+			},
+			propUserData: {
+				type:Object
 			}
 		},
 		data() {
 			return {
-				
+				userData:this.propUserData,
+				userName:null,
 			};
 		},
 		methods: {
 			toPageDetail(){
+				console.log(1111)
 				uni.navigateTo({
-					url:"/pages/bbs/pageDetail/pageDetail"
+					url:`/pages/bbs/pageDetail/pageDetail?postID=${this.commentData.post_id}`
 				})
 			}	
+		},
+		onReady() {
+			console.log(this.userData )
+			if(this.userData.nickname) {
+				this.userName = this.userData.nickname
+			}
+			else {
+				this.userName = `用户${this.userData.user_id}`
+			}
 		}
 	}
 </script>

@@ -1,3 +1,4 @@
+
 <script>
 	export default {
 		onLaunch: function() {
@@ -13,6 +14,9 @@
 			return {
 				globalImgBaseUrl: 'http://192.168.8.147:3000',
 			}
+		},
+		onLoad() {
+			
 		}
 		
 	}

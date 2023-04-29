@@ -1,6 +1,7 @@
 let config = require('../util/config')
 let globalURL = require('../routes/global');
 
+
 //获取所有帖子信息
 getPostData = (req,res) => {
     let sql = "select * from posts where is_pass = 1 order by create_time DESC"
@@ -465,7 +466,6 @@ getFollowState =(req,res) => {
             console.log("连接出错了")
             res.send(err)
         } else {
-  
           const isFollowed = data.filter(item => item.followed_id == followed_id)
           console.log(isFollowed)
           console.log(isFollowed.length)
@@ -673,12 +673,70 @@ getCommentData =  (req,res) => {
                 item.create_time = `${create_time.getFullYear()}年${create_time.getMonth()+1}月${create_time.getDate()+1}日 ${create_time.getHours()}:${create_time.getMinutes()}`
                 item.updated_time = `${updated_time.getFullYear()}年${updated_time.getMonth()+1}月${updated_time.getDate()+1}日 ${updated_time.getHours()}:${create_time.getMinutes()}`
             })
-            console.log(data)
+            //parent_id属性不为null的评论，这些评论就是子评论
+         const children = data.filter(comment => comment.parent_id !== null)
+         //将每个子评论添加到对应的父评论中，遍历children数组，找到该子评论对应的父评论
+         children.forEach(child => {
+            const parent = data.find(comment => comment.id === child.parent_id)
+            //返回parent后判断，如果能够找到父评论
+            if(parent) {    
+                //判断父评论中是否存在                
+                if(!parent.children) {
+                    parent.children = []
+                }
+                parent.children.push(child)
+                // console.log(parent)
+            }
+         })
+         const result = data.filter(comment => comment.parent_id === null)
+         res.send(result)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//提交评论 
+replyPost =  (req,res) => {
+    let {
+        post_id,user_id,content,parent_id
+    } = req.body
+    let sql = `insert into comments (user_id,post_id,parent_id,content) values (?,?,?,?)`
+    let sqlArr = [user_id,post_id,parent_id,content];
+    let callBack = (err,data) => {
+        console.log(sqlArr)
+        if(err) {
+            console.log("连接出错了")
+            res.send(err)
+        } else {
+           
+            res.send({
+                "data":data
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//删除评论
+deleteComment= (req,res) => {
+    let {
+       comment_id
+    } = req.body
+    console.log(req.body)
+    let sql = `delete from comments where id = ?`
+    let sqlArr = [comment_id];
+    let callBack = (err,data) => {
+        if(err) {
+            res.send(err)
+            console.log("连接出错了")
+        } else {
+            
             res.send(data)
         }
     }
     config.sqlConnect(sql,sqlArr,callBack)
 }
+
 //发布新帖
 sendPost = (req,res) => {
     let {
@@ -789,6 +847,241 @@ getFansNumByUserID = (req,res) => {
     }
     config.sqlConnect(sql,sqlArr,callBack)
 }
+
+//搜索帖子
+searchPost = (req,res) => {
+    let {
+        keywords
+    } = req.body
+    let sql = `select * from posts where title like ? or content like ?`
+    let sqlArr = [`%${keywords}%`,`%${keywords}%`];
+
+    console.log(sql)
+    console.log(sqlArr)
+    let callBack = (err,data) => {
+        if(err) {
+            res.send(err)
+            console.log("连接出错了")
+        } else {
+            //处理data对象数组中的time属性和image属性
+            let imgURl = globalURL.imgGlobalURL
+            data.forEach(item => {
+                if (item.image === "null" || item.image === null) {
+                    item.image = null
+                } else {
+                    item.image = item.image.split(",")
+                    // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+                    item.image.forEach((imgitem, itemIndex) => {
+                        imgitem = `${imgURl}${imgitem}`
+                        item.image[itemIndex] = imgitem
+                    })
+                }
+                //处理对象
+                let create_time = new Date(item.create_time)
+                item.create_time = `${create_time.getFullYear()}年${create_time.getMonth() + 1}月${create_time.getDate() + 1}日 ${create_time.getHours()}:${create_time.getMinutes()}`
+            })
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//获取指定用户ID的已评论条数，包括评论内容、所评论帖子的标题内容、评论时间等信息
+getCommentByUserID = (req,res) => {
+        let {
+            user_id
+        } = req.query
+        let sql = `select comments.id AS commment_id,post_id,comments.content AS comment_content,posts.create_time,title,posts.content AS post_content,posts.id AS post_id
+        from posts,comments 
+        WHERE posts.id = comments.post_id and comments.user_id = ?`
+        let sqlArr = [user_id];
+        let callBack = (err,data) => {
+            if(err) {
+                console.log("连接出错了")
+                console.log(err)
+            } else {
+                data.forEach(item => {
+                    let create_time = new Date(item.create_time)
+                    let time = create_time.getMinutes()
+                    let hours = create_time.getHours()
+                    if( hours < 10) {
+                        hours = '0' + hours
+                    }
+                    if(time < 10) {
+                        time = '0' + create_time.getMinutes()
+                    }
+                    item.create_time = `${create_time.getFullYear()}年${create_time.getMonth() + 1}月${create_time.getDate() + 1}日 ${hours}:${time}`
+                })
+                res.send(data)
+            }
+        }
+        config.sqlConnect(sql,sqlArr,callBack)
+    }
+
+//获取板块大类类别
+getClassify = (req,res) => {
+    let {
+    } = req.query
+    let sql = `select classify,classify_name from categories GROUP BY classify`
+    let sqlArr = [];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//获取指定分类中的板块名称和ID
+getBlockName = (req,res) => {
+    let {
+        classifyID
+    } = req.query
+    let sql = `select name,id from categories where classify = ?`
+    let sqlArr = [classifyID];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//获取所有板块中的帖子数量
+getBlockPostNum = (req,res) => {
+    let {
+    } = req.query
+    let sql = `select category_id,count(*) as post_num from posts GROUP BY category_id`
+    let sqlArr = [];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+// 获取指定板块的发帖数量
+getTargetBlockPostNum = (req,res) => {
+    let {
+        block_id
+    } = req.query
+    let sql = `select count(*) as post_num from posts where category_id = ?`
+    let sqlArr = [block_id];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+
+// 获取热门板块
+getHotBlock = (req,res) => {
+    let {
+    } = req.query
+    let sql = `select * from categories where is_top = 1`
+    let sqlArr = [];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//获取指定板块的POST帖子信息
+getPostByBlock = (req,res) => {
+    let {
+        block_id
+    } = req.query
+    let sql = `select * from posts where category_id = ? order by create_time DESC`
+    let sqlArr = [block_id];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            let imgURl = globalURL.imgGlobalURL
+            data.forEach(item => {
+                if(item.image === "null" || item.image === null) {
+                    item.image = null
+                } else {
+                    item.image = item.image.split(",")
+                    // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+                    item.image.forEach((imgitem,itemIndex) => {
+                        imgitem = `${imgURl}${imgitem}`
+                        item.image[itemIndex] = imgitem
+                    })
+                }
+                let create_time = new Date(item.create_time)
+                let time = create_time.getMinutes()
+                let hours = create_time.getHours()
+                if( hours < 10) {
+                    hours = '0' + hours
+                }
+                if(time < 10) {
+                    time = '0' + create_time.getMinutes()
+                }
+                item.create_time = `${create_time.getFullYear()}年${create_time.getMonth() + 1}月${create_time.getDate() + 1}日 ${hours}:${time}`
+            })
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//获取指定板块的信息
+getBlockInfoByID = (req,res) => {
+    let {
+        block_id
+    } = req.query
+    let sql = `select * from categories where id=?`
+    let sqlArr = [block_id];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//获取指定帖子的所属板块
+getPostFromBlock = (req,res) => {
+    let {
+        post_id
+    } = req.query
+    let sql = `select name,category_id from categories,posts where categories.id = posts.category_id and posts.id = ?`
+    let sqlArr = [post_id];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
 module.exports = {
     getPostData,
     getLikesData,
@@ -821,6 +1114,18 @@ module.exports = {
     getFollowNumByUserID,
     getFansNumByUserID,
     getCheckPost,
+    replyPost,
+    deleteComment,
+    searchPost,
+    getCommentByUserID,
+    getClassify,
+    getBlockName,
+    getBlockPostNum,
+    getHotBlock,
+    getPostByBlock,
+    getBlockInfoByID,
+    getTargetBlockPostNum,
+    getPostFromBlock
 }
 
 

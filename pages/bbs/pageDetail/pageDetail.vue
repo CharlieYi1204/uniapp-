@@ -77,13 +77,17 @@
 			<!-- 评论区 -->
 			<view class="comment-box">
 				<view class="comment-title">
-					{{commentNum}}条评论
+					<view>{{commentNum}}条评论</view>
+					<view style="color:#888;font-weight: normal;font-size: 30rpx;" @click="replyThisPost">回复本帖</view>
 				</view>
-				<!-- 二级评论 -->
+				<!-- 评论 -->
 				<view class="comment-txt" v-for="(item,index) in commentList" :key="index">
-					<pageComment @getCommentData="getCommentData" :commentID="index" :propcommentData="item"></pageComment>
-					<view class="comment-txt-2" v-if="item.parent_id">
-						<pageComment :isSubComment = "true"></pageComment>
+					<pageComment @getCommentData="getSubCommentData" :commentID="index" :propcommentData="item" :postID="postID"
+					@deleteGetData = "deleteGetData"></pageComment>
+					<view class="comment-txt-2" v-if="item.children">
+						<view v-for="(subiitem,subindex) in item.children" :key="subindex">
+							<pageComment  :propcommentData="subiitem"  @getCommentData="getSubCommentData" @deleteGetData = "deleteGetData"></pageComment>
+						</view>
 					</view>
 					<u-divider lineColor="#596275"></u-divider>
 				</view>
@@ -94,12 +98,12 @@
 			 <u--input
 			    :placeholder="commentListInstance"
 			    border="surround"
-			    v-model="value"
+			    v-model="commentPost.content"
 				ref = "replyInput"
 			  ></u--input>
 		</view>
 		<view>
-			<u-button type="primary" text="回复" color="#12B5A1"></u-button>
+			<u-button type="primary" text="回复" color="#12B5A1" @click="sendReply"></u-button>
 		</view>
 	</view>
 	<!-- 占位符，防止页面挡住 -->
@@ -122,25 +126,61 @@
 				currentUserID:null,
 				//帖子中的图片的相册数据
 				urls1:null,
-				
 				datetime:"2023-4-16",
 				popUpShow:false,
 				isStar:false,
 				isLike:false,
 				likeCount:0,
 				starNum:0,
-				value:'',
+				replyText:'',
 				isfouced:false,
-				reportValue:"",
 				commentNum:0,
 				haveSubComment:true,
-				commentListInstance:"回复该贴：",
+				commentListInstance:"回复本贴：",
 				commentList:null,
+				commentPost: {
+					user_id:null,
+					post_id:null,
+					content:'',
+					parent_id:null,
+				},
 				$imgBaseUrl:Vue.prototype.$imgBaseUrl,
 			};
 		},
 		methods:{
-			
+			//子组件删除评论之后，重新获取数据
+			deleteGetData(postID) {
+				console.log(postID)
+				this.getCommentData()
+				this.getCommmentNum()
+			},
+			// 避免点击用户后,无法定位至当前帖子回复
+			replyThisPost() {
+				this.commentListInstance = "回复本帖："
+				this.commentPost.user_id = this.currentUserID
+				this.commentPost.post_id = this.postID
+				this.commentPost.parent_id = null
+				console.log(this.commentPost,"1111")
+			},
+			//提交回复
+			sendReply() {
+				this.commentPost.post_id = parseInt(this.postID)
+				this.commentPost.user_id = this.currentUserID
+				console.log(this.commentPost,'22')
+				//将评论内容，请求后台
+				uni.$u.http.post("/bbs/replyPost",this.commentPost).then(res => {
+					console.log(res)
+					this.commentPost.content = null
+					this.commentList = null
+					this.getCommentData()
+					this.getCommmentNum()
+					uni.showToast({
+						title: '评论成功',
+						icon:'success',
+						duration: 1000
+					});
+				})
+			},
 			toIndex() {
 				uni.redirectTo({
 					url:'/pages/index/index'
@@ -176,13 +216,17 @@
 				this.popUpShow = false
 			},
 			toUserDetail() {
+				console.log("1111")
 				uni.navigateTo({
-					url:`/pages/bbs/userDetail/userDetail?userID=${this.propData.user_id}`
+					url:`/pages/bbs/userDetail/userDetail?userID=${this.userData.user_id}`
 				})
 			},
-			//获取子组件comment一级评论的数据
-			getCommentData(id) {
-				this.commentListInstance = `回复：${id}`
+			//获取子组件comment评论的数据
+			getSubCommentData(userName,userID,postID) {
+				console.log(userName,userID,postID)
+				this.commentPost.post_id = postID
+				this.commentListInstance = `回复：${userName}`
+				this.commentPost.parent_id = postID
 			},
 			//取消关注接口
 			cancleFouces() {
@@ -199,15 +243,20 @@
 					console.log(err)
 				})
 			},
+			//获取评论
+			getCommentData() {
+				uni.$u.http.get('/bbs/getCommentData', {params: {post_id:`${this.postID}`}}).then(res => {
+					console.log(res)
+					this.commentList = res.data
+				})
+			},
 			// 获取该页面的具体数据
 			getpageDetailData() {
 				uni.$u.http.get('/bbs/getTargetPostData', {params: {post_id:`${this.postID}`}}).then(res => {
 					this.pageData = res.data.data[0]
 					this.urls1 = this.pageData.image
 					//获取当前帖子的所有评论 
-				uni.$u.http.get('/bbs/getCommentData', {params: {post_id:`${this.postID}`}}).then(res => {
-					this.commentList = res.data
-				})
+					this.getCommentData()
 					//获取当前发帖的用户信息
 					uni.$u.http.get('/users/getIDTargetUser', {params: {user_id:`${this.pageData.user_id}`}}).then(res => {
 						const userData = res.data.data[0]
@@ -355,6 +404,7 @@
 		.post-context {
 			padding-top: 20rpx;
 			text-indent: 20rpx;
+			line-height: 50rpx;
 		}
 		.post-img {
 			.img-box{
@@ -410,6 +460,8 @@
 		padding: 30rpx 20rpx;
 		padding-top:0rpx;
 		.comment-title {
+			display: flex;
+			justify-content: space-between;
 			font-weight: bold;
 			padding:30rpx 0rpx;
 			padding:20rpx;

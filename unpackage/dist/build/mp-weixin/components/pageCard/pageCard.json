@@ -1,6 +1,9 @@
 {
   "component": true,
   "usingComponents": {
-    "u-avatar": "/uni_modules/uview-ui/components/u-avatar/u-avatar"
+    "u-toast": "/uni_modules/uview-ui/components/u-toast/u-toast",
+    "u-modal": "/uni_modules/uview-ui/components/u-modal/u-modal",
+    "u-avatar": "/uni_modules/uview-ui/components/u-avatar/u-avatar",
+    "u-button": "/uni_modules/uview-ui/components/u-button/u-button"
   }
 }

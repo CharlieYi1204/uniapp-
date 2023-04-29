@@ -1,0 +1,1 @@
+<view class="follow-box"><block wx:for="{{focusUserData}}" wx:for-item="item" wx:for-index="index" wx:key="index"><view><user-info-card vue-id="{{'69665467-1-'+index}}" userData="{{item}}" userID="{{userID}}" bind:__l="__l"></user-info-card></view></block></view>

@@ -3,6 +3,6 @@
   "enablePullDownRefresh": false,
   "usingComponents": {
     "u-divider": "/uni_modules/uview-ui/components/u-divider/u-divider",
-    "user-card": "/components/userCard/userCard"
+    "user-message-card": "/components/userMessageCard/userMessageCard"
   }
 }

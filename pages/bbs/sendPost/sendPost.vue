@@ -192,6 +192,7 @@
 				this.pickerShow = false
 			},
 			cancelPicker() {
+				console.log(1111)
 				this.pickerShow = false
 			},
 			// 提交数据至后台
@@ -219,7 +220,7 @@
 					title: '加载中'
 				});
 				this.$refs.uForm.validate().then(res => {
-					//调用百度内容审核API接口，若返回合规则直接发送成功，不合规则弹框请重新编辑，疑似则提交至后台用户进行管理。
+					//调用百度内容审核API接口，若返回合规则直接发送成功，不合规则提交至后台用户进行管理。
 					uni.$u.http.post("https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=24.5ad0345de5d7b3092ded668b39d1bc15.2592000.1684510068.282335-32035516"
 						,{text:content},{header:{'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'}}
 						).then(res => {

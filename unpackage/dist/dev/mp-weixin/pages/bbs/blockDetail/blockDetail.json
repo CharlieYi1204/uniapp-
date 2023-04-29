@@ -6,6 +6,7 @@
     "u-avatar": "/uni_modules/uview-ui/components/u-avatar/u-avatar",
     "u-button": "/uni_modules/uview-ui/components/u-button/u-button",
     "u-divider": "/uni_modules/uview-ui/components/u-divider/u-divider",
-    "page-card": "/components/pageCard/pageCard"
+    "page-card": "/components/pageCard/pageCard",
+    "u-empty": "/uni_modules/uview-ui/components/u-empty/u-empty"
   }
 }

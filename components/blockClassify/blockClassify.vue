@@ -7,7 +7,7 @@
 			<u-divider></u-divider>
 			</view>
 				<view class="content-box">
-					<view class="content-view" v-for="(item,index) in blockName" :key="index" @click="toBlockDetail(item.name)">
+					<view class="content-view" v-for="(item,index) in blockName" :key="index" @click="toBlockDetail(item.name,item.id,item.num)">
 						<view class="left-img">
 							<u-avatar
 								size="45"
@@ -34,33 +34,18 @@
 	export default {
 		name:"blockClassify",
 		props:{
+			classifyData: {
+				type:Object,
+				default(){
+					return null
+				}
+			},
 			classifyTitle:{
 				type:String,
 				default:"分类名称"
 			},
-			blockName: {
-				type:Array,
-				default() {
-					return  [{
-					name:"成都市",
-					num:4
-				},
-				{
-					name:"德阳市",
-					num:6
-				},
-				{
-					name:"眉山市",
-					num:2
-				},
-				{
-					name:"资阳市",
-					num:10
-				},{
-					name:"雅安市",
-					num:3
-				}]
-				}
+			propBlockName: {
+				type:Array
 			},
 			moreBlock: {
 				type:Boolean,
@@ -69,13 +54,48 @@
 		},
 		data() {
 			return {
+				blockName:this.propBlockName
 			};
 		},
+		//监听父组件传递过来的值
+		watch: {
+			propBlockName(newVal,oldVal) {
+				this.blockName = newVal
+			}
+		},
 		methods: {
+			//获取分块大类中的板块明细
+			getBlockName() {
+				uni.showLoading({
+					title: '加载中'
+				});
+				uni.$u.http.get("/bbs/getBlockName",{params:{classifyID: this.classifyData.classify}}).then(res => {
+					this.blockName = res.data
+					//获取板块中的帖子数量，如果没有则显示为0
+					uni.$u.http.get("/bbs/getBlockPostNum").then(res => {
+						let num = res.data
+						// 遍历板块分类
+						this.blockName.forEach(block => {
+							// 在板块中有帖子的数据中查找
+							let found = num.find(postnum => postnum.category_id === block.id)
+							// 找到后,将对应的帖子数量赋值给板块对象中的属性
+							if(found){
+								block.num = found.post_num
+							}else {
+								block.num = 0
+							}
+						})
+						// 	强制更新组件
+						 this.$forceUpdate();
+						uni.hideLoading();
+					})
+				})
+			},
 			//跳转至该板块详情页，把点击的参数带过去
-			toBlockDetail(name) {
+			toBlockDetail(name,id,num) {
+				console.log(1111)
 				uni.navigateTo({
-					url:`/pages/bbs/blockDetail/blockDetail?blockname=${name}`
+					url:`/pages/bbs/blockDetail/blockDetail?blockname=${name}&blockID=${id}&num=${num}`
 				})
 			},
 			//跳转至更多板块页面
@@ -84,6 +104,9 @@
 					url:"/pages/bbs/bolckClassifyDetail/bolckClassifyDetail"
 				})
 			}
+		},
+		mounted() {
+			this.getBlockName()
 		}
 	}
 </script>

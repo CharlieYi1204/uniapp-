@@ -44,6 +44,10 @@
 				<image :src="item" mode="aspectFill"></image>
 			</view>
 		</view>
+		<!-- 显示所属板块 -->
+		<view class="block-box">
+			<u-button type="primary" plain color="#12B5A1" shape="circle" :text="`#${fromBlock.name}`" @click="toBlockDetail()" size="mini"></u-button>
+		</view>
 			<!-- 下方点赞、评论、阅读量查看 -->
 		<view class="active-box" v-if="!userCard">
 			<view class="active-img" @click="changeLikeStatus">
@@ -117,6 +121,7 @@
 		},
 		data() {
 			return {
+				fromBlock:null,
 				collectCard:false,
 				isStar:false,
 				$imgBaseUrl:Vue.prototype.$imgBaseUrl,
@@ -132,6 +137,20 @@
 			};
 		},
 		methods: {
+			//跳转到板块详情页
+				
+			toBlockDetail() {
+				uni.navigateTo({
+					url:`/pages/bbs/blockDetail/blockDetail?blockname=${this.fromBlock.name}&blockID=${this.fromBlock.category_id}`
+				})
+			},
+			//获取所属板块
+			getFromBlock() {
+				uni.$u.http.get('/bbs/getPostFromBlock', {params:{post_id:this.propData.id}}).then(res => {
+					console.log(res.data,"Block")
+					this.fromBlock = res.data[0]
+				})
+			},
 			//新增收藏
 			addCollect() {
 				uni.$u.http.post('/bbs/addCollect', {post_id: `${this.propData.id}`, user_id: `${this.currentUserID}`} ).then(res => {
@@ -268,6 +287,7 @@
 			this.getLikesNum()
 			this.getCommmentNum()
 			this.getCollectState()
+			this.getFromBlock()
 	}
 	}
 </script>
@@ -300,7 +320,7 @@
 	}
 	.title-box{
 		padding:0rpx 40rpx;
-		padding-bottom: 40rpx;
+		padding-bottom: 10rpx;
 		.title {
 			font-size: 35rpx;
 			font-weight: bold;
@@ -351,6 +371,11 @@
 				height: 100%;
 			}
 		}
+	}
+	.block-box {
+		width: 200rpx;
+		padding-left: 40rpx;
+		padding-top: 20rpx;
 	}
 	.pageimg-userbox{
 		padding-bottom: 25rpx;

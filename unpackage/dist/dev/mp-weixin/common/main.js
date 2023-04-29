@@ -33,6 +33,38 @@ _vue.default.use(_uviewUi.default);
 
 //引入echarts
 
+//引入拦截器
+// import './router/index.js'
+// Vue.prototype.hasLogin = async function () {
+// 	const token = uni.getStorageSync("user_token")
+// 	if (token) {
+// 		try {
+// 			const res = await uni.$u.http.get("/users/verifyToken", {
+// 				header: {
+// 					Authorization: `Bearer ${token}`
+// 				}
+// 			})
+// 		const {code,message,user} = res.data;
+// 				if (code == 200) {
+// 					// 获取用户信息成功，更新页面数据)
+// 					//this.useInfo.username = user.username
+// 					return true
+// 				} else {
+// 					//token过期则清除token
+// 					uni.removeStorageSync('user_token');
+// 					uni.removeStorageSync('user_id');
+// 					uni.setStorageSync('isLogin', false);
+// 					return false
+// 				}}
+// 				catch(err) {
+// 				console.log(err)
+// 				return false
+// 				}
+// 	} else {
+// 		uni.setStorageSync('isLogin', false);
+// 		return false
+// 	}
+// }
 //全局配置baseURL
 uni.$u.http.setConfig(function (config) {
   /* config 为默认全局配置*/
@@ -141,6 +173,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+//
 var _default = {
   onLaunch: function onLaunch() {
     console.log('App Launch');
@@ -155,7 +188,8 @@ var _default = {
     return {
       globalImgBaseUrl: 'http://192.168.8.147:3000'
     };
-  }
+  },
+  onLoad: function onLoad() {}
 };
 exports.default = _default;
 

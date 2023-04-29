@@ -112,7 +112,13 @@
 					this.$refs.uToast.show({
 						type:"success",
 						message:"修改成功",
-						duration:800
+						duration:800,
+						complete() {
+							console.log(111)
+							uni.reLaunch({
+								url:"/pages/user/user"
+							})
+						}
 					})
 				}).catch(err => {
 				
@@ -166,7 +172,7 @@
 		background-color: #fff;
 		border-radius: 20rpx;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		
 		.author-box{
 			display: flex;
 			.usertxt{

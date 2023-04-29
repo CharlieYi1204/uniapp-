@@ -1,6 +1,6 @@
 <template>
-	<view>
-		这里是公告区
+	<view class="notice-box">
+		<noticeCard></noticeCard>
 	</view>
 </template>
 
@@ -15,5 +15,7 @@
 </script>
 
 <style lang="scss">
-
+.notice-box {
+	padding:20rpx 20rpx
+}
 </style>
