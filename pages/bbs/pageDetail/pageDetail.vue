@@ -145,12 +145,28 @@
 					parent_id:null,
 				},
 				$imgBaseUrl:Vue.prototype.$imgBaseUrl,
+				userState:null,
 			};
 		},
 		methods:{
+			//添加一条浏览历史记录
+			addVisit() {
+				const userID = uni.getStorageSync("user_id")
+				console.log(userID,"currentUserID")
+				console.log(this.postID,"this.postID")
+				uni.$u.http.post("/bbs/addVisit",{user_id:userID,post_id:this.postID}).then(res => {
+					console.log(1111111)
+					console.log(res,"resahahahh")
+				})
+			},
+			//获取当前用户的状态
+			getUserState() {
+				uni.$u.http.get("/users/getIDTargetUser",{params:{user_id:this.currentUserID}}).then(res => {
+					this.userState = res.data.data[0].is_banned
+				})
+			},
 			//子组件删除评论之后，重新获取数据
 			deleteGetData(postID) {
-				console.log(postID)
 				this.getCommentData()
 				this.getCommmentNum()
 			},
@@ -160,26 +176,71 @@
 				this.commentPost.user_id = this.currentUserID
 				this.commentPost.post_id = this.postID
 				this.commentPost.parent_id = null
-				console.log(this.commentPost,"1111")
 			},
 			//提交回复
-			sendReply() {
-				this.commentPost.post_id = parseInt(this.postID)
-				this.commentPost.user_id = this.currentUserID
-				console.log(this.commentPost,'22')
-				//将评论内容，请求后台
-				uni.$u.http.post("/bbs/replyPost",this.commentPost).then(res => {
-					console.log(res)
-					this.commentPost.content = null
-					this.commentList = null
-					this.getCommentData()
-					this.getCommmentNum()
-					uni.showToast({
-						title: '评论成功',
-						icon:'success',
-						duration: 1000
+			async sendReply() {
+				uni.showLoading({
+					title: '加载中'
+				});
+				console.log(this.userState,"11111")
+				await this.getUserState()
+				if(this.userState === 0) {
+					let content = this.commentPost.content
+					// 评论敏感词控制
+					uni.$u.http.post(
+						"https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=24.5ad0345de5d7b3092ded668b39d1bc15.2592000.1684510068.282335-32035516", {
+							text: content
+						}, {
+							header: {
+								'Content-Type': 'application/x-www-form-urlencoded',
+								'Accept': 'application/json'
+							}
+						}
+					).then(res => {
+						let conclusion = res.data.conclusion
+						let message = null
+						if(conclusion === "合规") {
+							this.commentPost.post_id = parseInt(this.postID)
+							this.commentPost.user_id = this.currentUserID
+							//将评论内容，请求后台	
+							uni.$u.http.post("/bbs/replyPost",this.commentPost).then(res => {
+								console.log(res)
+								uni.hideLoading()
+								this.commentPost.content = null
+								this.commentList = null
+								this.getCommentData()
+								this.getCommmentNum()
+								uni.hideLoading();
+								uni.showToast({
+									title: '评论成功',
+									icon:'success',
+									duration: 1000
+								});
+							})
+						}
+						else {
+							uni.hideLoading();
+							message = res.data.data[0].msg
+							uni.showModal({
+								title: "提示",
+								content: `评论内容${message},请编辑后重新提交`,
+								showCancel: false,
+							})
+						}
+					})
+				}
+				else {
+					uni.hideLoading();
+					uni.showModal({
+						title: '提示',
+						content: '该用户已被封禁，无法发言，请联系管理员',
+						showCancel:false
 					});
-				})
+					this.modalShow = false
+					this.isActive = false
+				}
+				
+				
 			},
 			toIndex() {
 				uni.redirectTo({
@@ -216,7 +277,7 @@
 				this.popUpShow = false
 			},
 			toUserDetail() {
-				console.log("1111")
+				
 				uni.navigateTo({
 					url:`/pages/bbs/userDetail/userDetail?userID=${this.userData.user_id}`
 				})
@@ -359,10 +420,12 @@
 			
 		},
 		mounted(){
+			this.addVisit()
 			this.getpageDetailData()
 			this.getLikesNum()
 			this.getStarNum()
 			this.getCommmentNum()
+			this.getUserState()
 		}
 	}
 </script>

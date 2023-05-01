@@ -55,6 +55,7 @@
   display: inline-block;
   border-radius: 20rpx;
   padding: 20rpx 20rpx;
+  white-space: normal;
 }
 .chat-box .message-box .message-to {
   display: flex;
@@ -80,6 +81,7 @@
   display: inline-block;
   border-radius: 20rpx;
   padding: 20rpx 20rpx;
+  white-space: normal;
 }
 .chat-box .input-bottom {
   height: 150rpx;

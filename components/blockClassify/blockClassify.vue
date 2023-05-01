@@ -93,7 +93,6 @@
 			},
 			//跳转至该板块详情页，把点击的参数带过去
 			toBlockDetail(name,id,num) {
-				console.log(1111)
 				uni.navigateTo({
 					url:`/pages/bbs/blockDetail/blockDetail?blockname=${name}&blockID=${id}&num=${num}`
 				})

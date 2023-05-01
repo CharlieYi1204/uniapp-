@@ -102,8 +102,10 @@
 				this.cardMethods.forEach(item => {
 					item.isSupport = false
 				})
-				uni.$u.http.post("/map/getdiscount", { districtcode:code },{dataType: 'json'}).then(res => {
-					let discountData = res.data.data[0]
+				console.log(code)
+				uni.$u.http.get("/map/getCardDiscount", {params:{ districtcode:code }}).then(res => {
+					console.log(res,"discount")
+					let discountData = res.data[0]
 					//由于code的唯一性，查出来数据只会有一条
 					this.discountData = discountData
 					//获取数据后来判断是否支持，若支持则将对应的优惠信息也放进去

@@ -106,6 +106,7 @@
   width: 200rpx;
   padding-left: 40rpx;
   padding-top: 20rpx;
+  padding-bottom: 10rpx;
 }
 .page-card .pageimg-userbox {
   padding-bottom: 25rpx;

@@ -31,8 +31,6 @@
 						<view class="block-name">{{name}}</view>
 						 <view class="info-box">
 							 <view class="block-info" style="color:#888;font-size: 20rpx;">发帖数：{{postNum}}</view>
-							 <view class="block-info" style="color:#888;font-size: 20rpx;padding-left: 20rpx;">关注人数:待获取</view>
-							 
 						 </view>
 						 	<view class="block-notice" v-if="blockData.description">
 						 		板块信息公告:<view style="text-indent: 40rpx;">{{blockData.description}}</view>
@@ -43,17 +41,17 @@
 					</view>
 					
 				</view>
-				<view class="title-right">
+				<!-- <view class="title-right">
 					<view class="focus-button">
 						<u-button type="primary" size="mini" text="关注" icon="plus" plain shape="circle" color="#12B5A1" @click="isFoucs" v-if="!isfouced"></u-button>
 						<u-button type="primary" size="mini" text="已关注" icon="checkmark" plain shape="circle" color="#888" @click="isFoucs" v-if="isfouced"></u-button>
 					</view>
-				</view>
+				</view> -->
 			</view>
 			<!-- 精选置顶帖 -->
 			<view class="sticky-box" v-if="isTopPost.length !== 0">
 				<view class="sticky-title">精选内容</view>
-				<view class="sticky-row" v-for="(item,index) in isTopPost" :key="index" @click="toPageDetail">
+				<view class="sticky-row" v-for="(item,index) in isTopPost" :key="index" @click="toPageDetail(item.id)">
 					<view class="sticky-icon">
 						<image src="/static/icon/sticky.png"></image>
 					</view>
@@ -130,9 +128,9 @@
 			isFoucs(){
 					this.isfouced = !this.isfouced
 				},
-			toPageDetail() {
+			toPageDetail(id) {
 				uni.navigateTo({
-					url:"/pages/bbs/pageDetail/pageDetail"
+					url:`/pages/bbs/pageDetail/pageDetail?postID=${id}`
 				})
 			},
 			//隐藏模态框

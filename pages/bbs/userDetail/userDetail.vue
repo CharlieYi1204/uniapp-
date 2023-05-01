@@ -9,8 +9,8 @@
 			<!-- 用户头像、ID、个性签名 -->
 			<view class="usertxt">
 				<view class="username">{{userData.nickname === null ? '未设置昵称' : userData.nickname}}
-				<u-icon name='man' size="20" style="padding-left: 10rpx;" color="#12B5A1" v-if="userData.gender === 0"></u-icon>
-				<u-icon name='woman' size="20" style="padding-left: 10rpx;" color="#12B5A1" v-if="userData.gender === 1"></u-icon>
+				<u-icon name='man' size="20" style="padding-left: 10rpx;" color="#12B5A1" v-if="userData.gender === 1"></u-icon>
+				<u-icon name='woman' size="20" style="padding-left: 10rpx;" color="#12B5A1" v-if="userData.gender === 0"></u-icon>
 				</view>
 				<view class="userid" style="color:#888;font-size: 25rpx;padding-top:10rpx">ID：{{userData.user_id}}</view>
 				<view class="usersign" style="color:#888;font-size: 25rpx;padding: 10rpx 0rpx;">个性签名：{{userData.signature}}</view>
@@ -45,7 +45,7 @@
 			<pageCard v-if="navIndex === 0" :propData="item"></pageCard>
 		</view>
 		<view v-for="(item,index) in commentData" :key="index">
-			<userComment v-if="navIndex === 1" :propUserData="userData" :commentData="item"></userComment>
+			<userComment v-if="navIndex === 1" :propUserData="userData" :commentData="item" @resetCommentData="resetCommentData"></userComment>
 		</view>
 		
 	</view>
@@ -87,6 +87,11 @@
 			};
 		},
 		methods:{
+			// 子组件删除评论之后,重新获取数据
+			resetCommentData(a) {
+				console.log(a)
+				this.getCommentByUserID()
+			},
 			//获取当前用户的评论 
 			getCommentByUserID() {
 				uni.$u.http.get("/bbs/getCommentByUserID",{params:{user_id:`${this.userID}`}}).then(res => {

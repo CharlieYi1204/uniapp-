@@ -14,6 +14,7 @@ router.get("/getIDTargetUser",user.getIDTargetUser)
 router.post("/updateUserInfo",user.updateUserInfo)
 router.post("/changUserBanned",user.changUserBanned)
 router.get("/searchUser",user.searchUser)
+router.post('/addUserBanned',user.addUserBanned)
 
 module.exports = router;
 

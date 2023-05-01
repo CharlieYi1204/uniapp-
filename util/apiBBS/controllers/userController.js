@@ -321,7 +321,30 @@ searchUser = (req,res) => {
     }
     config.sqlConnect(sql,sqlArr,callBack)
 }
-  
+
+// 使用户违规数+1
+addUserBanned = (req,res) => {
+  let {
+    user_id
+  } = req.body
+  const sql = `update user set rule_break_count = rule_break_count + 1 where user_id = ?`
+  const sqlArr = [user_id];
+    let callBack = (err,data) => {
+      if (err) {
+        console.log(err)
+        res.send({
+          err:err,
+          msg:"设置失败"
+        })
+      } else {
+          res.send({
+            msg :"违规次数+1",
+            data:data
+          })
+      }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
 
 module.exports = {
     getUser,
@@ -333,7 +356,8 @@ module.exports = {
     getIDTargetUser,
     updateUserInfo,
     changUserBanned,
-    searchUser
+    searchUser,
+    addUserBanned
 }
 
 

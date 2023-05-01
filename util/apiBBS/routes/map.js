@@ -8,4 +8,7 @@ router.get('/getSupportInfo',map.getCardSupport)
 router.get('/getCardDiscount',map.getCardDiscount)
 router.get('/getCardInfo',map.getCardInfo)
 router.post('/deleteSupportDelete',map.deleteSupportDelete)
+router.post('/addSupportCity',map.addSupportCity)
+router.post('/editSupportInfo',map.editSupportInfo)
+router.post('/addSupportInfo',map.addSupportInfo)
 module.exports = router;

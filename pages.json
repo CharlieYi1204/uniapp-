@@ -4,6 +4,30 @@
 		},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 	   {
+	   		"path": "pages/index/index",
+	   		"style": 
+	   		{
+	   			"navigationBarTitleText": "查询"
+	   		}
+	   },
+	   {
+	               "path" : "pages/user/user",
+	               "style" :                                                                                    
+	               {
+	                   "navigationBarTitleText": "个人",
+	                   "enablePullDownRefresh": false
+	               }
+	   },
+	   {
+	       "path" : "pages/user/userFunc/userManage/userManage",
+	       "style" :                                                                                    
+	       {
+	           "navigationBarTitleText": "个人信息维护",
+	           "enablePullDownRefresh": false
+	       }
+	       
+	   },
+	   {
 	        "path" : "pages/bbs/bbs",
 	        "style" :                                                                                    
 	        {
@@ -28,13 +52,6 @@
 	               "enablePullDownRefresh": false
 	           }
 	           
-	   },
-	   {
-	   		"path": "pages/index/index",
-	   		"style": 
-	   		{
-	   			"navigationBarTitleText": "查询"
-	   		}
 	   }
 	   ,{
 	       "path" : "pages/user/login/login",
@@ -81,14 +98,6 @@
 	    
 	},
 	{
-	            "path" : "pages/user/user",
-	            "style" :                                                                                    
-	            {
-	                "navigationBarTitleText": "个人",
-	                "enablePullDownRefresh": false
-	            }
-	},
-	{
 	    "path" : "pages/bbs/chat/chat",
 	    "style" :                                                                                    
 	    {
@@ -101,7 +110,7 @@
 	    "path" : "pages/user/userTags/userPosts/userPosts",
 	    "style" :                                                                                    
 	    {
-	        "navigationBarTitleText": "帖子",
+	        "navigationBarTitleText": "已发帖子",
 	        "enablePullDownRefresh": false
 	    }
 	    
@@ -185,15 +194,7 @@
             }
             
         }
-        ,{
-            "path" : "pages/user/userFunc/userManage/userManage",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "个人信息维护",
-                "enablePullDownRefresh": false
-            }
-            
-        }
+        
         ,{
             "path" : "pages/user/userFunc/visitHistory/visitHistory",
             "style" :                                                                                    

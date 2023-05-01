@@ -19,7 +19,8 @@
 				</view>
 				<view class="usertxt">
 					<view class="username">{{userName}}</view>
-					<view class="datatime" style="color:#888;font-size: 20rpx;">{{propData.create_time}}</view>
+					<view class="datatime" style="color:#888;font-size: 20rpx;" v-if="dateTimeShow">{{propData.create_time}}</view>
+					<view class="datatime" style="color:#888;font-size: 20rpx;" v-if="!dateTimeShow">浏览于:{{propData.visited_time}}</view>
 				</view>
 			</view>
 			<view class="author-right">
@@ -74,6 +75,10 @@
 			propUserHeadImgSrc:{
 				type:String,
 				default:''
+			},
+			dateTimeShow: {
+				type:Boolean,
+				default:true
 			},
 			propPageTime:{
 				type:String,
@@ -147,7 +152,6 @@
 			//获取所属板块
 			getFromBlock() {
 				uni.$u.http.get('/bbs/getPostFromBlock', {params:{post_id:this.propData.id}}).then(res => {
-					console.log(res.data,"Block")
 					this.fromBlock = res.data[0]
 				})
 			},
@@ -187,13 +191,12 @@
 			toDeletePost() {
 				console.log(111)
 				uni.$u.http.post("/bbs/deletePost",{post_id: `${this.propData.id}`,user_id: `${this.propData.user_id}`}).then(res => {
-					console.log("删除成功",res)
 					this.modalShow = false
-					this.$refs.uToast.show({
-						type:"success",
-						message:"删除成功",
-						duration:800
-					})
+					uni.showToast({
+						title: '删除成功',
+						duration: 800,
+						icon:'success'
+					});
 					this.isDelete=false
 				}).catch(err => {
 					console.log(err)
@@ -376,6 +379,7 @@
 		width: 200rpx;
 		padding-left: 40rpx;
 		padding-top: 20rpx;
+		padding-bottom: 10rpx;
 	}
 	.pageimg-userbox{
 		padding-bottom: 25rpx;

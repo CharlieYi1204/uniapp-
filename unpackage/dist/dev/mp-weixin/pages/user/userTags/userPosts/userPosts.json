@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "帖子",
+  "navigationBarTitleText": "已发帖子",
   "enablePullDownRefresh": false,
   "usingComponents": {
     "page-card": "/components/pageCard/pageCard"

@@ -3,8 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-
+const cors = require('cors')
 
 //路由路径
 var indexRouter = require('./routes/index');
@@ -23,6 +22,17 @@ app.use(bodyParser.json())
 //改写入口文件至app.js
 var http = require('http');
 var server = http.createServer(app);
+
+app.use(cors())
+//解决跨域
+app.all('*', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "content-type,Authorization");
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header('Access-Control-Allow-Headers', ['mytoken','Content-Type']);
+    next();
+  });
 
 app.use(logger('dev'));
 app.use(express.json());

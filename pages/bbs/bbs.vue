@@ -63,9 +63,17 @@
 					modalContent:"要去发送新帖子吗？",
 				    list3: [],
 				    blockData:null,
+					userState:null
 			}
 		},
 		methods: {
+			//获取当前用户状态，判断是否允许发帖
+			getUserData() {
+				const currentID = uni.getStorageSync("user_id")
+				uni.$u.http.get("/users/getIDTargetUser",{params:{user_id:currentID}}).then(res => {
+					this.userState = res.data.data[0].is_banned
+				})
+			},
 			//获取热门板块
 			getHotBlock(){
 				uni.$u.http.get("/bbs/getHotBlock").then(res => {
@@ -90,7 +98,6 @@
 							}
 						})
 						this.$forceUpdate();
-					console.log(this.blockData)
 				 })
 				})
 			},
@@ -140,14 +147,31 @@
 				
 			},
 			//模态框确认后跳转
-			toSendPost() {
-				uni.navigateTo({
-					url:"/pages/bbs/sendPost/sendPost"
-				})
+			async toSendPost() {
+				uni.showLoading({
+					title: '加载中'
+				});
+				await this.getUserData()
+				if(this.userState === 0) {
+					uni.navigateTo({
+						url:"/pages/bbs/sendPost/sendPost"
+					})
+					uni.hideLoading();
+				}
+				else {
+					uni.hideLoading();
+					uni.showModal({
+						title: '提示',
+						content: '该用户已被封禁，无法发言，请联系管理员',
+						showCancel:false
+					});
+					this.modalShow = false
+					this.isActive = false
+				}
 			},
 			//请求数据
 			getPageData() {
-				uni.$u.http.get('/bbs').then(res => {
+				uni.$u.http.get('/bbs/getHotPosts').then(res => {
 					let data = res.data.data 
 					this.pageData = data
 				})
@@ -165,6 +189,7 @@
 		},
 		onLoad() {
 			this.getSwiperData()
+			this.getUserData()
 			this.getPageData()
 			this.getHotBlock()
 			uni.showLoading({

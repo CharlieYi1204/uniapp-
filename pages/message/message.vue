@@ -2,18 +2,6 @@
 	<view class="message">
 		<!-- 顶部图标j及选项-->
 		<view class="title">
-			<view class="title-item" @click="toLike">
-				<view class="title-img-box">
-					<image src="../../static/icon/message_like.png"></image>
-				</view>
-				<view>赞</view>
-			</view>
-			<view class="title-item" @click="toComment">
-				<view class="title-img-box">
-					<image src="../../static/icon/message_commt.png"></image>
-				</view>
-				<view>评论</view>
-			</view>
 			<view class="title-item" @click="toNotice">
 				<view class="title-img-box">
 					<image src="../../static/icon/message.png"></image>

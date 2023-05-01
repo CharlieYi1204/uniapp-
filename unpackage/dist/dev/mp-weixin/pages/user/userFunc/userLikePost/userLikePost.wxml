@@ -1,1 +1,1 @@
-<view>这里是赞过的帖子</view>
+<view class="box"><view style="width:100%;text-align:center;color:#12B5A1;font-size:40rpx;font-weight:bold;">已赞帖子</view><block wx:for="{{postData}}" wx:for-item="item" wx:for-index="index" wx:key="index"><view><page-card vue-id="{{'3ff42f5c-1-'+index}}" propData="{{item}}" bind:__l="__l"></page-card></view></block><block wx:if="{{$root.g0===0}}"><u-empty vue-id="3ff42f5c-2" mode="list" text="暂无点赞记录" bind:__l="__l"></u-empty></block></view>

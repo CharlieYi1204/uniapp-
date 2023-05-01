@@ -1,5 +1,8 @@
 {
   "navigationBarTitleText": "赞过的帖子",
   "enablePullDownRefresh": false,
-  "usingComponents": {}
+  "usingComponents": {
+    "page-card": "/components/pageCard/pageCard",
+    "u-empty": "/uni_modules/uview-ui/components/u-empty/u-empty"
+  }
 }

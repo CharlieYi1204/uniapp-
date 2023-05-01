@@ -1,5 +1,9 @@
 {
   "navigationBarTitleText": "浏览历史",
   "enablePullDownRefresh": false,
-  "usingComponents": {}
+  "usingComponents": {
+    "u-button": "/uni_modules/uview-ui/components/u-button/u-button",
+    "page-card": "/components/pageCard/pageCard",
+    "u-empty": "/uni_modules/uview-ui/components/u-empty/u-empty"
+  }
 }

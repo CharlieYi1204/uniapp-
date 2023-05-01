@@ -97,6 +97,7 @@
 					display: inline-block; 
 					border-radius: 20rpx; 
 					padding:20rpx 20rpx;
+					white-space: normal;
 				}
 			}
 		}
@@ -122,6 +123,7 @@
 					display: inline-block; 
 					border-radius: 20rpx; 
 					padding:20rpx 20rpx;
+					white-space: normal;
 				}
 			}
 		}

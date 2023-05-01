@@ -122,11 +122,116 @@ deleteSupportDelete = (req,res) => {
     config.sqlConnect(sql,sqlArr,callBack)
 }
 
+// 新增支持城市
+addSupportCity = (req,res) => {
+    let {citycode,discode} = req.body
+    const sql = `insert into supportcity values (?,?)`
+    const sqlArr = [
+        citycode,discode
+    ]
+    let callBack = (err,data) => {
+        if(err){
+            res.send('添加失败，已存在该区域')
+        }
+        else {
+            res.send('添加成功')
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//区域范围优惠新增  
+addSupportInfo = (req,res) => {
+    let {districtcode,
+    method_card,
+    card_discount,
+    method_nfc,
+    nfc_discount,
+    method_qr,
+    qr_discount,
+    unit
+    } = req.body
+    const sql = `insert into card_payment values (?,?,?,?,?,?,?,?)`
+    const sqlArr = [
+        districtcode,
+    method_card,
+    card_discount,
+    method_nfc,
+    nfc_discount,
+    method_qr,
+    qr_discount,
+    unit
+    ]
+    let callBack = (err,data) => {
+        if(err){
+            res.send({
+                data:err,
+                msg:"提交失败"
+            })
+        }
+        else {
+            res.send({
+                data:data,
+                msg:"提交成功"
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+
+//区域范围优惠修改
+editSupportInfo = (req,res) => {
+    let {
+    method_card,
+    card_discount,
+    method_nfc,
+    nfc_discount,
+    method_qr,
+    qr_discount,
+    unit,
+    districtcode
+    } = req.body
+    const sql = `update card_payment set method_card=?,card_discount=?,
+    method_nfc=?,nfc_discount=?,
+    method_qr=?,qr_discount=?,
+    unit=? where districtcode=? `
+    const sqlArr = [
+    method_card,
+    card_discount,
+    method_nfc,
+    nfc_discount,
+    method_qr,
+    qr_discount,
+    unit,
+    districtcode
+    ]
+    let callBack = (err,data) => {
+        if(err){
+            res.send({
+                data:err,
+                msg:"提交失败"
+            })
+        }
+        else {
+            res.send({
+                data:data,
+                msg:"提交成功"
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+
 module.exports = {
     addMapData,
     getMapData,
     getCardSupport,
     getCardDiscount,
     getCardInfo,
-    deleteSupportDelete
+    deleteSupportDelete,
+    addSupportCity,
+    editSupportInfo,
+    addSupportInfo
 }

@@ -60,10 +60,6 @@
 						{
 							title:"查看浏览历史",
 							icon:"/static/icon/history.png"
-						},
-						{
-							title:"关注的板块",
-							icon:"/static/icon/block.png"
 						},{
 							title:"赞过的帖子",
 							icon:"/static/icon/user_like.png"
@@ -86,11 +82,6 @@
 						})
 						break;
 						case 2:
-						uni.navigateTo({
-							url:`/pages/user/userFunc/userFollowBlock/userFollowBlock?user_id=${this.useInfo.user_id}`
-						})
-						break;
-						case 3:
 						uni.navigateTo({
 							url:`/pages/user/userFunc/userLikePost/userLikePost?user_id=${this.useInfo.user_id}`
 						})

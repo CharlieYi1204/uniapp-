@@ -1,7 +1,6 @@
 let config = require('../util/config')
 let globalURL = require('../routes/global');
 
-
 //获取所有帖子信息
 getPostData = (req,res) => {
     let sql = "select * from posts where is_pass = 1 order by create_time DESC"
@@ -26,9 +25,150 @@ getPostData = (req,res) => {
                 }
                 //处理对象
                 let create_time = new Date(item.create_time)
-                let updated_time = new Date(item.updated_time)
-                item.create_time = `${create_time.getFullYear()}年${create_time.getMonth()+1}月${create_time.getDate()+1}日 ${create_time.getHours()}:${create_time.getMinutes()}`
-                item.updated_time = `${updated_time.getFullYear()}年${updated_time.getMonth()+1}月${updated_time.getDate()+1}日 ${updated_time.getHours()}:${create_time.getMinutes()}`
+                let time = create_time.getMinutes()
+                let hours = create_time.getHours()
+                if( hours < 10) {
+                    hours = '0' + hours
+                }
+                if(time < 10) {
+                    time = '0' + create_time.getMinutes()
+                }
+                item.create_time = `${create_time.getFullYear()}年${create_time.getMonth() + 1}月${create_time.getDate() + 1}日 ${hours}:${time}`
+            })
+            res.send({
+                'data':data
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//获取所有帖子信息，包括浏览量、点赞量、板块名称等信息
+getPostDeatilData = (req,res) => {
+    let sql = `select posts.* ,name,count(DISTINCT post_likes.user_id) as like_count,
+    count(DISTINCT collect.user_id) as collect_count 
+    FROM posts LEFT JOIN post_likes ON posts.id = post_likes.post_id LEFT JOIN collect ON posts.id = collect.post_id 
+    LEFT JOIN categories ON posts.category_id = categories.id where is_pass = 1 GROUP BY posts.id order by posts.create_time DESC`
+    let sqlArr = [];
+    let callBack = (err,data)=> {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            //处理data对象数组中的time属性和image属性
+            let imgURl=globalURL.imgGlobalURL
+            data.forEach(item => {
+                if(item.image === "null" || item.image === null) {
+                    item.image = null
+                } else {
+                    item.image = item.image.split(",")
+                    // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+                    item.image.forEach((imgitem,itemIndex) => {
+                        imgitem = `${imgURl}${imgitem}`
+                        item.image[itemIndex] = imgitem
+                    })
+                }
+                //处理对象
+                let create_time = new Date(item.create_time)
+                let time = create_time.getMinutes()
+                let hours = create_time.getHours()
+                if( hours < 10) {
+                    hours = '0' + hours
+                }
+                if(time < 10) {
+                    time = '0' + create_time.getMinutes()
+                }
+                item.create_time = `${create_time.getFullYear()}年${create_time.getMonth() + 1}月${create_time.getDate() + 1}日 ${hours}:${time}`
+            })
+            res.send({
+                data:data
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+// 获取所有帖子信息，包括浏览量、点赞量、板块名称等信息
+getPostDeatilDataByBlock = (req,res) => {
+    let {
+        name
+    } = req.body
+    let sql = `select posts.* ,name,count(DISTINCT post_likes.user_id) as like_count,
+    count(DISTINCT collect.user_id) as collect_count 
+    FROM posts LEFT JOIN post_likes ON posts.id = post_likes.post_id LEFT JOIN collect ON posts.id = collect.post_id 
+    LEFT JOIN categories ON posts.category_id = categories.id where is_pass = 1 and name = ? GROUP BY posts.id`
+    let sqlArr = [name];
+    let callBack = (err,data)=> {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            //处理data对象数组中的time属性和image属性
+            let imgURl=globalURL.imgGlobalURL
+            data.forEach(item => {
+                if(item.image === "null" || item.image === null) {
+                    item.image = null
+                } else {
+                    item.image = item.image.split(",")
+                    // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+                    item.image.forEach((imgitem,itemIndex) => {
+                        imgitem = `${imgURl}${imgitem}`
+                        item.image[itemIndex] = imgitem
+                    })
+                }
+                //处理对象
+                let create_time = new Date(item.create_time)
+                let time = create_time.getMinutes()
+                let hours = create_time.getHours()
+                if( hours < 10) {
+                    hours = '0' + hours
+                }
+                if(time < 10) {
+                    time = '0' + create_time.getMinutes()
+                }
+                item.create_time = `${create_time.getFullYear()}年${create_time.getMonth() + 1}月${create_time.getDate() + 1}日 ${hours}:${time}`
+            })
+            res.send({
+                data:data
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//获取近15天的热门帖子
+getHotPosts =  (req,res) => {
+    let sql = "select * from posts where is_pass = 1 and create_time >= DATE_SUB(NOW(),INTERVAL 15 DAY) order by visit_count DESC"
+    let sqlArr = [];
+    let callBack = (err,data)=> {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            //处理data对象数组中的time属性和image属性
+            let imgURl=globalURL.imgGlobalURL
+            data.forEach(item => {
+                if(item.image === "null" || item.image === null) {
+                    item.image = null
+                } else {
+                    item.image = item.image.split(",")
+                    // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+                    item.image.forEach((imgitem,itemIndex) => {
+                        imgitem = `${imgURl}${imgitem}`
+                        item.image[itemIndex] = imgitem
+                    })
+                }
+                //处理对象
+                let create_time = new Date(item.create_time)
+                let time = create_time.getMinutes()
+                let hours = create_time.getHours()
+                if( hours < 10) {
+                    hours = '0' + hours
+                }
+                if(time < 10) {
+                    time = '0' + create_time.getMinutes()
+                }
+                item.create_time = `${create_time.getFullYear()}年${create_time.getMonth() + 1}月${create_time.getDate() + 1}日 ${hours}:${time}`
             })
             res.send({
                 'data':data
@@ -76,11 +216,34 @@ getCheckPost =(req,res) => {
     config.sqlConnect(sql,sqlArr,callBack)
 }
 
+
+// 帖子审核通过 
+checkPassPost =(req,res) => {
+    let {
+        user_id,post_id
+    } = req.body
+    let sql = `update posts set is_pass = 1,failed_reson = null where user_id = ? and id = ?`
+    let sqlArr = [user_id,post_id];
+    let callBack = (err,data) => {
+        if(err) {
+            res.send({err:err,
+                msg:"审核出错"
+            })
+        } else {
+            res.send({data:data,
+                msg:"帖子审核通过，可正常展示"
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+
 //获取精选帖子
 getWonderfulPost = (req,res) => {
         let {
         } = req.query
-        let sql = `select * from posts where is_wonderful = 1`
+        let sql = `select * from posts where is_wonderful = 1 and is_pass = 1`
         let sqlArr = [];
         let callBack = (err,data) => {
                         //处理data对象数组中的time属性和image属性
@@ -108,6 +271,121 @@ getWonderfulPost = (req,res) => {
         config.sqlConnect(sql,sqlArr,callBack)
     }
 
+// 根据帖子ID对其设置精选
+setPostWonderful = (req,res) => {
+    let {
+        post_id
+    } = req.body
+    let sql = `update posts set is_wonderful = 1 where id = ?`
+    let sqlArr = [post_id];
+    let callBack = (err,data) => {
+        if(err) {
+            res.send({
+                err:err,
+                msg:"发生错误"
+            })
+        } else {
+            res.send({
+                data:data,
+                msg:"已精选该贴"
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+// 根据帖子ID对其取消精选
+cancelPostWonderful = (req,res) => {
+    let {
+        post_id
+    } = req.body
+    let sql = `update posts set is_wonderful = 0 where id = ?`
+    let sqlArr = [post_id];
+    let callBack = (err,data) => {
+        if(err) {
+            res.send({
+                err:err,
+                msg:"发生错误"
+            })
+        } else {
+            res.send({
+                data:data,
+                msg:"已取消精选"
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//置顶该帖子
+setPostTop = (req,res) => {
+    let {
+        post_id
+    } = req.body
+    let sql = `update posts set is_top = 1 where id = ?`
+    let sqlArr = [post_id];
+    let callBack = (err,data) => {
+        if(err) {
+            res.send({
+                err:err,
+                msg:"发生错误"
+            })
+        } else {
+            res.send({
+                data:data,
+                msg:"已置顶该贴"
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//取消置顶该帖子
+canclePostTop = (req,res) => {
+    let {
+        post_id
+    } = req.body
+    let sql = `update posts set is_top = 0 where id = ?`
+    let sqlArr = [post_id];
+    let callBack = (err,data) => {
+        if(err) {
+            res.send({
+                err:err,
+                msg:"发生错误"
+            })
+        } else {
+            res.send({
+                data:data,
+                msg:"已取消置顶"
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//根据帖子ID删除该贴
+deletePostByPostID = (req,res) => {
+    let {
+        post_id
+    } = req.body
+    let sql = `delete from posts where id = ?`
+    let sqlArr = [post_id];
+    let callBack = (err,data) => {
+        if(err) {
+            res.send({
+                err:err,
+                msg:"发生错误"
+            })
+        } else {
+            res.send({
+                data:data,
+                msg:"已删除该贴"
+            })
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
 
 
 //根据帖子ID获取详情 
@@ -115,7 +393,7 @@ getTargetPostData = (req,res) => {
     let {
         post_id
     } = req.query
-    let sql = `select * from posts where id = ?`
+    let sql = `select * from posts where id = ? and is_pass = 1`
     let sqlArr = [post_id];
     let callBack = (err,data) => {
         if(err) {
@@ -147,7 +425,7 @@ getTargetPostData = (req,res) => {
 }
 
 
-//根据帖子ID获取点赞消息 
+//根据帖子ID获取点赞消息的数量 
 getLikesData = (req,res) => {
     let {
         post_id
@@ -171,7 +449,7 @@ getPostByUserID = (req,res) => {
         let {
             user_id
         } = req.query
-        let sql = `select * from posts where user_id=?`
+        let sql = `select * from posts where user_id=? and is_pass = 1 order by create_time desc`
         let sqlArr = [user_id];
         let callBack = (err,data) => {
             if(err) {
@@ -288,6 +566,48 @@ addLikes = (req,res) => {
             console.log("连接出错了") 
             res.send(err)
         } else {
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//获取对应用户所点赞的帖子
+getLikesPostByUserID = (req,res) => {
+    let {
+       user_id
+    } = req.query
+    let sql = `select * from posts,post_likes WHERE post_likes.post_id = posts.id and post_likes.user_id = ? and is_pass = 1
+    ORDER BY post_likes.created_time desc`
+    let sqlArr = [user_id];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了") 
+            res.send(err)
+        } else {
+            let imgURl = globalURL.imgGlobalURL
+            data.forEach(item => {
+                if(item.image === "null" || item.image === null) {
+                    item.image = null
+                } else {
+                    item.image = item.image.split(",")
+                    // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+                    item.image.forEach((imgitem,itemIndex) => {
+                        imgitem = `${imgURl}${imgitem}`
+                        item.image[itemIndex] = imgitem
+                    })
+                }
+                let create_time = new Date(item.create_time)
+                let time = create_time.getMinutes()
+                let hours = create_time.getHours()
+                if( hours < 10) {
+                    hours = '0' + hours
+                }
+                if(time < 10) {
+                    time = '0' + create_time.getMinutes()
+                }
+                item.create_time = `${create_time.getFullYear()}年${create_time.getMonth() + 1}月${create_time.getDate() + 1}日 ${hours}:${time}`
+            })
             res.send(data)
         }
     }
@@ -893,7 +1213,7 @@ getCommentByUserID = (req,res) => {
         } = req.query
         let sql = `select comments.id AS commment_id,post_id,comments.content AS comment_content,posts.create_time,title,posts.content AS post_content,posts.id AS post_id
         from posts,comments 
-        WHERE posts.id = comments.post_id and comments.user_id = ?`
+        WHERE posts.id = comments.post_id and comments.user_id = ? order by comments.create_time DESC`
         let sqlArr = [user_id];
         let callBack = (err,data) => {
             if(err) {
@@ -917,6 +1237,23 @@ getCommentByUserID = (req,res) => {
         }
         config.sqlConnect(sql,sqlArr,callBack)
     }
+
+//获取所有二级板块信息
+getAllBlock =  (req,res) => {
+    let {
+    } = req.query
+    let sql = `select * from categories`
+    let sqlArr = [];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
 
 //获取板块大类类别
 getClassify = (req,res) => {
@@ -1011,7 +1348,7 @@ getPostByBlock = (req,res) => {
     let {
         block_id
     } = req.query
-    let sql = `select * from posts where category_id = ? order by create_time DESC`
+    let sql = `select * from posts where category_id = ? and is_pass = 1 order by create_time DESC`
     let sqlArr = [block_id];
     let callBack = (err,data) => {
         if(err) {
@@ -1082,6 +1419,86 @@ getPostFromBlock = (req,res) => {
     }
     config.sqlConnect(sql,sqlArr,callBack)
 }
+
+
+//插入浏览记录
+addVisit = (req,res) => {
+    let {
+        user_id,post_id
+    } = req.body
+    let sql = `insert into visit_history VALUES (?,?,CURRENT_TIMESTAMP) ON DUPLICATE KEY UPDATE visited_time = CURRENT_TIMESTAMP`
+    let sqlArr = [user_id,post_id];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//获取指定ID用户的浏览历史记录
+getVisitByUserID = (req,res) => {
+    let {
+        user_id
+    } = req.query
+    let sql = `select * from visit_history,posts where visit_history.user_id = ? and visit_history.post_id = posts.id ORDER BY visited_time desc`
+    let sqlArr = [user_id];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            let imgURl = globalURL.imgGlobalURL
+            data.forEach(item => {
+                if(item.image === "null" || item.image === null) {
+                    item.image = null
+                } else {
+                    item.image = item.image.split(",")
+                    // 将存储的地址加入服务器的绝对路径，后面存的时候直接存绝对路径，可以不要这个
+                    item.image.forEach((imgitem,itemIndex) => {
+                        imgitem = `${imgURl}${imgitem}`
+                        item.image[itemIndex] = imgitem
+                    })
+                }
+                let visited_time = new Date(item.visited_time)
+                let time = visited_time.getMinutes()
+                let hours = visited_time.getHours()
+                if( hours < 10) {
+                    hours = '0' + hours
+                }
+                if(time < 10) {
+                    time = '0' + visited_time.getMinutes()
+                }
+                item.visited_time = `${visited_time.getFullYear()}年${visited_time.getMonth() + 1}月${visited_time.getDate() + 1}日 ${hours}:${time}`
+            })
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+//清除指定用户ID的浏览记录
+clearVisit = (req,res) => {
+    let {
+        user_id
+    } = req.query
+    let sql = `delete from visit_history where user_id = ?`
+    let sqlArr = [user_id];
+    let callBack = (err,data) => {
+        if(err) {
+            console.log("连接出错了")
+            console.log(err)
+        } else {
+            res.send(data)
+        }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
+
 module.exports = {
     getPostData,
     getLikesData,
@@ -1125,7 +1542,21 @@ module.exports = {
     getPostByBlock,
     getBlockInfoByID,
     getTargetBlockPostNum,
-    getPostFromBlock
+    getPostFromBlock,
+    getAllBlock,
+    getHotPosts,
+    getLikesPostByUserID,
+    addVisit,
+    getVisitByUserID,
+    clearVisit,
+    checkPassPost,
+    getPostDeatilData,
+    getPostDeatilDataByBlock,
+    deletePostByPostID,
+    canclePostTop,
+    setPostTop,
+    cancelPostWonderful,
+    setPostWonderful
 }
 
 

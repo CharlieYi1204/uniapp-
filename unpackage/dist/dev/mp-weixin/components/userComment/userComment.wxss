@@ -36,15 +36,19 @@
 .cardComment .author-box {
   width: 100%;
   display: flex;
+  justify-content: space-between;
   padding: 30rpx 30rpx;
 }
-.cardComment .author-box .usertxt {
+.cardComment .author-box .author-left {
+  display: flex;
+}
+.cardComment .author-box .author-left .usertxt {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding-left: 20rpx;
 }
-.cardComment .author-box .usertxt .username {
+.cardComment .author-box .author-left .usertxt .username {
   font-weight: bold;
 }
 .cardComment .commit-txt {
