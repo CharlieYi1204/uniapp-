@@ -83,10 +83,18 @@
 				navIndex:0,
 				fansNum:0,
 				followNum:0,
-				postData:null
+				postData:null,
+				userState:null
 			};
 		},
 		methods:{
+			// 获取用户封禁状态
+			getUserState() {
+				console.log(this.currentUserID)
+				uni.$u.http.get("/users/getIDTargetUser",{params:{user_id:this.currentUserID}}).then(res => {
+					this.userState = res.data.data[0].is_banned
+				})
+			},
 			// 子组件删除评论之后,重新获取数据
 			resetCommentData(a) {
 				console.log(a)
@@ -136,11 +144,25 @@
 					this.navIndex = 0
 				}
 			},
-			// 跳转至聊天详情页面
-			toChatPage() {
+			// 根据当前用户状态判断是否跳转至聊天详情页面
+			async toChatPage() {
+				uni.showLoading({
+					title: '加载中'
+				});
+				await this.getUserState()
+				if(this.userState === 0) {
 				uni.navigateTo({
 					url:"/pages/bbs/chat/chat"
 				})
+				uni.hideLoading();
+				} else {
+					uni.hideLoading();
+					uni.showModal({
+						title: '提示',
+						content: '该用户已被封禁，无法发言，请联系管理员',
+						showCancel:false
+					});
+				}
 			},
 			getData() {
 				//获取用户信息

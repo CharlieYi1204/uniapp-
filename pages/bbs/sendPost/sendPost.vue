@@ -149,7 +149,7 @@
 				this.pickerShow = false
 			},
 			// 提交数据至后台
-			sendPost(pass) {
+			sendPost(pass,message) {
 				const currentUserID = uni.getStorageSync("user_id")
 				uni.$u.http.post('/bbs/sendPost', {
 					user_id: currentUserID,
@@ -157,7 +157,8 @@
 					title: `${this.model1.postInfo.title}`,
 					content: `${this.model1.postInfo.context}`,
 					is_pass: pass,
-					image: `${this.model1.postInfo.image}`
+					image: `${this.model1.postInfo.image}`,
+					failed_reson:message
 				}).then(res => {
 					console.log(res)
 				}).catch(err => {
@@ -212,9 +213,9 @@
 								})
 							} else if (conclusion === "疑似") {
 								this.model1.postInfo.is_pass = 0
-								this.sendPost(this.model1.postInfo.is_pass)
-								// conclusion =  res.data.data[0].conclusion
 								message = res.data.data[0].msg
+								this.sendPost(this.model1.postInfo.is_pass,message)
+								// conclusion =  res.data.data[0].conclusion
 								uni.showModal({
 									title: "提示",
 									content: `发帖内容${message},已提交至后台等待管理员审核`,

@@ -46,9 +46,12 @@
 		methods: {
 			toNoticeDetail() {
 				uni.navigateTo({
-					url:"/pages/message/notice/noticedetail/noticedetail"
+					url:`/pages/message/notice/noticedetail/noticedetail?id=${this.noticeData.id}`
 				})
 			}
+		},
+		mounted() {
+			console.log(this.noticeData)
 		}
 	}
 </script>
@@ -60,6 +63,7 @@
 	border-radius: 20rpx;
 	width:100%;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	margin-bottom: 25rpx;
 	.notice-title {
 		display: flex;
 		justify-content: space-between;

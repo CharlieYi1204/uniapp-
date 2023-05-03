@@ -39,15 +39,15 @@
 				})
 			},
 			clearHistory() {
-				uni.showLoading({
-					title: '删除中'
-				});
 				const userID = this.userID
 				const self = this
 				uni.showModal({
 					title: '提示',
 					content: '确定要清空历史记录吗',
 					success: function (res) {
+						uni.showLoading({
+							title: '删除中'
+						});
 						if (res.confirm) {
 							uni.$u.http.get("/bbs/clearVisit",{params:{user_id:userID}}).then(res => {
 								console.log(userID)

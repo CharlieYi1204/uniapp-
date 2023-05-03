@@ -1,18 +1,14 @@
 <template>
 	<view class="detail-box">
 		<!-- 标题 -->
-		<view class="title">这里是公告标题</view>
+		<view class="title">{{noticeData.title}}</view>
 		<!-- 时间 -->
-		<view class="datetime">这里显示时间</view>
+		<view class="datetime">{{noticeData.create_time}}</view>
 		<!-- 公告内容 -->
 		<view class="content">
-			近日，天府通公共交通出行又有新进展。11月，天府通顺利实现卡/码乘车服务在米易的上线，为持有天府通卡或使用天府通APP乘车码的两地市民提供便利。
-			
-			2013年，天府通与攀枝花以“市民卡”为纽带，实现两地公共交通互联互通。多年来，天府通持续巩固成攀互通成果。
-			
-			前期，在成都、米易两地政府和交通主管部门的领导和支持下，伴随米易全域城市公交升级换代，天府通卡/码乘车服务正式上线米易，成为继落地攀枝花市区后，第二个与成都公共交通互通的攀枝花城市，也意味着米易本地乘客可享受天府通便捷的支付方式和乘车优惠服务。
+			{{noticeData.content}}
 		<view class="image-box">
-			<u-album :urls="imgUrl" previewFullImage multipleSize="95" singleSize="320"></u-album>
+			<u-album :urls="noticeData.image" previewFullImage multipleSize="85" singleSize="300"></u-album>
 			</view>
 		</view>
 		<!-- 公告图片 -->
@@ -28,11 +24,26 @@
 			return {
 				imgUrl:["http://localhost:3000/images/yaan2.jpg",
 				"http://localhost:3000/images/yaan2.jpg",
-				"http://localhost:3000/images/yaan2.jpg"]
+				"http://localhost:3000/images/yaan2.jpg"],
+				noticeID:null,
+				noticeData:null
 			}
 		},
 		methods: {
-			
+			getNoiceData(){
+				uni.$u.http.get('/msg/getNoticeByID',{params:{notice_id:this.noticeID}}).then(res => {
+					console.log(res)
+					this.noticeData = res.data.data[0]
+					console.log(this.noticeData)
+				})
+			}
+		},
+		onLoad(data) {
+			this.noticeID = data.id
+			console.log(this.noticeID)
+		},
+		mounted() {
+			this.getNoiceData()
 		}
 	}
 </script>

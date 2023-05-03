@@ -1,1 +1,1 @@
-<view class="notice-box"><notice-card vue-id="5627ed08-1" bind:__l="__l"></notice-card></view>
+<view class="notice-box"><block wx:for="{{noticeData}}" wx:for-item="item" wx:for-index="index" wx:key="index"><block wx:if="{{noticeData}}"><view><notice-card vue-id="{{'5627ed08-1-'+index}}" noticeData="{{item}}" bind:__l="__l"></notice-card></view></block></block></view>

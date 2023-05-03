@@ -218,7 +218,7 @@ getCheckPost =(req,res) => {
 
 
 // 帖子审核通过 
-checkPassPost =(req,res) => {
+checkPassPost = (req,res) => {
     let {
         user_id,post_id
     } = req.body
@@ -1065,22 +1065,24 @@ sendPost = (req,res) => {
         title,
         content,
         is_pass,
-        image
+        image,
+        failed_reson
     } = req.body
     console.log(req.body)
-    let sql = `insert into posts (user_id,category_id,title,content,is_pass,image) values (?,?,?,?,?,?)`
+    let sql = `insert into posts (user_id,category_id,title,content,is_pass,image,failed_reson) values (?,?,?,?,?,?,?)`
     let sqlArr = [user_id,
         category_id,
         title,
         content,
         is_pass,
-        image];
+        image,
+        failed_reson];
     let callBack = (err,data) => {
         if(err) {
             res.send(err)
             console.log("连接出错了")
         } else {
-            
+            console.log(sqlArr)
             res.send(data)
         }
     }

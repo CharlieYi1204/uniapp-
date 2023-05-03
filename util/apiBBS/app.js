@@ -13,6 +13,7 @@ var mapRouter = require('./routes/map')
 var bbsRouter = require('./routes/bbs')
 var upLoadRouter = require('./routes/upload')
 var blockRouter = require('./routes/block')
+var msgRouter = require('./routes/msg')
 var app = express();
 
 //引入body-parser中间件以来解析请求体中的数据
@@ -50,12 +51,12 @@ app.use((req, res, next) => {
 
 //路由路径设置
 app.use('/', indexRouter);
+app.use('/msg',msgRouter)
 app.use('/users', usersRouter);
 app.use('/geo',geoRouter)
 app.use('/map',mapRouter)
 app.use('/bbs',bbsRouter)
 app.use('/upload',upLoadRouter)
 app.use('/block',blockRouter)
-
 app.listen('3000')
 

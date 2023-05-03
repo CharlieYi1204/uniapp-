@@ -59,8 +59,8 @@
 			<view class="page-action">
 				<view class="action-report" style="display:flex;align-items:center;"
 				@click="popUpShow = true">
-					<image src="../../../static/icon/warn.png"></image>
-					<text>举报</text>
+					<!-- <image src="../../../static/icon/warn.png"></image>
+					<text>举报</text> -->
 				</view>
 				<view class="action-like">
 					<view class="action-star" style="display:flex;align-items:center;padding-right:10rpx" @click="changeStar">

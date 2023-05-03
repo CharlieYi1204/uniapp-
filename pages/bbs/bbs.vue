@@ -39,7 +39,7 @@
 		</view>	
 		<!-- 公告通知小喇叭 -->
 		 <view>
-		    <u-notice-bar :text="text1" mode="link" speed="150" url="/pages/message/notice/noticedetail/noticedetail" custom-style="margin-bottom:20rpx;border-radius: 20rpx;"></u-notice-bar>
+		    <u-notice-bar :text="text1" mode="link" speed="150" @click="toNoticeDeatil" custom-style="margin-bottom:20rpx;border-radius: 20rpx;"></u-notice-bar>
 		  </view>
 		<!-- 板块专区 -->
 		<blockClassify classifyTitle="热门板块" :moreBlock="true" :propBlockName="blockData"></blockClassify>
@@ -55,7 +55,8 @@
 	export default {
 		data() {
 			return {
-					text1:"成都交通卡/码联盟+1,攀枝花市米易县也可以刷卡啦",
+					text1:null,
+					noticeID:null,
 					pageData: [],
 					modalShow:false,
 					isActive:false,
@@ -67,6 +68,20 @@
 			}
 		},
 		methods: {
+			// 跳转至公告详情
+			toNoticeDeatil() {
+				uni.navigateTo({
+					url:`/pages/message/notice/noticedetail/noticedetail?id=${this.noticeID}`
+				})
+			},
+			//获取置顶通知
+			getTopNotice() {
+				uni.$u.http.get("/msg/getTopNotice").then(res => {
+					console.log(res.data[0])
+					this.text1 = res.data[0].title
+					this.noticeID = res.data[0].id
+				})
+			},
 			//获取当前用户状态，判断是否允许发帖
 			getUserData() {
 				const currentID = uni.getStorageSync("user_id")
@@ -192,6 +207,7 @@
 			this.getUserData()
 			this.getPageData()
 			this.getHotBlock()
+			this.getTopNotice()
 			uni.showLoading({
 					title: '加载中'
 				});

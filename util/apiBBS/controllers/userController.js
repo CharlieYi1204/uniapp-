@@ -103,6 +103,26 @@ updateUserInfo =  (req,res)=> {
   config.sqlConnect(sql,sqlArr,callBack)
 }
 
+//后台修改用户信息
+updateUserInfoAdmin =  (req,res)=> {
+  let {nickname,gender,signature,user_id,rule_break_count} = req.body;
+  let sql = `update user set nickname=?,gender=?,signature=?,rule_break_count=? where user_id=?`
+  let sqlArr = [nickname,gender,signature,rule_break_count,user_id];
+  console.log(sql)
+  console.log(sqlArr)
+  let callBack = (err,data) => {
+    if (err) {
+      console.log("连接出错了")
+    } else {
+      res.send({
+        "message":"修改成功",
+          "data":data
+      })
+    }
+  }
+  config.sqlConnect(sql,sqlArr,callBack)
+}
+
 //获取指定用户信息
 getTargetUser = (req,res)=> {
   let {username} = req.query;
@@ -346,6 +366,31 @@ addUserBanned = (req,res) => {
     config.sqlConnect(sql,sqlArr,callBack)
 }
 
+
+//按照用户ID，进行删除用户
+deletUserByID = (req,res) => {
+  let {
+    user_id
+  } = req.body
+  const sql = `delete from user where user_id = ?`
+  const sqlArr = [user_id];
+    let callBack = (err,data) => {
+      if (err) {
+        console.log(err)
+        res.send({
+          err:err,
+          msg:"设置失败"
+        })
+      } else {
+          res.send({
+            msg :"已删除该用户",
+            data:data
+          })
+      }
+    }
+    config.sqlConnect(sql,sqlArr,callBack)
+}
+
 module.exports = {
     getUser,
     getTargetUser,
@@ -357,7 +402,9 @@ module.exports = {
     updateUserInfo,
     changUserBanned,
     searchUser,
-    addUserBanned
+    addUserBanned,
+    deletUserByID,
+    updateUserInfoAdmin
 }
 
 
